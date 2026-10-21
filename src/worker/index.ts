@@ -8,7 +8,8 @@ import { getEnv } from "../server/env";
 const env = getEnv();
 const worker = new Worker<AuditJobData>(queueName(), async (job) => { await processAudit(job.data.auditId); }, {
   connection: redisConnection(),
-  concurrency: 2,
+  // >= 2 so the mobile and desktop jobs of one run execute in parallel.
+  concurrency: env.WORKER_CONCURRENCY,
   lockDuration: env.AUDIT_JOB_TIMEOUT_MS + 60_000,
 });
 worker.on("ready", () => logger.info("worker.ready", { queue: queueName(), keyed: Boolean(env.PSI_API_KEY) }));

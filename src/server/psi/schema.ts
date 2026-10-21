@@ -21,6 +21,7 @@ export type LhAudit = z.infer<typeof AuditSchema>;
 const CruxMetricSchema = z.object({
   percentile: z.number(),
   category: z.string().optional(),
+  distributions: z.array(z.object({ min: z.number(), max: z.number().optional(), proportion: z.number() }).passthrough()).optional(),
 }).passthrough();
 
 export const LoadingExperienceSchema = z.object({

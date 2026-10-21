@@ -1,12 +1,19 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Globe, Loader2, Monitor, Smartphone } from "lucide-react";
+import { ArrowRight, Globe, Layers, Loader2, Monitor, Smartphone } from "lucide-react";
+
+const OPTIONS = [
+  { v: "both", label: "Both", icon: Layers },
+  { v: "mobile", label: "Mobile", icon: Smartphone },
+  { v: "desktop", label: "Desktop", icon: Monitor },
+] as const;
+type Target = (typeof OPTIONS)[number]["v"];
 
 export function AuditForm() {
   const router = useRouter();
   const [url, setUrl] = useState("");
-  const [strategy, setStrategy] = useState<"mobile" | "desktop">("mobile");
+  const [strategy, setStrategy] = useState<Target>("both");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -17,7 +24,7 @@ export function AuditForm() {
       const res = await fetch("/api/audits", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ url, strategy }) });
       const data: unknown = await res.json();
       if (!res.ok) { setError((data as { error?: { message?: string } }).error?.message ?? "Request failed"); setBusy(false); return; }
-      router.push(`/audits/${(data as { audit: { id: string } }).audit.id}`);
+      router.push(`/runs/${(data as { run: { id: string } }).run.id}`);
     } catch {
       setError("Network error"); setBusy(false);
     }
@@ -34,11 +41,11 @@ export function AuditForm() {
         </label>
         <div className="flex items-center gap-2">
           <div className="flex rounded-xl bg-muted p-1" role="radiogroup" aria-label="Strategy">
-            {(["mobile", "desktop"] as const).map((s) => (
-              <button key={s} type="button" role="radio" aria-checked={strategy === s} onClick={() => setStrategy(s)}
-                className={`flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium transition-all ${strategy === s ? "bg-surface text-foreground shadow-sm ring-1 ring-border" : "text-muted-foreground hover:text-foreground"}`}>
-                {s === "mobile" ? <Smartphone className="size-3.5" /> : <Monitor className="size-3.5" />}
-                {s === "mobile" ? "Mobile" : "Desktop"}
+            {OPTIONS.map((o) => (
+              <button key={o.v} type="button" role="radio" aria-checked={strategy === o.v} onClick={() => setStrategy(o.v)}
+                title={o.v === "both" ? "Mobile and desktop in parallel" : undefined}
+                className={`flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-[13px] font-medium transition-all sm:px-3 ${strategy === o.v ? "bg-surface text-foreground shadow-sm ring-1 ring-border" : "text-muted-foreground hover:text-foreground"}`}>
+                <o.icon className="size-3.5" />{o.label}
               </button>
             ))}
           </div>

@@ -12,7 +12,7 @@ test("submits a real audit and shows a terminal status (requires worker + PSI)",
   await page.getByLabel("URL").fill("https://example.com");
   await page.getByRole("radio", { name: "Desktop" }).click();
   await page.getByRole("button", { name: "Run audit" }).click();
-  await page.waitForURL(/\/audits\//);
+  await page.waitForURL(/\/runs\//);
   await expect(page.getByTestId("status").first()).toHaveText(/succeeded|failed/, { timeout: 110_000 });
   await page.screenshot({ path: "test-results/audit.png", fullPage: true });
 });
@@ -22,7 +22,7 @@ test("real audit renders lab, field, and opportunities (requires PSI key)", asyn
   await page.goto("/");
   await page.getByLabel("URL").fill("https://web.dev");
   await page.getByRole("button", { name: "Run audit" }).click();
-  await page.waitForURL(/\/audits\//);
+  await page.waitForURL(/\/runs\//);
   await expect(page.getByTestId("status").first()).toHaveText("succeeded", { timeout: 110_000 });
   await expect(page.getByTestId("score")).toHaveText(/^\d{1,3}$/);
   await expect(page.getByTestId("lab-lcp")).not.toContainText("Unavailable");

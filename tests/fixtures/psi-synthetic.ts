@@ -2,6 +2,9 @@
  * SYNTHETIC TEST FIXTURES — NOT REAL DATA.
  * Hand-written to mirror the PSI v5 response shape. Values are invented for parser tests only.
  */
+/** SYNTHETIC 1x1 PNG (not a real page screenshot). */
+export const SYNTHETIC_PNG_DATA_URI = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+
 export const SYNTHETIC_PSI_WITH_FIELD = {
   id: "https://fixture.invalid/",
   loadingExperience: {
@@ -9,8 +12,8 @@ export const SYNTHETIC_PSI_WITH_FIELD = {
     origin_fallback: true,
     overall_category: "AVERAGE",
     metrics: {
-      LARGEST_CONTENTFUL_PAINT_MS: { percentile: 2600, category: "AVERAGE" },
-      INTERACTION_TO_NEXT_PAINT: { percentile: 180, category: "FAST" },
+      LARGEST_CONTENTFUL_PAINT_MS: { percentile: 2600, category: "AVERAGE", distributions: [{ min: 0, max: 2500, proportion: 0.7 }, { min: 2500, max: 4000, proportion: 0.2 }, { min: 4000, proportion: 0.1 }] },
+      INTERACTION_TO_NEXT_PAINT: { percentile: 180, category: "FAST", distributions: [{ min: 0, max: 200, proportion: 0.8 }, { min: 200, max: 500, proportion: 0.15 }] },
       CUMULATIVE_LAYOUT_SHIFT_SCORE: { percentile: 5, category: "FAST" },
       FIRST_CONTENTFUL_PAINT_MS: { percentile: 1500, category: "FAST" },
       EXPERIMENTAL_TIME_TO_FIRST_BYTE: { percentile: 700, category: "AVERAGE" },
@@ -31,6 +34,11 @@ export const SYNTHETIC_PSI_WITH_FIELD = {
       "render-blocking-resources": { id: "render-blocking-resources", title: "Eliminate render-blocking resources", description: "See [docs](https://x.invalid).", score: 0.3, scoreDisplayMode: "metricSavings", details: { type: "opportunity", overallSavingsMs: 900 } },
       "unused-javascript": { id: "unused-javascript", title: "Reduce unused JavaScript", score: 0.5, scoreDisplayMode: "metricSavings", details: { type: "opportunity", overallSavingsMs: 300, overallSavingsBytes: 50000 } },
       "uses-http2": { id: "uses-http2", title: "Passing audit", score: 1, details: { type: "opportunity", overallSavingsMs: 0 } },
+      "dom-size": { id: "dom-size", title: "Avoid an excessive DOM size", score: 0.4, scoreDisplayMode: "numeric", displayValue: "2,000 elements",
+        details: { type: "table", headings: [{ key: "statistic", label: "Statistic", valueType: "text" }, { key: "value", label: "Value", valueType: "numeric" }], items: [{ statistic: "Total DOM Elements", value: 2000 }] } },
+      "final-screenshot": { id: "final-screenshot", title: "Final Screenshot", score: null, scoreDisplayMode: "informative", details: { type: "screenshot", data: SYNTHETIC_PNG_DATA_URI } },
+      "screenshot-thumbnails": { id: "screenshot-thumbnails", title: "Screenshot Thumbnails", score: null, scoreDisplayMode: "informative",
+        details: { type: "filmstrip", items: [{ timing: 300, data: SYNTHETIC_PNG_DATA_URI }, { timing: 600, data: "data:text/html;base64,PHNjcmlwdD4=" }, { timing: 900, data: SYNTHETIC_PNG_DATA_URI }] } },
     },
   },
 } as const;

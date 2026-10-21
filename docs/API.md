@@ -23,6 +23,7 @@ Base URL: the web app (for example `http://localhost:3000`). All endpoints are J
   "id": "cmv…",
   "url": "https://web.dev/",
   "strategy": "mobile",                 // "mobile" | "desktop"
+  "runId": "cmv…",                      // linked run (null for audits created before runs existed)
   "status": "SUCCEEDED",                // QUEUED | RUNNING | SUCCEEDED | FAILED
   "error": null,                        // { code, message } when FAILED
   "createdAt": "…", "startedAt": "…", "completedAt": "…",
@@ -39,9 +40,30 @@ Base URL: the web app (for example `http://localhost:3000`). All endpoints are J
   },
   "opportunities": [
     { "id": "unused-javascript", "title": "Reduce unused JavaScript", "description": "…", "score": 0,
-      "displayValue": "Est savings of 870 KiB", "savingsMs": 4350, "savingsBytes": 890880, "metricSavings": { "LCP": 4350 } }
-  ]
+      "displayValue": "Est savings of 870 KiB", "savingsMs": 4350, "savingsBytes": 890880, "metricSavings": { "LCP": 4350 },
+      "table": { "headings": ["URL", "Transfer Size", "Est Savings"], "rows": [["https://…/app.js", "512.0 KiB", "300.1 KiB"]] } }
+  ],
+  "diagnostics": [ /* same shape: failing audits WITHOUT estimated metric savings */ ],
+  "labMetricScores": { "lcp": 0.51, "fcp": 0.24, "si": 0.67, "tbt": 0.24, "cls": 0.85 },   // Lighthouse 0-1 scores, drive ●/■/▲ indicators
+  "fieldDistributions": { "lcp": [0.6613, 0.1761, 0.1626] },  // CrUX [good, needs improvement, poor]; omitted when not reported
+  "screenshots": {
+    "final": { "src": "/api/audits/cmv…/screenshot?kind=final&i=0", "timingMs": null },
+    "thumbnails": [{ "src": "/api/audits/cmv…/screenshot?kind=thumb&i=0", "timingMs": 428 }]
+  }
 }
+```
+
+`table` holds at most 5 rows copied from the Lighthouse audit's `details` (pre-formatted strings). Absent data is never estimated:
+a metric without a CrUX histogram has no `fieldDistributions` entry, and an audit without screenshots has `final: null`.
+
+## Run object
+
+A run groups the per-device audits created by one submission.
+
+```jsonc
+{ "id": "cmv…", "url": "https://web.dev/", "createdAt": "…",
+  "status": "RUNNING",          // QUEUED | RUNNING | SUCCEEDED | PARTIAL (some device failed) | FAILED (all failed)
+  "audits": [Audit /* mobile */, Audit /* desktop */] }   // ordered mobile, desktop
 ```
 
 `lab.ttfbMs` is Lighthouse's `server-response-time`, which measures backend latency for the root document. It is **not** a full TTFB.
@@ -68,21 +90,36 @@ Base URL: the web app (for example `http://localhost:3000`). All endpoints are J
 
 ## `POST /api/audits`
 
-Creates an audit and hands it to the executor. In `queue` mode (default) PSI runs in the separate worker. In `inline` demo mode it runs via `after()` once the 202 response has been sent. The response is the same in both modes.
+Creates a run with one audit per device and hands them to the executor. `strategy: "both"` (the UI default) creates
+mobile **and** desktop audits that execute **in parallel**: in `queue` mode (default) as two BullMQ jobs consumed by a worker with
+`WORKER_CONCURRENCY >= 2`; in `inline` demo mode as one `after()` task that runs both with `Promise.all`. The response is the same in both modes.
+One submission counts once against the create rate limit but uses one PSI request per device.
 
-Request: `{ "url": "https://example.com", "strategy": "mobile" | "desktop" }` (no extra keys allowed)
+Request: `{ "url": "https://example.com", "strategy": "mobile" | "desktop" | "both" }` (no extra keys allowed)
 
 | Status | Code | When |
 | --- | --- | --- |
-| 202 | — | `{ "audit": Audit }` with status `QUEUED` |
+| 202 | — | `{ "run": Run, "audit": Audit }`, all audits `QUEUED`. `audit` is the first device (kept for single-strategy clients). |
 | 400 | `INVALID_JSON` / `INVALID_INPUT` | Malformed body or schema |
 | 400 | `INVALID_URL` | Not http/https, has credentials, local, private or link-local IP, unresolvable, or resolves to a private address |
 | 413 / 415 / 429 | | See Conventions |
 | 503 | `QUEUE_UNAVAILABLE` | Redis is unreachable (the audit is stored as FAILED) |
 
 ```bash
-curl -X POST localhost:3000/api/audits -H 'content-type: application/json' -d '{"url":"https://web.dev","strategy":"mobile"}'
+curl -X POST localhost:3000/api/audits -H 'content-type: application/json' -d '{"url":"https://web.dev","strategy":"both"}'
 ```
+
+## `GET /api/runs/:id`
+
+Returns `{ "run": Run }`, or `400 INVALID_ID` / `404 NOT_FOUND`. Poll while any audit is `QUEUED` or `RUNNING`; each device
+progresses independently (live per-device status in the UI).
+
+## `GET /api/audits/:id/screenshot?kind=final|thumb&i=<n>`
+
+Serves a Lighthouse screenshot stored when the audit completed. The bytes are decoded from the `final-screenshot` and
+`screenshot-thumbnails` data URIs **inside the PSI response**; VeloAudit never fetches the audited site itself. Only
+`image/jpeg|png|webp` up to 2 MB are accepted. Responses are `immutable`-cached and sent with `X-Content-Type-Options: nosniff`
+and `Content-Security-Policy: default-src 'none'; sandbox`. Errors: `400 INVALID_ID` / `INVALID_INPUT`, `404 NOT_FOUND`.
 
 ## `GET /api/audits`
 

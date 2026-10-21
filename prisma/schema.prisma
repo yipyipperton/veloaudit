@@ -24,8 +24,20 @@ enum MetricSource {
   FIELD
 }
 
+/// One user submission. Groups the per-device audits (mobile + desktop) that run in parallel.
+model AuditRun {
+  id        String   @id @default(cuid())
+  url       String
+  createdAt DateTime @default(now())
+  audits    Audit[]
+
+  @@index([createdAt(sort: Desc)])
+}
+
 model Audit {
   id          String      @id @default(cuid())
+  runId       String?
+  run         AuditRun?   @relation(fields: [runId], references: [id], onDelete: Cascade)
   url         String
   strategy    Strategy
   status      AuditStatus @default(QUEUED)
@@ -63,7 +75,14 @@ model Audit {
   fieldTtfbCategory String?
 
   opportunities Json?
+  diagnostics   Json?
+  /// Lighthouse per-metric scores 0-1 ({ lcp, fcp, si, tbt, cls }), used for threshold indicators.
+  labMetricScores Json?
+  /// CrUX histogram per metric: { lcp: [good, needsImprovement, poor], ... } as proportions 0-1.
+  fieldDistributions Json?
+  assets AuditAsset[]
 
+  @@index([runId])
   @@index([createdAt(sort: Desc)])
   @@index([status])
   @@index([url, strategy, createdAt(sort: Desc)])
@@ -81,4 +100,18 @@ model Budget {
 
   @@unique([url, strategy, source, metric])
   @@index([url, strategy])
+}
+
+/// Screenshot bytes decoded from Lighthouse data URIs in the PSI response (never fetched from the target site).
+model AuditAsset {
+  id       String @id @default(cuid())
+  auditId  String
+  audit    Audit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  kind     String // "final" | "thumb"
+  idx      Int
+  mime     String
+  timingMs Float?
+  data     Bytes
+
+  @@unique([auditId, kind, idx])
 }

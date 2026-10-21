@@ -9,7 +9,9 @@ export function syntheticAudit(over: Partial<AuditView> = {}): AuditView {
     lab: { score: 80, lcpMs: 2000, fcpMs: 1200, speedIndexMs: 2500, tbtMs: 300, cls: 0.05, ttfbMs: 40 },
     field: { scope: "url", overall: "AVERAGE", lcpMs: { value: 2400, category: "FAST" }, inpMs: { value: 210, category: "AVERAGE" },
       cls: { value: 0.08, category: "FAST" }, fcpMs: { value: 1500, category: "FAST" }, ttfbMs: { value: 600, category: "FAST" } },
-    opportunities: [],
+    opportunities: [], diagnostics: [], runId: null,
+    labMetricScores: { lcp: 0.8, fcp: 0.9, si: 0.8, tbt: 0.7, cls: 0.95 }, fieldDistributions: {},
+    screenshots: { final: null, thumbnails: [] },
     ...over,
   };
 }

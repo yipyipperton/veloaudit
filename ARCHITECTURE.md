@@ -26,14 +26,20 @@ Browser ──► Next.js App Router (UI + route handlers)
 
 ## Execution modes
 
-`enqueueAudit(url, strategy, { schedule })` either enqueues a BullMQ job (`queue`, the default) or, when `AUDIT_EXECUTION_MODE=inline`,
-passes `processAudit(id)` to the platform scheduler (Next.js `after()`, i.e. Vercel `waitUntil`). The route sets `maxDuration = 300`.
+`enqueueRun(url, "mobile" | "desktop" | "both", { schedule })` creates an `AuditRun` and one audit per device atomically, then either
+adds one BullMQ job per device (`queue`, the default; the worker's `WORKER_CONCURRENCY >= 2` runs them in parallel) or, when
+`AUDIT_EXECUTION_MODE=inline`, passes a single task that runs `processAudit(id)` for every device with `Promise.all` to the platform scheduler (Next.js `after()`, i.e. Vercel `waitUntil`). The route sets `maxDuration = 300`.
 `processAudit` is the same function in both modes, so the deadline, error codes and persistence behave identically. Inline mode is
 for demos: it has no durable queue and is limited by function lifetime and concurrency.
 
 ## Data model
 
-- `Audit`: one row per run. Lab columns (`lab*`), field columns (`field*` plus categories and `fieldScope`), and `opportunities` (JSON).
+- `AuditRun`: one row per submission, grouping its device audits (`Audit.runId`, cascade delete, indexed).
+- `AuditAsset`: screenshot bytes (`kind` = `final` | `thumb`, `idx`, `mime`, `timingMs`), unique per `(auditId, kind, idx)`.
+  Decoded from the Lighthouse data URIs already in the PSI response, so the audited site is never fetched by us. Kept out of the
+  audit row so list/history queries stay light; replaced atomically with the result in one transaction.
+- `Audit`: one row per device. Lab columns (`lab*`), field columns (`field*` plus categories and `fieldScope`), `opportunities` / `diagnostics` (JSON, with up to 5 detail rows each), `labMetricScores` (Lighthouse 0-1 per metric) and
+  `fieldDistributions` (CrUX good/NI/poor proportions).
   Indexed on `createdAt`, `status`, and `(url, strategy, createdAt)` for history queries.
 - `Budget`: `(url, strategy, source, metric, threshold)`, unique per `(url, strategy, source, metric)` and indexed on `(url, strategy)`.
 

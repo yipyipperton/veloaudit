@@ -1,5 +1,6 @@
-import type { Audit } from "@prisma/client";
+import type { Audit, Strategy } from "@prisma/client";
 import * as repo from "../persistence/audits";
+import type { RunWithAudits } from "../persistence/audits";
 import { auditQueue } from "./queue";
 import { runPagespeed, PsiError, type PsiStrategy } from "../psi/client";
 import { parsePsiResponse, PsiParseError } from "../psi/parser";
@@ -16,35 +17,48 @@ export type EnqueueOptions = {
   deps?: ProcessDeps;
 };
 
+export type RunTarget = StrategyInput | "both";
+const strategiesFor = (t: RunTarget): Strategy[] => (t === "both" ? ["MOBILE", "DESKTOP"] : [t === "mobile" ? "MOBILE" : "DESKTOP"]);
+
 /**
- * API side: persist a QUEUED audit and hand it to an executor.
- * - "queue" (production): enqueue a BullMQ job for the separate worker process. PSI never runs in the request.
- * - "inline" (demo): schedule the SAME processAudit() to run after the response via the platform's after()/waitUntil.
+ * API side: persist a run with one QUEUED audit per device and hand them to an executor.
+ * - "queue" (production): one BullMQ job per device for the separate worker (concurrency >= 2 runs them in parallel).
+ * - "inline" (demo): schedule ONE task after the response that runs the SAME processAudit() for every device via
+ *   Promise.all, so mobile and desktop execute concurrently inside the function's after()/waitUntil budget.
  */
-export async function enqueueAudit(url: string, strategy: StrategyInput, opts: EnqueueOptions = {}): Promise<Audit> {
-  const audit = await repo.createAudit(url, strategy === "mobile" ? "MOBILE" : "DESKTOP");
+export async function enqueueRun(url: string, target: RunTarget, opts: EnqueueOptions = {}): Promise<RunWithAudits> {
+  const run = await repo.createRun(url, strategiesFor(target));
+  const ids = run.audits.map((a) => a.id);
   const mode = opts.mode ?? getEnv().AUDIT_EXECUTION_MODE;
   if (mode === "inline") {
     if (!opts.schedule) {
-      await repo.markFailed(audit.id, "QUEUE_UNAVAILABLE", "Inline execution requires a scheduler");
+      await Promise.all(ids.map((id) => repo.markFailed(id, "QUEUE_UNAVAILABLE", "Inline execution requires a scheduler")));
       throw new QueueUnavailableError("no scheduler for inline mode");
     }
     opts.schedule(async () => {
-      try { await processAudit(audit.id, opts.deps); }
-      catch (err) { logger.error("audit.inline_crashed", { auditId: audit.id, err: err instanceof Error ? err.message : "unknown" }); }
+      await Promise.all(ids.map(async (auditId) => {
+        try { await processAudit(auditId, opts.deps); }
+        catch (err) { logger.error("audit.inline_crashed", { auditId, err: err instanceof Error ? err.message : "unknown" }); }
+      }));
     });
-    logger.info("audit.scheduled_inline", { auditId: audit.id, url, strategy });
-    return audit;
+    logger.info("run.scheduled_inline", { runId: run.id, auditIds: ids.join(","), url, target });
+    return run;
   }
   try {
-    await auditQueue().add("run", { auditId: audit.id }, { jobId: audit.id, attempts: 1, removeOnComplete: 1000, removeOnFail: 1000 });
+    await auditQueue().addBulk(ids.map((auditId) => ({ name: "run", data: { auditId }, opts: { jobId: auditId, attempts: 1, removeOnComplete: 1000, removeOnFail: 1000 } })));
   } catch (err) {
-    logger.error("audit.enqueue_failed", { auditId: audit.id, err: err instanceof Error ? err.message : "unknown" });
-    await repo.markFailed(audit.id, "QUEUE_UNAVAILABLE", "Could not enqueue audit job");
+    logger.error("run.enqueue_failed", { runId: run.id, err: err instanceof Error ? err.message : "unknown" });
+    await Promise.all(ids.map((id) => repo.markFailed(id, "QUEUE_UNAVAILABLE", "Could not enqueue audit job")));
     throw new QueueUnavailableError("queue unavailable");
   }
-  logger.info("audit.enqueued", { auditId: audit.id, url, strategy });
-  return audit;
+  logger.info("run.enqueued", { runId: run.id, auditIds: ids.join(","), url, target });
+  return run;
+}
+
+/** Single-device convenience wrapper (kept for callers/tests that audit one strategy). */
+export async function enqueueAudit(url: string, strategy: StrategyInput, opts: EnqueueOptions = {}): Promise<Audit> {
+  const run = await enqueueRun(url, strategy, opts);
+  return run.audits[0]!;
 }
 
 export type PsiRunner = (url: string, strategy: PsiStrategy, signal: AbortSignal) => Promise<unknown>;

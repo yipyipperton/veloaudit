@@ -17,9 +17,10 @@ step "build"; npm run build; end
 step "playwright browsers"; npx playwright install ${PLAYWRIGHT_INSTALL_FLAGS---with-deps} chromium; end
 step "e2e"
 PORT="${CI_PORT:-3100}"
-npm start -- -p "$PORT" > /tmp/ci-web.log 2>&1 & WEB=$!
-npm run worker > /tmp/ci-worker.log 2>&1 & WORKER=$!
-trap 'kill $WEB $WORKER 2>/dev/null || true' EXIT
+# setsid: each server gets its own process group, so cleanup also stops npm's child node processes.
+setsid npm start -- -p "$PORT" > /tmp/ci-web.log 2>&1 & WEB=$!
+setsid npm run worker > /tmp/ci-worker.log 2>&1 & WORKER=$!
+trap 'kill -- -$WEB -$WORKER 2>/dev/null || true' EXIT
 for i in $(seq 1 60); do curl -sf "http://localhost:$PORT" >/dev/null && break; sleep 1; done
 BASE_URL="http://localhost:$PORT" npm run test:e2e
 end

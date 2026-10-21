@@ -11,7 +11,9 @@ const SYNTHETIC_AUDIT = {
   finalUrl: null, lighthouseVersion: "synthetic", fetchTime: null,
   lab: { score: 50, lcpMs: 2000, fcpMs: 1000, speedIndexMs: 1500, tbtMs: 400, cls: 0.1, ttfbMs: 50 },
   field: { scope: null, overall: null, lcpMs: null, inpMs: null, cls: null, fcpMs: null, ttfbMs: null },
-  opportunities: [],
+  opportunities: [], diagnostics: [], runId: null,
+  labMetricScores: { lcp: null, fcp: null, si: null, tbt: null, cls: null }, fieldDistributions: {},
+  screenshots: { final: null, thumbnails: [] },
 };
 
 test("field metrics show Unavailable and INP is not filled from TBT", async ({ page }) => {
@@ -21,4 +23,5 @@ test("field metrics show Unavailable and INP is not filled from TBT", async ({ p
   for (const m of ["lcp", "inp", "cls", "fcp", "ttfb"]) await expect(page.getByTestId(`field-${m}`)).toContainText("Unavailable");
   await expect(page.getByTestId("lab-tbt")).toContainText("400 ms");
   await expect(page.getByTestId("field-inp")).not.toContainText("400");
+  await expect(page.getByTestId("cwv-assessment")).toHaveAttribute("data-verdict", "no_data");
 });

@@ -15,5 +15,5 @@ export const GET = safe("GET /api/history", async (req: Request) => {
   const q = HistoryQuerySchema.safeParse({ url: sp.get("url") ?? "", strategy: sp.get("strategy") ?? "" });
   if (!q.success) return jsonError(400, "INVALID_INPUT", firstIssue(q.error));
   const rows = await listHistory(q.data.url, q.data.strategy === "mobile" ? "MOBILE" : "DESKTOP");
-  return NextResponse.json({ url: q.data.url, strategy: q.data.strategy, audits: rows.map(toDto) });
+  return NextResponse.json({ url: q.data.url, strategy: q.data.strategy, audits: rows.map((a) => toDto(a)) });
 });

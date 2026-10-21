@@ -1,7 +1,7 @@
 # VeloAudit
 
-VeloAudit is a web performance auditor. Submit a public URL and choose mobile or desktop. A background worker calls the
-Google PageSpeed Insights (PSI) v5 API and stores Lighthouse **lab** metrics and Chrome UX Report (CrUX) **field** metrics
+VeloAudit is a web performance auditor. Submit a public URL and VeloAudit audits mobile **and** desktop in parallel as one
+linked run (or just one device). A background worker calls the Google PageSpeed Insights (PSI) v5 API and stores Lighthouse **lab** metrics and Chrome UX Report (CrUX) **field** metrics
 as separate data sets. The UI lets you follow job status live, read the results and the opportunities Lighthouse found,
 look at trends per URL, compare two runs, set performance budgets and download reports.
 
@@ -11,7 +11,7 @@ durable queue, so treat it as a demo, not a production deployment.
 
 ![Dashboard (dark)](docs/screenshots/dashboard-dark.png)
 
-![Audit detail (light)](docs/screenshots/audit-webdev-mobile-light.png)
+![PSI-style results, mobile tab (light)](docs/screenshots/psi-mobile-tab-light-desktop.png)
 
 ## Engineering highlights
 
@@ -46,11 +46,11 @@ Vitest, Playwright, GitHub Actions and Bash (CI scripts).
 ```mermaid
 flowchart LR
   B[Browser<br/>Next.js UI] -->|fetch JSON| API[Next.js route handlers<br/>validation · rate limit · serialize]
-  API -->|Prisma| PG[(PostgreSQL<br/>Audit · Budget)]
+  API -->|Prisma| PG[(PostgreSQL<br/>AuditRun · Audit · AuditAsset · Budget)]
   API -->|enqueue job| R[(Redis<br/>BullMQ queue)]
-  W[Worker process<br/>tsx src/worker] -->|consume| R
+  W[Worker process<br/>tsx src/worker<br/>concurrency ≥ 2] -->|consume mobile + desktop jobs| R
   W -->|runPagespeed<br/>timeout + backoff| PSI[Google PageSpeed<br/>Insights v5]
-  W -->|parse lab + field<br/>save result| PG
+  W -->|parse lab + field + screenshots<br/>save result| PG
   API -->|history · compare · budgets · reports| PG
 ```
 
@@ -58,14 +58,14 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for modules and the job lifecycle, and [d
 
 ## Execution modes
 
-The same orchestration module (`src/server/orchestration/audits.ts`) is used in both modes: `enqueueAudit()` creates the `QUEUED`
-row, and `processAudit()` does the PSI call, parse and save, enforces the job deadline and always leaves a terminal status.
+The same orchestration module (`src/server/orchestration/audits.ts`) is used in both modes: `enqueueRun()` creates the run and one `QUEUED`
+audit per device, and `processAudit()` does the PSI call, parse and save, enforces the job deadline and always leaves a terminal status.
 Only the executor changes.
 
 | `AUDIT_EXECUTION_MODE` | Executor | Use for |
 | --- | --- | --- |
-| `queue` (default) | BullMQ job on Redis, consumed by the separate `npm run worker` process | **Production.** Retries and throughput are under your control, and the worker is decoupled from web requests. |
-| `inline` | `processAudit()` is scheduled with Next.js `after()` (Vercel `waitUntil`) in the `POST /api/audits` function (`maxDuration = 300`) | **Demo / serverless only.** Needs no Redis or worker host. The work still runs after the 202 response is sent, but it is bound to a function invocation: there is no durable queue, a crashed invocation loses its job (the row stays `RUNNING` until the deadline or stale recovery), and concurrency is unmanaged. |
+| `queue` (default) | One BullMQ job per device on Redis, consumed in parallel (`WORKER_CONCURRENCY`, default 4) by the separate `npm run worker` process | **Production.** Retries and throughput are under your control, and the worker is decoupled from web requests. |
+| `inline` | One `after()` task runs `processAudit()` for every device with `Promise.all`, scheduled with Next.js `after()` (Vercel `waitUntil`) in the `POST /api/audits` function (`maxDuration = 300`) | **Demo / serverless only.** Needs no Redis or worker host. The work still runs after the 202 response is sent, but it is bound to a function invocation: there is no durable queue, a crashed invocation loses its job (the row stays `RUNNING` until the deadline or stale recovery), and concurrency is unmanaged. |
 
 ### Live demo deployment (Vercel, inline mode)
 
@@ -87,9 +87,12 @@ flowchart LR
 
 | Feature | Where |
 | --- | --- |
-| Submit an audit and follow its status live | `/` → `/audits/:id` |
-| Lab metrics (score, LCP, FCP, SI, TBT, CLS, server response) and field p75 (LCP, INP, CLS, FCP, TTFB) | audit page |
-| Opportunities from real Lighthouse audits, with estimated savings | audit page |
+| One submit audits mobile + desktop in parallel, with live per-device progress | `/` → `/runs/:id` |
+| PSI-style results with a Mobile/Desktop tab switcher | `/runs/:id?tab=mobile\|desktop` |
+| Core Web Vitals assessment (Passed/Failed, field data only) with good / needs-improvement / poor distribution bars from CrUX histograms | results page |
+| Large threshold-colored score gauge and lab metric grid with ● / ■ / ▲ indicators (Lighthouse per-metric scores) | results page |
+| Lighthouse final screenshot in a device frame, plus the `screenshot-thumbnails` filmstrip | results page |
+| Expandable opportunity and diagnostic rows with the audit's own detail table | results page |
 | History per URL and strategy, with separate lab and field trend charts | `/history?url=&strategy=` |
 | Compare two completed runs (deltas, noise floor, variance caveat) | `/compare?a=&b=` |
 | Performance budgets with an explicit lab or field source | audit and history pages, `/api/budgets` |
@@ -121,6 +124,7 @@ Development: `npm run dev` plus `npm run worker`.
 | `AUDIT_QUEUE_NAME` | no | `audits` | Use different names to isolate environments or tests |
 | `AUDIT_EXECUTION_MODE` | no | `queue` | `queue` = BullMQ + worker (production). `inline` = run via `after()` in the request's function (demo/serverless). |
 | `AUDIT_JOB_TIMEOUT_MS` | no | `300000` | Hard deadline per audit job |
+| `WORKER_CONCURRENCY` | no | `4` | Worker job concurrency (min 2, so a run's mobile and desktop jobs execute in parallel) |
 | `DNS_RESOLVER` | no | `system` | Set to `doh` (Google DNS-over-HTTPS) only where the system resolver returns synthetic IPs, such as some sandboxes or egress proxies |
 | `TEST_DATABASE_URL` | tests | `…/veloaudit_test` | Database used by the integration tests |
 
@@ -161,7 +165,11 @@ backoff, and hold a BullMQ lock.
 - The DNS validation is a policy guard. PSI fetches the page from Google's network, and DNS rebinding between our check and Google's fetch is not mitigated.
 - Lab results come from a single Lighthouse run per audit, with no median-of-N. Field data is a CrUX 28-day aggregate and only appears when Google has enough traffic data.
 - There are no authentication or multi-tenant budgets. Budgets are global per URL and strategy.
-- Raw PSI JSON is not stored, so new metrics can't be backfilled from old audits.
+- Raw PSI JSON is not stored, so new metrics can't be backfilled from old audits. Audits from before runs existed have no
+  distributions, screenshots or diagnostics and open as a single-device view.
+- Per-device progress is real state (queued / running / done + elapsed time). PSI exposes no percentage, so none is shown.
+- Screenshots are what Lighthouse captured in Google's lab environment (stored in Postgres as small JPEGs, roughly 20-40 KB per run), not a live view of the site.
+- Only URL-level-or-fallback CrUX data from `loadingExperience` is shown. PSI's separate "origin" toggle is not reproduced.
 - The "printable" report relies on the browser's Print → PDF. No server-side PDF is generated.
 
 ## Future work
