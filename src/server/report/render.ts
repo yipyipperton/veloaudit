@@ -64,12 +64,12 @@ export function renderHtml(a: AuditView, budgets: readonly BudgetResult[] = []):
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VeloAudit report — ${esc(a.url)}</title>
 <style>
-:root{color-scheme:light}body{font:14px/1.5 ui-sans-serif,system-ui,-apple-system,sans-serif;max-width:860px;margin:32px auto;padding:0 24px;color:#111}
-h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:4px}
-.muted{color:#666}.score{font-size:48px;font-weight:700}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #eee;padding:6px 8px;text-align:left}
-th{font-weight:600;color:#444}.note{background:#f6f6f6;border-left:3px solid #999;padding:8px 12px;margin:8px 0}
-.b-pass{color:#15803d;font-weight:600}.b-fail{color:#b91c1c;font-weight:600}.b-not_evaluable{color:#666;font-style:italic}
-li{margin:0 0 12px}li p{margin:4px 0 0;color:#444}code{font-family:ui-monospace,monospace}
+:root{color-scheme:light;--b:#e4e4e7;--m:#71717a;--a:#4f46e5}*{box-sizing:border-box}body{font:14px/1.6 "Geist","Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;max-width:880px;margin:48px auto;padding:0 28px;color:#09090b;-webkit-font-smoothing:antialiased}
+h1{font-size:26px;letter-spacing:-.03em;margin:0 0 6px;font-weight:650}h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--m);margin:40px 0 12px;font-weight:600}
+.muted{color:var(--m)}.score{font-size:56px;font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}table{border-collapse:separate;border-spacing:0;width:100%;border:1px solid var(--b);border-radius:12px;overflow:hidden}td,th{border-bottom:1px solid var(--b);padding:9px 14px;text-align:left;font-variant-numeric:tabular-nums}tr:last-child td{border-bottom:0}
+th{font-weight:500;color:var(--m);background:#fafafa;font-size:12px}.note{background:#fafafa;border:1px solid var(--b);border-left:3px solid var(--a);border-radius:8px;padding:10px 14px;margin:10px 0;color:#3f3f46}
+.b-pass{color:#15803d;font-weight:600}.b-fail{color:#b91c1c;font-weight:600}.b-not_evaluable{color:var(--m);font-style:italic}
+li{margin:0 0 14px}li p{margin:4px 0 0;color:#52525b}code{font-family:ui-monospace,"Geist Mono",monospace}@media print{body{margin:0 auto}}
 @media print{body{margin:0;max-width:none}.noprint{display:none}a{color:inherit;text-decoration:none}}
 </style></head><body>
 <p class="noprint"><button onclick="window.print()">Print / Save as PDF</button></p>

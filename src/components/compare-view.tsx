@@ -1,4 +1,5 @@
 "use client";
+import { Skeleton } from "./skeleton";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,7 +31,7 @@ function DeltaTable({ rows, testId }: { rows: MetricDelta[]; testId: string }) {
             <TableCell className="text-right font-mono text-xs">{formatValue(d.after, d.def.unit)}</TableCell>
             <TableCell className="text-right font-mono text-xs">{d.delta === null ? "—" : formatDelta(d.delta, d.def.unit)}</TableCell>
             <TableCell className="text-right font-mono text-xs">{d.pct === null ? "—" : `${d.pct > 0 ? "+" : ""}${d.pct.toFixed(1)}%`}</TableCell>
-            <TableCell className="text-right"><Badge variant="outline" className={`border-transparent ${V[d.verdict]}`}>{d.verdict === "unchanged" ? "within noise" : d.verdict.replace("_", " ")}</Badge></TableCell>
+            <TableCell className="text-right"><Badge variant="outline" className={`rounded-full border-transparent text-[11px] ${V[d.verdict]}`}>{d.verdict === "unchanged" ? "within noise" : d.verdict.replace("_", " ")}</Badge></TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -40,17 +41,18 @@ function DeltaTable({ rows, testId }: { rows: MetricDelta[]; testId: string }) {
 
 export function CompareView({ a, b }: { a: string; b: string }) {
   const { data, error } = usePoll<Resp>(`/api/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`, 0, () => false);
-  if (error) return <p role="alert" className="text-red-600 dark:text-red-400">{error}</p>;
-  if (!data) return <p className="text-muted-foreground">Loading…</p>;
+  if (error) return <p role="alert" className="text-rose-600 dark:text-rose-400">{error}</p>;
+  if (!data) return <div className="space-y-6"><Skeleton className="h-8 w-80 max-w-full" /><Skeleton className="h-16 rounded-xl" /><Skeleton className="h-96 rounded-2xl" /></div>;
   const when = (x: AuditView) => new Date(x.createdAt).toLocaleString();
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-2">
-        <h1 className="break-all font-mono text-lg font-semibold">{data.before.url}</h1>
+      <div className="fade-up flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span className="eyebrow basis-full">Compare runs</span>
+        <h1 className="break-all text-2xl font-semibold tracking-tight">{data.before.url}</h1>
         <Badge variant="outline">{data.before.strategy}</Badge>
         <Link className="ml-auto text-sm text-muted-foreground hover:underline" href={historyHref(data.before.url, data.before.strategy)}>View history →</Link>
       </div>
-      <div className="flex gap-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm" role="note" data-testid="caveat">
+      <div className="flex gap-3 rounded-xl border border-amber-500/25 bg-amber-500/[0.07] p-4 text-[13px] leading-relaxed" role="note" data-testid="caveat">
         <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
         <p><strong>Run-to-run variance:</strong> {data.caveat}</p>
       </div>

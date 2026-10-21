@@ -29,5 +29,5 @@ test("real audit renders lab, field, and opportunities (requires PSI key)", asyn
   await expect(page.getByTestId("field-inp")).toBeVisible();
   await expect(page.getByTestId("opportunities").locator("li").first()).toBeVisible();
   await page.goto("/");
-  await expect(page.locator("table tbody tr").first()).toContainText("web.dev");
+  await expect(page.getByTestId("recent-audits").locator("li").first()).toContainText("web.dev");
 });

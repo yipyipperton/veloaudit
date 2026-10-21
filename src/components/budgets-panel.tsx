@@ -15,7 +15,7 @@ const BADGE: Record<BudgetResult["status"], string> = {
   fail: "bg-red-500/15 text-red-700 dark:text-red-300",
   not_evaluable: "bg-muted text-muted-foreground",
 };
-const selectCls = "h-9 rounded-md border border-input bg-background px-2 text-sm";
+const selectCls = "h-9 rounded-lg border border-input bg-surface px-2.5 text-[13px] shadow-xs outline-none transition-shadow focus:ring-2 focus:ring-[var(--brand)]/30";
 
 export function BudgetsPanel({ url, strategy, auditId }: { url: string; strategy: "mobile" | "desktop"; auditId?: string }) {
   const qs = new URLSearchParams({ url, strategy, ...(auditId ? { auditId } : {}) });
@@ -37,20 +37,20 @@ export function BudgetsPanel({ url, strategy, auditId }: { url: string; strategy
 
   return (
     <div className="space-y-4" data-testid="budgets">
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-rose-600">{error}</p>}
       {data && data.results.length === 0 && <p className="text-sm text-muted-foreground">No budgets yet for this URL and strategy.</p>}
       {data && data.results.length > 0 && (
-        <ul className="divide-y divide-border/70 rounded-lg border border-border/70">
+        <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border">
           {data.results.map((r, i) => {
             const unit = findMetric(r.source, r.metric)?.unit ?? "ms";
             const id = data.budgets[i]?.id;
             return (
-              <li key={`${r.source}-${r.metric}`} className="flex flex-wrap items-center gap-3 px-3 py-2 text-sm" data-testid={`budget-${r.source}-${r.metric}`}>
+              <li key={`${r.source}-${r.metric}`} className="flex flex-wrap items-center gap-3 px-4 py-2.5 text-[13px] transition-colors hover:bg-subtle" data-testid={`budget-${r.source}-${r.metric}`}>
                 <Badge variant="outline" className="font-mono text-[10px] uppercase">{r.source}</Badge>
                 <span className="font-medium">{findMetric(r.source, r.metric)?.label ?? r.metric}</span>
                 <span className="font-mono text-xs text-muted-foreground">{r.comparator ?? "<="} {formatValue(r.threshold, unit)}</span>
                 <span className="font-mono text-xs">actual {formatValue(r.actual, unit)}</span>
-                <Badge variant="outline" className={`border-transparent ${BADGE[r.status]}`} data-testid="budget-status">{r.status === "not_evaluable" ? "not evaluable" : r.status}</Badge>
+                <Badge variant="outline" className={`rounded-full border-transparent ${BADGE[r.status]}`} data-testid="budget-status">{r.status === "not_evaluable" ? "not evaluable" : r.status}</Badge>
                 {r.status === "not_evaluable" && <span className="text-xs text-muted-foreground">{r.reason}</span>}
                 {id && <Button variant="ghost" size="icon" className="ml-auto size-7" aria-label="Delete budget" onClick={() => void remove(id)}><Trash2 className="size-3.5" /></Button>}
               </li>
@@ -58,7 +58,7 @@ export function BudgetsPanel({ url, strategy, auditId }: { url: string; strategy
           })}
         </ul>
       )}
-      <form onSubmit={add} className="flex flex-wrap items-end gap-2" aria-label="Add budget">
+      <form onSubmit={add} className="flex flex-wrap items-end gap-2.5 rounded-xl border border-dashed border-border p-3" aria-label="Add budget">
         <label className="grid gap-1 text-xs text-muted-foreground">Source
           <select aria-label="Budget source" className={selectCls} value={source} onChange={(e) => { const s = e.target.value as MetricSource; setSource(s); setMetric((s === "lab" ? LAB_METRICS : FIELD_METRICS)[0]?.key ?? "lcp"); }}>
             <option value="field">Field (CrUX)</option><option value="lab">Lab (Lighthouse)</option>
@@ -72,8 +72,8 @@ export function BudgetsPanel({ url, strategy, auditId }: { url: string; strategy
         <label className="grid gap-1 text-xs text-muted-foreground">Target ({findMetric(source, metric)?.better === "higher" ? "≥" : "≤"}{findMetric(source, metric)?.unit === "ms" ? " ms" : ""})
           <Input aria-label="Budget threshold" className="h-9 w-28 font-mono" inputMode="decimal" value={threshold} onChange={(e) => setThreshold(e.target.value)} />
         </label>
-        <Button type="submit" size="sm" className="h-9">Save budget</Button>
-        {formError && <p role="alert" className="basis-full text-sm text-red-600 dark:text-red-400">{formError}</p>}
+        <Button type="submit" size="sm" className="h-9 rounded-lg px-4">Save budget</Button>
+        {formError && <p role="alert" className="basis-full text-sm text-rose-600 dark:text-rose-400">{formError}</p>}
       </form>
     </div>
   );

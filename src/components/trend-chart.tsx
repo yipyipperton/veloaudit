@@ -11,16 +11,17 @@ export function TrendChart({ data, series, unit, testId }: { data: Point[]; seri
     <div className="h-56 w-full" data-testid={testId}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis dataKey="t" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} stroke="var(--border)" />
-          <YAxis tickFormatter={tick} width={48} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} stroke="var(--border)"
+          <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.7} />
+          <XAxis dataKey="t" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} stroke="var(--border)" tickLine={false} axisLine={false} />
+          <YAxis tickFormatter={tick} width={48} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} stroke="var(--border)" tickLine={false} axisLine={false}
             domain={unit === "score" ? [0, 100] : [0, "auto"]} />
           <Tooltip
-            contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12, color: "var(--popover-foreground)" }}
+            contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 10, fontSize: 12, color: "var(--popover-foreground)", boxShadow: "var(--shadow-soft)" }}
+            cursor={{ stroke: "var(--border)" }}
             formatter={(v) => (typeof v === "number" ? formatValue(v, unit) : "Unavailable")} />
-          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
           {series.map((s) => (
-            <Line key={s.key} type="monotone" dataKey={s.key} name={s.label} stroke={s.color} strokeWidth={2} dot={{ r: 3 }} connectNulls={false} isAnimationActive={false} />
+            <Line key={s.key} type="linear" dataKey={s.key} name={s.label} stroke={s.color} strokeWidth={2} dot={{ r: 2.5, strokeWidth: 0, fill: s.color }} activeDot={{ r: 4.5, strokeWidth: 2, stroke: "var(--card)" }} connectNulls={false} isAnimationActive={false} />
           ))}
         </LineChart>
       </ResponsiveContainer>

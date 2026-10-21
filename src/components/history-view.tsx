@@ -1,4 +1,5 @@
 "use client";
+import { Skeleton } from "./skeleton";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -30,28 +31,29 @@ export function HistoryView({ url, strategy }: { url: string; strategy: "mobile"
   const qs = new URLSearchParams({ url, strategy }).toString();
   const { data, error } = usePoll<Resp>(`/api/history?${qs}`, 0, () => false);
   const [sel, setSel] = useState<string[]>([]);
-  if (error) return <p role="alert" className="text-red-600 dark:text-red-400">{error}</p>;
-  if (!data) return <p className="text-muted-foreground">Loading…</p>;
+  if (error) return <p role="alert" className="text-rose-600 dark:text-rose-400">{error}</p>;
+  if (!data) return <div className="space-y-6"><Skeleton className="h-8 w-80 max-w-full" /><div className="grid gap-4 lg:grid-cols-3">{[0,1,2].map((i) => <Skeleton key={i} className="h-64 rounded-2xl" />)}</div><Skeleton className="h-72 rounded-2xl" /></div>;
   const pts = toPoints(data.audits);
   const toggle = (id: string) => setSel((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s.slice(-1), id]));
   const anyField = data.audits.some((a) => a.field.scope !== null);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-2">
-        <h1 className="break-all font-mono text-lg font-semibold">{data.url}</h1>
+      <div className="fade-up flex flex-wrap items-center gap-x-3 gap-y-2">
+        <span className="eyebrow basis-full">History</span>
+        <h1 className="break-all text-2xl font-semibold tracking-tight">{data.url}</h1>
         <Badge variant="outline">{data.strategy}</Badge>
         <span className="text-sm text-muted-foreground">{data.audits.length} completed audit{data.audits.length === 1 ? "" : "s"}</span>
-        <div className="ml-auto flex gap-1">
+        <div className="ml-auto flex rounded-lg bg-muted p-0.5">
           {(["mobile", "desktop"] as const).map((s) => (
-            <Link key={s} className={buttonVariants({ size: "sm", variant: s === strategy ? "secondary" : "ghost" })} href={`/history?${new URLSearchParams({ url, strategy: s })}`}>{s}</Link>
+            <Link key={s} className={`rounded-md px-3 py-1 text-[13px] capitalize transition-all ${s === strategy ? "bg-surface font-medium text-foreground shadow-sm ring-1 ring-border" : "text-muted-foreground hover:text-foreground"}`} href={`/history?${new URLSearchParams({ url, strategy: s })}`}>{s}</Link>
           ))}
         </div>
       </div>
       {data.audits.length === 0 ? <p className="text-muted-foreground">No completed audits for this URL and strategy yet.</p> : (
         <>
           <section className="space-y-3">
-            <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground"><span className="size-2 rounded-full bg-violet-500" />Lab · Lighthouse (single simulated run per audit)</h2>
+            <h2 className="flex items-center gap-2 eyebrow pt-2"><span className="size-1.5 rounded-full bg-violet-500 shadow-[0_0_8px] shadow-violet-500" />Lab · Lighthouse (single simulated run per audit)</h2>
             <div className="grid gap-4 lg:grid-cols-3">
               <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Lab performance score</CardTitle></CardHeader>
                 <CardContent><TrendChart testId="chart-lab-score" unit="score" data={pts} series={[{ key: "labScore", label: "Lab score", color: C.a }]} /></CardContent></Card>
@@ -64,7 +66,7 @@ export function HistoryView({ url, strategy }: { url: string; strategy: "mobile"
             </div>
           </section>
           <section className="space-y-3">
-            <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground"><span className="size-2 rounded-full bg-sky-500" />Field · CrUX p75 (28-day rolling real-user data)</h2>
+            <h2 className="flex items-center gap-2 eyebrow pt-2"><span className="size-1.5 rounded-full bg-sky-500 shadow-[0_0_8px] shadow-sky-500" />Field · CrUX p75 (28-day rolling real-user data)</h2>
             {!anyField && <p className="text-sm text-muted-foreground">No field data was available for any of these audits; gaps are shown rather than estimated.</p>}
             <div className="grid gap-4 lg:grid-cols-2">
               <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Field timings</CardTitle><CardDescription className="text-xs">Missing values appear as gaps. INP is never derived from lab TBT.</CardDescription></CardHeader>
@@ -88,7 +90,7 @@ export function HistoryView({ url, strategy }: { url: string; strategy: "mobile"
                     const n = data.audits.indexOf(a) + 1;
                     return (
                       <TableRow key={a.id} data-state={sel.includes(a.id) ? "selected" : undefined}>
-                        <TableCell><input type="checkbox" aria-label={`Select run ${n}`} checked={sel.includes(a.id)} onChange={() => toggle(a.id)} className="size-4 accent-violet-600" /></TableCell>
+                        <TableCell><input type="checkbox" aria-label={`Select run ${n}`} checked={sel.includes(a.id)} onChange={() => toggle(a.id)} className="size-4 accent-[var(--brand)]" /></TableCell>
                         <TableCell className="font-mono text-xs"><Link className="hover:underline" href={`/audits/${a.id}`}>#{n}</Link></TableCell>
                         <TableCell className="text-xs text-muted-foreground tabular-nums">{new Date(a.createdAt).toLocaleString()}</TableCell>
                         <TableCell className={`text-right font-mono font-semibold ${scoreColor(a.lab.score)}`}>{a.lab.score ?? "—"}</TableCell>

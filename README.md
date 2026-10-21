@@ -9,6 +9,8 @@ look at trends per URL, compare two runs, set performance budgets and download r
 Vercel functions with Neon Postgres (free plan, provisioned through the Vercel Marketplace). The demo shares one PSI quota and has no
 durable queue, so treat it as a demo, not a production deployment.
 
+![Dashboard (dark)](docs/screenshots/dashboard-dark.png)
+
 ![Audit detail (light)](docs/screenshots/audit-webdev-mobile-light.png)
 
 ## Engineering highlights
