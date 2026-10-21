@@ -24,6 +24,13 @@ Browser ──► Next.js App Router (UI + route handlers)
 | `src/components/` | UI (shadcn/ui, Recharts, next-themes): dashboard, audit detail, budgets panel, history charts, compare view. |
 | `src/worker/index.ts` | The BullMQ worker entry point (a separate process), with graceful shutdown. |
 
+## Execution modes
+
+`enqueueAudit(url, strategy, { schedule })` either enqueues a BullMQ job (`queue`, the default) or, when `AUDIT_EXECUTION_MODE=inline`,
+passes `processAudit(id)` to the platform scheduler (Next.js `after()`, i.e. Vercel `waitUntil`). The route sets `maxDuration = 300`.
+`processAudit` is the same function in both modes, so the deadline, error codes and persistence behave identically. Inline mode is
+for demos: it has no durable queue and is limited by function lifetime and concurrency.
+
 ## Data model
 
 - `Audit`: one row per run. Lab columns (`lab*`), field columns (`field*` plus categories and `fieldScope`), and `opportunities` (JSON).

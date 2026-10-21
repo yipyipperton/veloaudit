@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { CreateAuditSchema } from "@/server/validation/schemas";
 import { validatePublicUrl } from "@/server/validation/url";
 import { enqueueAudit, QueueUnavailableError } from "@/server/orchestration/audits";
@@ -10,6 +10,8 @@ import { toDto } from "@/server/http/serialize";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+// Only matters in AUDIT_EXECUTION_MODE=inline (demo), where the PSI call runs via after() in this function.
+export const maxDuration = 300;
 
 export const POST = safe("POST /api/audits", async (req: Request) => {
   const rl = rateLimit(`create:${clientIp(req)}`, 10, 60_000);
@@ -21,7 +23,7 @@ export const POST = safe("POST /api/audits", async (req: Request) => {
   const check = await validatePublicUrl(parsed.data.url);
   if (!check.ok) return jsonError(400, "INVALID_URL", check.reason);
   try {
-    const audit = await enqueueAudit(check.url, parsed.data.strategy);
+    const audit = await enqueueAudit(check.url, parsed.data.strategy, { schedule: (task) => after(task) });
     return NextResponse.json({ audit: toDto(audit) }, { status: 202 });
   } catch (err) {
     if (err instanceof QueueUnavailableError) return jsonError(503, "QUEUE_UNAVAILABLE", "Audit queue is temporarily unavailable");

@@ -14,7 +14,9 @@
     "db:migrate": "prisma migrate deploy",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
-    "ci:local": "bash scripts/ci-local.sh"
+    "ci:local": "bash scripts/ci-local.sh",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma migrate deploy && next build"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

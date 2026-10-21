@@ -9,9 +9,33 @@ import type { StrategyInput } from "../validation/schemas";
 
 export class QueueUnavailableError extends Error {}
 
-/** API side: persist a QUEUED audit and enqueue it. Never runs PSI in the request lifetime. */
-export async function enqueueAudit(url: string, strategy: StrategyInput): Promise<Audit> {
+export type EnqueueOptions = {
+  /** Required for inline mode: schedules work after the response is sent (Next.js `after()` / waitUntil). */
+  schedule?: (task: () => Promise<void>) => void;
+  mode?: "queue" | "inline";
+  deps?: ProcessDeps;
+};
+
+/**
+ * API side: persist a QUEUED audit and hand it to an executor.
+ * - "queue" (production): enqueue a BullMQ job for the separate worker process. PSI never runs in the request.
+ * - "inline" (demo): schedule the SAME processAudit() to run after the response via the platform's after()/waitUntil.
+ */
+export async function enqueueAudit(url: string, strategy: StrategyInput, opts: EnqueueOptions = {}): Promise<Audit> {
   const audit = await repo.createAudit(url, strategy === "mobile" ? "MOBILE" : "DESKTOP");
+  const mode = opts.mode ?? getEnv().AUDIT_EXECUTION_MODE;
+  if (mode === "inline") {
+    if (!opts.schedule) {
+      await repo.markFailed(audit.id, "QUEUE_UNAVAILABLE", "Inline execution requires a scheduler");
+      throw new QueueUnavailableError("no scheduler for inline mode");
+    }
+    opts.schedule(async () => {
+      try { await processAudit(audit.id, opts.deps); }
+      catch (err) { logger.error("audit.inline_crashed", { auditId: audit.id, err: err instanceof Error ? err.message : "unknown" }); }
+    });
+    logger.info("audit.scheduled_inline", { auditId: audit.id, url, strategy });
+    return audit;
+  }
   try {
     await auditQueue().add("run", { auditId: audit.id }, { jobId: audit.id, attempts: 1, removeOnComplete: 1000, removeOnFail: 1000 });
   } catch (err) {

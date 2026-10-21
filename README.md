@@ -5,6 +5,10 @@ Google PageSpeed Insights (PSI) v5 API and stores Lighthouse **lab** metrics and
 as separate data sets. The UI lets you follow job status live, read the results and the opportunities Lighthouse found,
 look at trends per URL, compare two runs, set performance budgets and download reports.
 
+**Live demo:** https://veloaudit.vercel.app. This runs in **demo execution mode** (see [Execution modes](#execution-modes)).
+The demo database is a temporary Prisma Postgres instance that is **deleted automatically within 24 hours** unless it is claimed,
+so the demo may stop working after that.
+
 ![Audit detail (light)](docs/screenshots/audit-webdev-mobile-light.png)
 
 ## Engineering highlights
@@ -50,6 +54,31 @@ flowchart LR
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for modules and the job lifecycle, and [docs/API.md](docs/API.md) for the full HTTP API.
 
+## Execution modes
+
+The same orchestration module (`src/server/orchestration/audits.ts`) is used in both modes: `enqueueAudit()` creates the `QUEUED`
+row, and `processAudit()` does the PSI call, parse and save, enforces the job deadline and always leaves a terminal status.
+Only the executor changes.
+
+| `AUDIT_EXECUTION_MODE` | Executor | Use for |
+| --- | --- | --- |
+| `queue` (default) | BullMQ job on Redis, consumed by the separate `npm run worker` process | **Production.** Retries and throughput are under your control, and the worker is decoupled from web requests. |
+| `inline` | `processAudit()` is scheduled with Next.js `after()` (Vercel `waitUntil`) in the `POST /api/audits` function (`maxDuration = 300`) | **Demo / serverless only.** Needs no Redis or worker host. The work still runs after the 202 response is sent, but it is bound to a function invocation: there is no durable queue, a crashed invocation loses its job (the row stays `RUNNING` until the deadline or stale recovery), and concurrency is unmanaged. |
+
+### Live demo deployment (Vercel, inline mode)
+
+```mermaid
+flowchart LR
+  U[Browser] --> V[Vercel: Next.js<br/>UI + route handlers]
+  V -->|"after(): processAudit()"| PSI[PSI v5]
+  V -->|Prisma| PG[(Prisma Postgres<br/>temporary, us-east-1)]
+```
+
+- Production env vars set on Vercel: `DATABASE_URL`, `PSI_API_KEY` (sensitive), `DNS_RESOLVER=system`, `AUDIT_EXECUTION_MODE=inline` and
+  `AUDIT_JOB_TIMEOUT_MS=240000`. `REDIS_URL` is not needed in inline mode.
+- `vercel.json` runs `npm run vercel-build` (`prisma migrate deploy && next build`), so migrations are applied on each deploy.
+- Rate limiting is in-memory per function instance, so on serverless it is only best-effort.
+
 ## Features
 
 | Feature | Where |
@@ -86,6 +115,7 @@ Development: `npm run dev` plus `npm run worker`.
 | `REDIS_URL` | yes | `redis://localhost:6379` | BullMQ connection |
 | `PSI_API_KEY` | no | — | Recommended. Without it, keyless requests are tried, but Google's shared keyless quota is often exhausted (HTTP 429 "Queries per day"). Get a key at https://developers.google.com/speed/docs/insights/v5/get-started. Keep it in the environment or a secret manager, never in git. |
 | `AUDIT_QUEUE_NAME` | no | `audits` | Use different names to isolate environments or tests |
+| `AUDIT_EXECUTION_MODE` | no | `queue` | `queue` = BullMQ + worker (production). `inline` = run via `after()` in the request's function (demo/serverless). |
 | `AUDIT_JOB_TIMEOUT_MS` | no | `300000` | Hard deadline per audit job |
 | `DNS_RESOLVER` | no | `system` | Set to `doh` (Google DNS-over-HTTPS) only where the system resolver returns synthetic IPs, such as some sandboxes or egress proxies |
 | `TEST_DATABASE_URL` | tests | `…/veloaudit_test` | Database used by the integration tests |
@@ -122,6 +152,7 @@ backoff, and hold a BullMQ lock.
 
 ## Known limitations
 
+- The public demo uses inline mode and a temporary database (see Execution modes). It is not a production deployment.
 - The rate limiter is in-memory per process, so it is only correct for a single web instance.
 - The DNS validation is a policy guard. PSI fetches the page from Google's network, and DNS rebinding between our check and Google's fetch is not mitigated.
 - Lab results come from a single Lighthouse run per audit, with no median-of-N. Field data is a CrUX 28-day aggregate and only appears when Google has enough traffic data.

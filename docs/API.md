@@ -68,7 +68,7 @@ Base URL: the web app (for example `http://localhost:3000`). All endpoints are J
 
 ## `POST /api/audits`
 
-Creates an audit and enqueues it. PSI runs in the worker, never in the request.
+Creates an audit and hands it to the executor. In `queue` mode (default) PSI runs in the separate worker. In `inline` demo mode it runs via `after()` once the 202 response has been sent. The response is the same in both modes.
 
 Request: `{ "url": "https://example.com", "strategy": "mobile" | "desktop" }` (no extra keys allowed)
 

@@ -94,3 +94,23 @@ describe("job lifecycle (real Postgres, fake PSI transport, SYNTHETIC payload)",
     }
   });
 });
+
+describe("inline execution mode (demo/serverless) reuses processAudit", () => {
+  it("schedules processAudit instead of enqueueing, and completes", async () => {
+    const tasks: Array<() => Promise<void>> = [];
+    const f = scriptedFetch([503]);
+    const a = await enqueueAudit("https://a.example/", "mobile", { mode: "inline", schedule: (t) => tasks.push(t), deps: deps(f.fetchImpl) });
+    expect(a.status).toBe("QUEUED");
+    expect(await auditQueue().getJob(a.id)).toBeFalsy();
+    expect(tasks).toHaveLength(1);
+    await tasks[0]!();
+    const done = await repo.getAudit(a.id);
+    expect(done?.status).toBe("SUCCEEDED");
+    expect(f.calls()).toBe(2);
+  });
+  it("fails safely when no scheduler is provided", async () => {
+    await expect(enqueueAudit("https://a.example/", "mobile", { mode: "inline" })).rejects.toThrow();
+    const rows = await prisma.audit.findMany({});
+    expect(rows[0]?.errorCode).toBe("QUEUE_UNAVAILABLE");
+  });
+});
