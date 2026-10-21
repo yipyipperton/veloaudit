@@ -6,7 +6,7 @@ export type Series = { key: string; label: string; color: string };
 export type Point = { t: string } & Record<string, number | null | string>;
 
 export function TrendChart({ data, series, unit, testId }: { data: Point[]; series: Series[]; unit: MetricUnit; testId: string }) {
-  const tick = (v: number) => (unit === "ms" ? (v >= 1000 ? `${(v / 1000).toFixed(1)}s` : `${v}`) : unit === "unitless" ? v.toFixed(2) : `${v}`);
+  const tick = (v: number) => (unit === "ms" ? (v >= 1000 ? `${(v / 1000).toFixed(1)}s` : `${v}`) : unit === "unitless" ? v.toFixed(3) : `${v}`);
   return (
     <div className="h-56 w-full" data-testid={testId}>
       <ResponsiveContainer width="100%" height="100%">

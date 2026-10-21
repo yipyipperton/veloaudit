@@ -30,7 +30,7 @@ function DeltaTable({ rows, testId }: { rows: MetricDelta[]; testId: string }) {
             <TableCell className="text-right font-mono text-xs">{formatValue(d.after, d.def.unit)}</TableCell>
             <TableCell className="text-right font-mono text-xs">{d.delta === null ? "—" : formatDelta(d.delta, d.def.unit)}</TableCell>
             <TableCell className="text-right font-mono text-xs">{d.pct === null ? "—" : `${d.pct > 0 ? "+" : ""}${d.pct.toFixed(1)}%`}</TableCell>
-            <TableCell className="text-right"><Badge variant="outline" className={`border-transparent ${V[d.verdict]}`}>{d.verdict.replace("_", " ")}</Badge></TableCell>
+            <TableCell className="text-right"><Badge variant="outline" className={`border-transparent ${V[d.verdict]}`}>{d.verdict === "unchanged" ? "within noise" : d.verdict.replace("_", " ")}</Badge></TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -58,7 +58,7 @@ export function CompareView({ a, b }: { a: string; b: string }) {
         <div>Before: <Link className="font-mono hover:underline" href={`/audits/${data.before.id}`}>{when(data.before)}</Link></div>
         <div>After: <Link className="font-mono hover:underline" href={`/audits/${data.after.id}`}>{when(data.after)}</Link></div>
       </div>
-      <Card><CardHeader><CardTitle>Lab · Lighthouse</CardTitle><CardDescription>Single simulated runs; small deltas are usually noise.</CardDescription></CardHeader>
+      <Card><CardHeader><CardTitle>Lab · Lighthouse</CardTitle><CardDescription>Single simulated runs. Deltas under max(10 ms, 5%), 2 score points or 0.01 CLS are shown as &ldquo;within noise&rdquo;.</CardDescription></CardHeader>
         <CardContent><DeltaTable testId="delta-lab" rows={data.deltas.filter((d) => d.def.source === "lab")} /></CardContent></Card>
       <Card><CardHeader><CardTitle>Field · CrUX p75</CardTitle><CardDescription>28-day rolling aggregate; unavailable values are not compared.</CardDescription></CardHeader>
         <CardContent><DeltaTable testId="delta-field" rows={data.deltas.filter((d) => d.def.source === "field")} /></CardContent></Card>

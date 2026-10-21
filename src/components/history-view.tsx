@@ -13,7 +13,8 @@ import { usePoll } from "./use-poll";
 import type { AuditView } from "@/lib/types";
 
 type Resp = { url: string; strategy: "mobile" | "desktop"; audits: AuditView[] };
-const C = { a: "var(--chart-1)", b: "var(--chart-2)", c: "var(--chart-3)", d: "var(--chart-4)", e: "var(--chart-5)" };
+// Fixed palette readable on both light and dark backgrounds.
+const C = { a: "#8b5cf6", b: "#0ea5e9", c: "#10b981", d: "#f59e0b", e: "#f43f5e" };
 
 function toPoints(audits: AuditView[]): Point[] {
   return audits.map((a, i) => ({

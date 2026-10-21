@@ -32,3 +32,18 @@ describe("compareAudits (SYNTHETIC)", () => {
     expect(COMPARE_CAVEAT).toMatch(/vary from run to run/i);
   });
 });
+
+describe("noise floor (SYNTHETIC)", () => {
+  it("treats tiny real-world-style deltas as unchanged (CLS 0.119->0.118, 4ms->3ms, score +1)", () => {
+    const b = syntheticAudit({ id: "cbeforebbbbbbbbbbbbbbbbb", lab: { score: 56, lcpMs: 3930, fcpMs: 3930, speedIndexMs: 4490, tbtMs: 707, cls: 0.119, ttfbMs: 4 } });
+    const a = syntheticAudit({ id: "cafterbbbbbbbbbbbbbbbbbb", lab: { score: 57, lcpMs: 4000, fcpMs: 3930, speedIndexMs: 4490, tbtMs: 556, cls: 0.118, ttfbMs: 3 } });
+    const r = compareAudits(b, a);
+    if (!r.ok) throw new Error(r.reason);
+    const v = (k: string) => r.deltas.find((d) => d.def.source === "lab" && d.def.key === k)?.verdict;
+    expect(v("cls")).toBe("unchanged");
+    expect(v("ttfb")).toBe("unchanged");
+    expect(v("score")).toBe("unchanged");
+    expect(v("lcp")).toBe("unchanged"); // +70ms on 3.93s < 5%
+    expect(v("tbt")).toBe("improved");  // -151ms > 5%
+  });
+});

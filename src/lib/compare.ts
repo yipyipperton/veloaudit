@@ -11,7 +11,15 @@ export type MetricDelta = {
   verdict: Verdict;
 };
 
-const EPSILON: Record<MetricDef["unit"], number> = { ms: 1, score: 0.5, unitless: 0.0005 };
+/**
+ * Deltas smaller than these are reported as "unchanged" (within typical noise), not as improvements/regressions.
+ * ms: max(10 ms, 5% of the baseline); score: < 2 points; CLS: < 0.01.
+ */
+export function noiseFloor(unit: MetricDef["unit"], before: number): number {
+  if (unit === "ms") return Math.max(10, Math.abs(before) * 0.05);
+  if (unit === "score") return 2;
+  return 0.01;
+}
 
 export const COMPARE_CAVEAT =
   "A single pair of runs does not prove an improvement or regression. Lighthouse lab results vary from run to run " +
@@ -31,7 +39,7 @@ export function compareAudits(before: AuditView, after: AuditView): CompareResul
     if (b === null || a === null) return { def, before: b, after: a, delta: null, pct: null, verdict: "not_comparable" };
     const delta = a - b;
     const pct = b !== 0 ? (delta / b) * 100 : null;
-    const verdict: Verdict = Math.abs(delta) < EPSILON[m.unit] ? "unchanged"
+    const verdict: Verdict = Math.abs(delta) < noiseFloor(m.unit, b) ? "unchanged"
       : (m.better === "lower" ? delta < 0 : delta > 0) ? "improved" : "regressed";
     return { def, before: b, after: a, delta, pct, verdict };
   });

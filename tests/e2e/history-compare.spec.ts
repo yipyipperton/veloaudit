@@ -53,7 +53,7 @@ test("history shows separate lab and field trend charts and compares two runs (S
   await expect(score).toContainText("88");
   await expect(score).toContainText("+28");
   await expect(score).toContainText("improved");
-  await expect(page.getByTestId("delta-field-inp")).toContainText("improved");
+  await expect(page.getByTestId("delta-field-inp")).toContainText("improved"); // 250 -> 190 ms
 });
 
 test("compare marks a missing field value as not comparable (SYNTHETIC seed)", async ({ page }) => {
