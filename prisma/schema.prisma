@@ -19,6 +19,11 @@ enum Strategy {
   DESKTOP
 }
 
+enum MetricSource {
+  LAB
+  FIELD
+}
+
 model Audit {
   id          String      @id @default(cuid())
   url         String
@@ -62,4 +67,18 @@ model Audit {
   @@index([createdAt(sort: Desc)])
   @@index([status])
   @@index([url, strategy, createdAt(sort: Desc)])
+}
+
+/// User-defined performance target, evaluated against an explicit source (lab or field).
+model Budget {
+  id        String       @id @default(cuid())
+  url       String
+  strategy  Strategy
+  source    MetricSource
+  metric    String // e.g. "lcp", "inp", "cls", "score"
+  threshold Float
+  createdAt DateTime     @default(now())
+
+  @@unique([url, strategy, source, metric])
+  @@index([url, strategy])
 }

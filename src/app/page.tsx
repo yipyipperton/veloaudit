@@ -4,9 +4,12 @@ import { RecentAudits } from "@/components/recent-audits";
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-5xl space-y-6 p-6">
-      <header><h1 className="text-3xl font-bold">VeloAudit</h1><p className="text-muted-foreground">Web performance audits powered by Google PageSpeed Insights.</p></header>
-      <Card><CardHeader><CardTitle>New audit</CardTitle><CardDescription>Public http(s) URLs only.</CardDescription></CardHeader><CardContent><AuditForm /></CardContent></Card>
+    <main className="mx-auto max-w-6xl space-y-6 px-6 py-8">
+      <section className="space-y-2">
+        <h1 className="text-3xl font-semibold tracking-tight">Web performance audits</h1>
+        <p className="max-w-2xl text-muted-foreground">Lighthouse lab metrics and Chrome UX Report field data from Google PageSpeed Insights, kept separate and stored for trends, comparisons and budgets.</p>
+      </section>
+      <Card><CardHeader><CardTitle>New audit</CardTitle><CardDescription>Public http(s) URLs only. Private, loopback and link-local targets are rejected.</CardDescription></CardHeader><CardContent><AuditForm /></CardContent></Card>
       <Card><CardHeader><CardTitle>Recent audits</CardTitle></CardHeader><CardContent><RecentAudits /></CardContent></Card>
     </main>
   );

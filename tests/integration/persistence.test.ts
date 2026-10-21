@@ -1,6 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 import { prisma } from "@/server/persistence/db";
 import * as repo from "@/server/persistence/audits";
+import * as budgets from "@/server/persistence/budgets";
 import { parsePsiResponse } from "@/server/psi/parser";
 import { SYNTHETIC_PSI_NO_FIELD } from "../fixtures/psi-synthetic";
 import { resetDb, syntheticPsi } from "./helpers";
@@ -15,7 +16,6 @@ describe("audit persistence (real Postgres, SYNTHETIC payloads)", () => {
     expect(a.labScore).toBeNull();
     expect(a.fieldInpMs).toBeNull();
   });
-
   it("round-trips lab, field, and opportunities", async () => {
     const a = await repo.createAudit("https://a.example/", "DESKTOP");
     await repo.markRunning(a.id);
@@ -29,7 +29,6 @@ describe("audit persistence (real Postgres, SYNTHETIC payloads)", () => {
     expect(got?.startedAt).not.toBeNull();
     expect(got?.completedAt).not.toBeNull();
   });
-
   it("stores missing field data as NULL (never derived from lab TBT)", async () => {
     const a = await repo.createAudit("https://b.example/", "MOBILE");
     await repo.saveResult(a.id, parsePsiResponse(SYNTHETIC_PSI_NO_FIELD));
@@ -38,16 +37,12 @@ describe("audit persistence (real Postgres, SYNTHETIC payloads)", () => {
     expect(got?.fieldInpMs).toBeNull();
     expect(got?.fieldScope).toBeNull();
   });
-
   it("markFailed truncates long messages and lists newest first", async () => {
     const a = await repo.createAudit("https://c.example/", "MOBILE");
     const b = await repo.createAudit("https://d.example/", "MOBILE");
-    const f = await repo.markFailed(a.id, "X", "m".repeat(2000));
-    expect(f.errorMessage?.length).toBe(500);
-    const list = await repo.listAudits(10);
-    expect(list.map((x) => x.id)).toEqual([b.id, a.id]);
+    expect((await repo.markFailed(a.id, "X", "m".repeat(2000))).errorMessage?.length).toBe(500);
+    expect((await repo.listAudits(10)).map((x) => x.id)).toEqual([b.id, a.id]);
   });
-
   it("failStale only fails old non-terminal audits", async () => {
     const old = await repo.createAudit("https://e.example/", "MOBILE");
     await prisma.audit.update({ where: { id: old.id }, data: { createdAt: new Date(Date.now() - 3_600_000), status: "RUNNING" } });
@@ -56,10 +51,37 @@ describe("audit persistence (real Postgres, SYNTHETIC payloads)", () => {
     expect((await repo.getAudit(old.id))?.errorCode).toBe("STALE");
     expect((await repo.getAudit(fresh.id))?.status).toBe("QUEUED");
   });
-
+  it("listHistory returns only SUCCEEDED audits for url+strategy, oldest first", async () => {
+    const ids: string[] = [];
+    for (let i = 0; i < 3; i++) {
+      const a = await repo.createAudit("https://h.example/", "MOBILE");
+      await prisma.audit.update({ where: { id: a.id }, data: { createdAt: new Date(Date.UTC(2000, 0, i + 1)) } });
+      await repo.saveResult(a.id, parsePsiResponse(syntheticPsi()));
+      ids.push(a.id);
+    }
+    await repo.createAudit("https://h.example/", "MOBILE"); // queued, excluded
+    await repo.saveResult((await repo.createAudit("https://h.example/", "DESKTOP")).id, parsePsiResponse(syntheticPsi()));
+    expect((await repo.listHistory("https://h.example/", "MOBILE")).map((a) => a.id)).toEqual(ids);
+    expect((await repo.listHistory("https://h.example/", "MOBILE", 2)).map((a) => a.id)).toEqual(ids.slice(1));
+  });
   it("has the expected indexes", async () => {
-    const rows = await prisma.$queryRaw<Array<{ indexname: string }>>`SELECT indexname FROM pg_indexes WHERE tablename = 'Audit'`;
-    const names = rows.map((r) => r.indexname);
-    expect(names).toEqual(expect.arrayContaining(["Audit_createdAt_idx", "Audit_status_idx", "Audit_url_strategy_createdAt_idx"]));
+    const rows = await prisma.$queryRaw<Array<{ indexname: string }>>`SELECT indexname FROM pg_indexes WHERE tablename IN ('Audit','Budget')`;
+    expect(rows.map((r) => r.indexname)).toEqual(expect.arrayContaining([
+      "Audit_createdAt_idx", "Audit_status_idx", "Audit_url_strategy_createdAt_idx", "Budget_url_strategy_idx", "Budget_url_strategy_source_metric_key"]));
+  });
+});
+
+describe("budget persistence", () => {
+  it("upserts one target per url/strategy/source/metric and deletes", async () => {
+    const input = { url: "https://b.example/", strategy: "MOBILE" as const, source: "FIELD" as const, metric: "inp", threshold: 200 };
+    const b1 = await budgets.upsertBudget(input);
+    const b2 = await budgets.upsertBudget({ ...input, threshold: 150 });
+    expect(b2.id).toBe(b1.id);
+    expect(b2.threshold).toBe(150);
+    await budgets.upsertBudget({ ...input, source: "LAB", metric: "lcp", threshold: 2500 });
+    expect(await budgets.listBudgets("https://b.example/", "MOBILE")).toHaveLength(2);
+    expect(await budgets.listBudgets("https://b.example/", "DESKTOP")).toHaveLength(0);
+    expect(await budgets.deleteBudget(b1.id)).toBe(true);
+    expect(await budgets.deleteBudget(b1.id)).toBe(false);
   });
 });

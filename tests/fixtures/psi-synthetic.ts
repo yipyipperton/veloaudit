@@ -1,5 +1,5 @@
 /**
- * SYNTHETIC TEST FIXTURE — NOT REAL DATA.
+ * SYNTHETIC TEST FIXTURES — NOT REAL DATA.
  * Hand-written to mirror the PSI v5 response shape. Values are invented for parser tests only.
  */
 export const SYNTHETIC_PSI_WITH_FIELD = {
@@ -18,7 +18,7 @@ export const SYNTHETIC_PSI_WITH_FIELD = {
   },
   lighthouseResult: {
     finalDisplayedUrl: "https://fixture.invalid/",
-    lighthouseVersion: "0.0.0-fixture",
+    lighthouseVersion: "0.0.0-SYNTHETIC",
     fetchTime: "2000-01-01T00:00:00.000Z",
     categories: { performance: { score: 0.73 } },
     audits: {
@@ -42,6 +42,32 @@ export const SYNTHETIC_PSI_NO_FIELD = {
     audits: {
       "largest-contentful-paint": { id: "largest-contentful-paint", title: "LCP", numericValue: 800 },
       "total-blocking-time": { id: "total-blocking-time", title: "TBT", numericValue: 250 },
+    },
+  },
+} as const;
+
+/**
+ * SYNTHETIC, modeled on the Lighthouse 13 audit shapes seen in real web.dev runs (values invented):
+ * `bootup-time` has only TBT metricSavings and a `table` details type; `render-blocking-insight` is an insight audit.
+ */
+export const SYNTHETIC_PSI_LH13_SHAPES = {
+  loadingExperience: {
+    metrics: {
+      LARGEST_CONTENTFUL_PAINT_MS: { percentile: 3000, category: "AVERAGE" },
+      INTERACTION_TO_NEXT_PAINT: { percentile: 230, category: "AVERAGE" },
+      CUMULATIVE_LAYOUT_SHIFT_SCORE: { percentile: 1, category: "FAST" },
+    },
+  },
+  lighthouseResult: {
+    lighthouseVersion: "13.x-SYNTHETIC",
+    categories: { performance: { score: 0.35 } },
+    audits: {
+      "largest-contentful-paint": { id: "largest-contentful-paint", title: "LCP", score: 0, numericValue: 14000 },
+      "server-response-time": { id: "server-response-time", title: "Initial server response time was short", score: 1, numericValue: 4 },
+      "bootup-time": { id: "bootup-time", title: "Reduce JavaScript execution time", score: 0, scoreDisplayMode: "metricSavings", metricSavings: { TBT: 800 }, displayValue: "3.4 s", details: { type: "table" } },
+      "render-blocking-insight": { id: "render-blocking-insight", title: "Render-blocking requests", score: 0, scoreDisplayMode: "metricSavings", metricSavings: { LCP: 1800, FCP: 1800 }, details: { type: "table" } },
+      "unsized-images": { id: "unsized-images", title: "Image elements do not have explicit width and height", score: 0.5, scoreDisplayMode: "metricSavings", metricSavings: { CLS: 0 }, details: { type: "table" } },
+      "layout-shifts": { id: "layout-shifts", title: "Avoid large layout shifts", score: 0, scoreDisplayMode: "metricSavings", metricSavings: { CLS: 0.129 }, details: { type: "table" } },
     },
   },
 } as const;

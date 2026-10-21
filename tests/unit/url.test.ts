@@ -39,15 +39,13 @@ describe("checkUrlSyntax", () => {
 
 describe("validatePublicUrl (DNS)", () => {
   it("rejects hostnames resolving to private addresses", async () => {
-    const r = await validatePublicUrl("https://evil.example", async () => ["93.184.215.14", "10.0.0.5"]);
-    expect(r.ok).toBe(false);
+    expect((await validatePublicUrl("https://evil.example", async () => ["93.184.215.14", "10.0.0.5"])).ok).toBe(false);
   });
   it("accepts hostnames resolving only to public addresses", async () => {
     expect((await validatePublicUrl("https://ok.example", async () => ["93.184.215.14"])).ok).toBe(true);
   });
   it("rejects unresolvable hostnames", async () => {
-    const r = await validatePublicUrl("https://nx.example", async () => { throw new Error("ENOTFOUND"); });
-    expect(r.ok).toBe(false);
+    expect((await validatePublicUrl("https://nx.example", async () => { throw new Error("ENOTFOUND"); })).ok).toBe(false);
   });
 });
 

@@ -34,7 +34,6 @@ describe("POST /api/audits validation", () => {
     expect(j.error?.code).toBe(code);
     expect(JSON.stringify(j)).not.toMatch(/at .*\.ts|stack/i);
   });
-
   it("415 for non-JSON content type", async () => {
     expect((await post("{}", { "content-type": "text/plain" })).status).toBe(415);
   });
@@ -58,12 +57,10 @@ describe("POST /api/audits validation", () => {
   });
 });
 
-describe("GET endpoints", () => {
+describe("GET audit endpoints", () => {
   it("400 for malformed id, 404 for unknown id", async () => {
-    const bad = await GET_ONE(new Request("http://t/x"), { params: Promise.resolve({ id: "../etc" }) });
-    expect(bad.status).toBe(400);
-    const nf = await GET_ONE(new Request("http://t/x"), { params: Promise.resolve({ id: "c".repeat(25) }) });
-    expect(nf.status).toBe(404);
+    expect((await GET_ONE(new Request("http://t/x"), { params: Promise.resolve({ id: "../etc" }) })).status).toBe(400);
+    expect((await GET_ONE(new Request("http://t/x"), { params: Promise.resolve({ id: "c".repeat(25) }) })).status).toBe(404);
   });
   it("lists audits", async () => {
     await post('{"url":"https://8.8.4.4/","strategy":"mobile"}');
