@@ -4,14 +4,16 @@ import { BudgetsPanel } from "../budgets-panel";
 import { FieldSection } from "./field-section";
 import { BigGauge, DeviceFrame, Filmstrip, GaugeLegend, LabGrid } from "./lab-section";
 import { FindingList } from "./findings";
+import { CategoryGauges, CategorySection, categorySectionId } from "./categories";
 
 /** PSI-inspired report for ONE device audit. Field and lab data are separate sections and never mixed. */
 export function PsiReport({ audit: a }: { audit: AuditView }) {
   return (
     <div className="space-y-10" data-testid={`report-${a.strategy}`}>
+      <CategoryGauges audit={a} />
       <FieldSection audit={a} />
 
-      <section className="space-y-4" aria-labelledby="lab-h">
+      <section id={categorySectionId("performance")} className="scroll-mt-32 space-y-4" aria-labelledby="lab-h">
         <div>
           <p className="eyebrow">Lab · Lighthouse {a.lighthouseVersion ?? ""}</p>
           <h2 id="lab-h" className="mt-1 text-lg font-semibold tracking-tight">Diagnose performance issues</h2>
@@ -42,6 +44,9 @@ export function PsiReport({ audit: a }: { audit: AuditView }) {
         <p className="text-[12px] text-muted-foreground">Failing audits without an estimated metric saving. They don&apos;t directly affect the score.</p>
         <FindingList items={a.diagnostics} testId="diagnostics" empty="No failing diagnostics were reported for this run." />
       </section>
+
+      {a.categories.filter((c) => c.id !== "performance").map((c) => <CategorySection key={c.id} cat={c} />)}
+      {a.categories.length === 0 && <p className="text-[12px] text-muted-foreground">Accessibility, Best Practices and SEO were not collected for this audit (it predates category support). Run a new audit to see them.</p>}
 
       <Card>
         <CardHeader><CardTitle>Performance budgets</CardTitle>

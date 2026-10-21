@@ -1,4 +1,5 @@
 import { PsiResponseSchema, type PsiResponse } from "./schema";
+import { parseCategories, type CategoryResult } from "./categories";
 import { extractDiagnostics, extractOpportunities, type Opportunity } from "../recommendations/opportunities";
 
 export type LabMetrics = {
@@ -42,6 +43,9 @@ export type ParsedAudit = {
   labMetricScores: LabMetricScores;
   fieldDistributions: FieldDistributions;
   screenshots: Screenshots;
+  /** Lighthouse category scores 0-100 (performance duplicates lab.score). null = not requested / not scored. */
+  categoryScores: { performance: number | null; accessibility: number | null; bestPractices: number | null; seo: number | null };
+  categories: CategoryResult[];
 };
 
 export class PsiParseError extends Error {}
@@ -122,6 +126,12 @@ function parseField(r: PsiResponse): FieldMetrics {
   };
 }
 
+function categoryFields(lr: PsiResponse["lighthouseResult"]): Pick<ParsedAudit, "categoryScores" | "categories"> {
+  const categories = parseCategories(lr);
+  const score = (id: string) => categories.find((c) => c.id === id)?.score ?? null;
+  return { categories, categoryScores: { performance: score("performance"), accessibility: score("accessibility"), bestPractices: score("best-practices"), seo: score("seo") } };
+}
+
 export function parsePsiResponse(json: unknown): ParsedAudit {
   const res = PsiResponseSchema.safeParse(json);
   if (!res.success) throw new PsiParseError("PSI response did not match expected shape");
@@ -153,5 +163,6 @@ export function parsePsiResponse(json: unknown): ParsedAudit {
     },
     fieldDistributions: parseDistributions(r),
     screenshots: parseScreenshots(a),
+    ...categoryFields(lr),
   };
 }

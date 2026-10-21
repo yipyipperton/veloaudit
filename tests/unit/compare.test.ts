@@ -18,7 +18,7 @@ describe("compareAudits (SYNTHETIC)", () => {
   });
   it("keeps lab and field separate and marks missing values not comparable", () => {
     expect(get("field", "inp")).toMatchObject({ delta: null, verdict: "not_comparable" });
-    expect(r.deltas.filter((d) => d.def.source === "lab")).toHaveLength(7);
+    expect(r.deltas.filter((d) => d.def.source === "lab")).toHaveLength(10); // 7 lab metrics + 3 category scores
     expect(r.deltas.filter((d) => d.def.source === "field")).toHaveLength(5);
   });
   it("rejects different URL/strategy, unfinished, or identical audits", () => {

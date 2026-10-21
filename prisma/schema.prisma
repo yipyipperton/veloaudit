@@ -78,6 +78,12 @@ model Audit {
   fieldTtfbMs      Float?
   fieldTtfbCategory String?
 
+  // Lighthouse category scores 0-100 (performance = labScore). null = not scored / audit predates categories.
+  accessibilityScore Float?
+  bestPracticesScore Float?
+  seoScore           Float?
+  /// Per-category failed audits (with details) and passed / manual / not-applicable refs, grouped like PSI.
+  categories    Json?
   opportunities Json?
   diagnostics   Json?
   /// Lighthouse per-metric scores 0-1 ({ lcp, fcp, si, tbt, cls }), used for threshold indicators.

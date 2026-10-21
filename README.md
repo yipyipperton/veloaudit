@@ -102,10 +102,11 @@ flowchart LR
 | Core Web Vitals assessment (Passed/Failed, field data only) with good / needs-improvement / poor distribution bars from CrUX histograms | results page |
 | Large threshold-colored score gauge and lab metric grid with ● / ■ / ▲ indicators (Lighthouse per-metric scores) | results page |
 | Lighthouse final screenshot in a device frame, plus the `screenshot-thumbnails` filmstrip | results page |
+| Four Lighthouse category gauges (Performance, Accessibility, Best Practices, SEO) per device tab; clicking one scrolls to its section, with failed audits (expandable, grouped as PSI groups them) and collapsed passed / manual-check / not-applicable lists | results page |
 | Expandable opportunity and diagnostic rows with the audit's own detail table | results page |
-| History per URL and strategy, with separate lab and field trend charts | `/history?url=&strategy=` |
+| History per URL and strategy, with separate lab, field and Lighthouse category-score trend charts | `/history?url=&strategy=` |
 | Compare two completed runs (deltas, noise floor, variance caveat) | `/compare?a=&b=` |
-| Performance budgets with an explicit lab or field source | audit and history pages, `/api/budgets` |
+| Budgets with an explicit lab or field source, including category-score budgets (`accessibility`, `best-practices`, `seo`) | audit and history pages, `/api/budgets` |
 | Reports: printable HTML and Markdown | `/api/audits/:id/report?format=html\|md` |
 | Light and dark mode | header toggle (defaults to the system setting) |
 
@@ -171,6 +172,7 @@ backoff, and hold a BullMQ lock.
 
 ## Known limitations
 
+- Requesting all four Lighthouse categories makes the PSI response about 1.0–1.15 MB, compared with about 0.8 MB for performance only, and makes the call slower (23–34 s measured). Audits stored before categories existed show no category scores.
 - The public demo uses inline mode on a free Neon plan (see Execution modes). It is not a production deployment.
 - The rate limiter is in-memory per process, so it is only correct for a single web instance.
 - The DNS validation is a policy guard. PSI fetches the page from Google's network, and DNS rebinding between our check and Google's fetch is not mitigated.

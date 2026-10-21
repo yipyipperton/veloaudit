@@ -23,6 +23,7 @@ function toPoints(audits: AuditView[]): Point[] {
     labScore: a.lab.score, labLcp: a.lab.lcpMs, labFcp: a.lab.fcpMs, labSi: a.lab.speedIndexMs, labTbt: a.lab.tbtMs, labCls: a.lab.cls,
     fieldLcp: a.field.lcpMs?.value ?? null, fieldInp: a.field.inpMs?.value ?? null, fieldFcp: a.field.fcpMs?.value ?? null,
     fieldTtfb: a.field.ttfbMs?.value ?? null, fieldCls: a.field.cls?.value ?? null,
+    catPerf: a.categoryScores.performance, catA11y: a.categoryScores.accessibility, catBp: a.categoryScores.bestPractices, catSeo: a.categoryScores.seo,
   }));
 }
 
@@ -64,6 +65,11 @@ export function HistoryView({ url, strategy }: { url: string; strategy: "mobile"
               <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Lab CLS</CardTitle></CardHeader>
                 <CardContent><TrendChart testId="chart-lab-cls" unit="unitless" data={pts} series={[{ key: "labCls", label: "Lab CLS", color: C.e }]} /></CardContent></Card>
             </div>
+            <Card><CardHeader className="pb-2"><CardTitle className="text-sm">Lighthouse category scores</CardTitle>
+              <CardDescription className="text-xs">One series per category. Audits from before categories were collected show as gaps.</CardDescription></CardHeader>
+              <CardContent><TrendChart testId="chart-lab-categories" unit="score" data={pts} series={[
+                { key: "catPerf", label: "Performance", color: C.a }, { key: "catA11y", label: "Accessibility", color: C.b },
+                { key: "catBp", label: "Best Practices", color: C.c }, { key: "catSeo", label: "SEO", color: C.d }]} /></CardContent></Card>
           </section>
           <section className="space-y-3">
             <h2 className="flex items-center gap-2 eyebrow pt-2"><span className="size-1.5 rounded-full bg-sky-500 shadow-[0_0_8px] shadow-sky-500" />Field · CrUX p75 (28-day rolling real-user data)</h2>

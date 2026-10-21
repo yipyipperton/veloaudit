@@ -1,5 +1,5 @@
 import type { Audit, Budget } from "@prisma/client";
-import type { AuditView, BudgetView, Distribution, FieldKey, RunStatus, RunView } from "@/lib/types";
+import type { AuditView, BudgetView, CategoryView, Distribution, FieldKey, RunStatus, RunView } from "@/lib/types";
 import type { AssetMeta, RunWithAudits } from "../persistence/audits";
 import type { Opportunity } from "../recommendations/opportunities";
 
@@ -39,6 +39,8 @@ export function toDto(a: Audit, assets: AssetMeta[] = []): AuditView {
     labMetricScores: a.labMetricScores ? { lcp: scoreOf(ms["lcp"]), fcp: scoreOf(ms["fcp"]), si: scoreOf(ms["si"]), tbt: scoreOf(ms["tbt"]), cls: scoreOf(ms["cls"]) } : NULL_SCORES,
     fieldDistributions: distributions(a.fieldDistributions),
     screenshots: { final: final ? shot(final) : null, thumbnails: assets.filter((m) => m.kind === "thumb").map(shot) },
+    categoryScores: { performance: a.labScore, accessibility: a.accessibilityScore, bestPractices: a.bestPracticesScore, seo: a.seoScore },
+    categories: Array.isArray(a.categories) ? (a.categories as unknown as CategoryView[]) : [],
   };
 }
 

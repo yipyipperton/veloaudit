@@ -23,7 +23,21 @@ export type AuditView = {
   labMetricScores: { lcp: number | null; fcp: number | null; si: number | null; tbt: number | null; cls: number | null };
   fieldDistributions: Partial<Record<FieldKey, Distribution>>;
   screenshots: { final: Screenshot | null; thumbnails: Screenshot[] };
+  /** Category scores 0-100; performance mirrors lab.score. Null for audits that predate categories. */
+  categoryScores: CategoryScores;
+  /** Non-empty only for audits run with all four categories. */
+  categories: CategoryView[];
 };
+export type CategoryId = "performance" | "accessibility" | "best-practices" | "seo";
+export type CategoryFinding = Opportunity & { group: string | null; weight?: number };
+export type CategoryView = {
+  id: CategoryId; title: string; score: number | null;
+  failed: CategoryFinding[];
+  passed: { id: string; title: string }[];
+  manual: { id: string; title: string; description: string }[];
+  notApplicable: { id: string; title: string }[];
+};
+export type CategoryScores = { performance: number | null; accessibility: number | null; bestPractices: number | null; seo: number | null };
 export type RunStatus = "QUEUED" | "RUNNING" | "SUCCEEDED" | "PARTIAL" | "FAILED";
 export type RunView = { id: string; url: string; createdAt: string; status: RunStatus; audits: AuditView[] };
 export type BudgetView = {

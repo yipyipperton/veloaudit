@@ -18,6 +18,8 @@ export type PsiClientOptions = {
   signal?: AbortSignal;
 };
 
+export const PSI_CATEGORIES = ["performance", "accessibility", "best-practices", "seo"] as const;
+const MAX_BODY_BYTES = 8 * 1024 * 1024;
 const ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
 const defaultSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -43,7 +45,9 @@ function classify(status: number, body: string): PsiError {
 /** Calls PSI v5 with per-attempt timeout and exponential backoff (with jitter) on transient errors. */
 export async function runPagespeed(url: string, strategy: PsiStrategy, opts: PsiClientOptions = {}): Promise<unknown> {
   const { apiKey, timeoutMs = 120_000, maxAttempts = 4, baseDelayMs = 2_000, fetchImpl = fetch, sleep = defaultSleep, signal } = opts;
-  const qs = new URLSearchParams({ url, strategy, category: "performance" });
+  // PSI takes repeated `category` params. All four make the response ~1.0-1.2 MB and the call ~20-35 s (measured on web.dev).
+  const qs = new URLSearchParams({ url, strategy });
+  for (const c of PSI_CATEGORIES) qs.append("category", c);
   if (apiKey) qs.set("key", apiKey);
   const reqUrl = `${ENDPOINT}?${qs.toString()}`; // never logged (may contain key)
 
@@ -56,12 +60,13 @@ export async function runPagespeed(url: string, strategy: PsiStrategy, opts: Psi
         headers: { accept: "application/json" },
       });
       const body = await res.text();
+      if (body.length > MAX_BODY_BYTES) throw new PsiError(`PSI response too large (${body.length} bytes)`, "PSI_BAD_RESPONSE", res.status, false);
       if (res.ok) {
         let parsed: unknown;
         try { parsed = JSON.parse(body); } catch {
           throw new PsiError("PSI returned a non-JSON body", "PSI_BAD_RESPONSE", res.status, false);
         }
-        logger.info("psi.success", { url, strategy, attempt, ms: Date.now() - started, keyed: Boolean(apiKey) });
+        logger.info("psi.success", { url, strategy, attempt, ms: Date.now() - started, bytes: body.length, keyed: Boolean(apiKey) });
         return parsed;
       }
       last = classify(res.status, body);

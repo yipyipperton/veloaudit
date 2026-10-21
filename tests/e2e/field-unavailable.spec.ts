@@ -14,6 +14,7 @@ const SYNTHETIC_AUDIT = {
   opportunities: [], diagnostics: [], runId: null,
   labMetricScores: { lcp: null, fcp: null, si: null, tbt: null, cls: null }, fieldDistributions: {},
   screenshots: { final: null, thumbnails: [] },
+  categoryScores: { performance: 50, accessibility: null, bestPractices: null, seo: null }, categories: [],
 };
 
 test("field metrics show Unavailable and INP is not filled from TBT", async ({ page }) => {

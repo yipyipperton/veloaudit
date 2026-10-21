@@ -12,6 +12,7 @@ export function syntheticAudit(over: Partial<AuditView> = {}): AuditView {
     opportunities: [], diagnostics: [], runId: null,
     labMetricScores: { lcp: 0.8, fcp: 0.9, si: 0.8, tbt: 0.7, cls: 0.95 }, fieldDistributions: {},
     screenshots: { final: null, thumbnails: [] },
+    categoryScores: { performance: 80, accessibility: 95, bestPractices: 100, seo: 90 }, categories: [],
     ...over,
   };
 }

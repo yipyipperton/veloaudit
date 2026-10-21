@@ -1,0 +1,3133 @@
+{
+ "_fixture": "EXCERPT of a REAL PSI v5 response (web.dev, mobile, categories=performance,accessibility,best-practices,seo, fetched 2026-10-21). Categories, auditRefs and categoryGroups are complete; only audits referenced by non-performance categories plus the 5 core lab metrics are kept, details.items truncated to 3 and debugData removed. Values are unmodified.",
+ "id": "https://web.dev/",
+ "loadingExperience": {
+  "id": "https://web.dev/",
+  "metrics": {
+   "CUMULATIVE_LAYOUT_SHIFT_SCORE": {
+    "percentile": 1,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 10,
+      "proportion": 0.8664
+     },
+     {
+      "min": 10,
+      "max": 25,
+      "proportion": 0.0607
+     },
+     {
+      "min": 25,
+      "proportion": 0.0729
+     }
+    ],
+    "category": "FAST"
+   },
+   "EXPERIMENTAL_TIME_TO_FIRST_BYTE": {
+    "percentile": 1705,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 800,
+      "proportion": 0.2721
+     },
+     {
+      "min": 800,
+      "max": 1800,
+      "proportion": 0.4954
+     },
+     {
+      "min": 1800,
+      "proportion": 0.2326
+     }
+    ],
+    "category": "AVERAGE"
+   },
+   "FIRST_CONTENTFUL_PAINT_MS": {
+    "percentile": 3065,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 1800,
+      "proportion": 0.4675
+     },
+     {
+      "min": 1800,
+      "max": 3000,
+      "proportion": 0.2715
+     },
+     {
+      "min": 3000,
+      "proportion": 0.261
+     }
+    ],
+    "category": "SLOW"
+   },
+   "INTERACTION_TO_NEXT_PAINT": {
+    "percentile": 228,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 200,
+      "proportion": 0.7022
+     },
+     {
+      "min": 200,
+      "max": 500,
+      "proportion": 0.2061
+     },
+     {
+      "min": 500,
+      "proportion": 0.0917
+     }
+    ],
+    "category": "AVERAGE"
+   },
+   "LARGEST_CONTENTFUL_PAINT_MS": {
+    "percentile": 3069,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 2500,
+      "proportion": 0.6613
+     },
+     {
+      "min": 2500,
+      "max": 4000,
+      "proportion": 0.1761
+     },
+     {
+      "min": 4000,
+      "proportion": 0.1626
+     }
+    ],
+    "category": "AVERAGE"
+   }
+  },
+  "overall_category": "SLOW",
+  "initial_url": "https://web.dev/"
+ },
+ "lighthouseResult": {
+  "requestedUrl": "https://web.dev/",
+  "finalDisplayedUrl": "https://web.dev/",
+  "lighthouseVersion": "13.5.0",
+  "fetchTime": "2026-10-21T19:12:02.227Z",
+  "categories": {
+   "performance": {
+    "id": "performance",
+    "title": "Performance",
+    "score": 0.57,
+    "auditRefs": [
+     {
+      "id": "first-contentful-paint",
+      "weight": 10,
+      "group": "metrics",
+      "acronym": "FCP"
+     },
+     {
+      "id": "largest-contentful-paint",
+      "weight": 25,
+      "group": "metrics",
+      "acronym": "LCP"
+     },
+     {
+      "id": "total-blocking-time",
+      "weight": 30,
+      "group": "metrics",
+      "acronym": "TBT"
+     },
+     {
+      "id": "cumulative-layout-shift",
+      "weight": 25,
+      "group": "metrics",
+      "acronym": "CLS"
+     },
+     {
+      "id": "speed-index",
+      "weight": 10,
+      "group": "metrics",
+      "acronym": "SI"
+     },
+     {
+      "id": "cache-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "cls-culprits-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "document-latency-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "dom-size-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "duplicated-javascript-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "font-display-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "forced-reflow-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "image-delivery-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "inp-breakdown-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "lcp-breakdown-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "lcp-discovery-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "legacy-javascript-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "network-dependency-tree-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "render-blocking-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "third-parties-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "viewport-insight",
+      "weight": 0,
+      "group": "insights"
+     },
+     {
+      "id": "interactive",
+      "weight": 0,
+      "group": "hidden",
+      "acronym": "TTI"
+     },
+     {
+      "id": "max-potential-fid",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "unminified-css",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "unminified-javascript",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "unused-css-rules",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "unused-javascript",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "total-byte-weight",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "user-timings",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "bootup-time",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "mainthread-work-breakdown",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "long-tasks",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "non-composited-animations",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "unsized-images",
+      "weight": 0,
+      "group": "diagnostics"
+     },
+     {
+      "id": "network-requests",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "network-rtt",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "network-server-latency",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "main-thread-tasks",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "diagnostics",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "metrics",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "screenshot-thumbnails",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "final-screenshot",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "script-treemap-data",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "resource-summary",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "redirects",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "server-response-time",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "layout-shifts",
+      "weight": 0,
+      "group": "hidden"
+     }
+    ]
+   },
+   "accessibility": {
+    "id": "accessibility",
+    "title": "Accessibility",
+    "description": "These checks highlight opportunities to [improve the accessibility of your web app](https://developer.chrome.com/docs/lighthouse/accessibility/). Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so [manual testing](https://web.dev/articles/how-to-review) is also encouraged.",
+    "score": 0.9,
+    "manualDescription": "These items address areas which an automated testing tool cannot cover. Learn more in our guide on [conducting an accessibility review](https://web.dev/articles/how-to-review).",
+    "auditRefs": [
+     {
+      "id": "accesskeys",
+      "weight": 0,
+      "group": "a11y-navigation"
+     },
+     {
+      "id": "aria-allowed-attr",
+      "weight": 10,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-command-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-conditional-attr",
+      "weight": 7,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-deprecated-role",
+      "weight": 1,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-dialog-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-hidden-body",
+      "weight": 10,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-hidden-focus",
+      "weight": 7,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-input-field-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-meter-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-progressbar-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-prohibited-attr",
+      "weight": 7,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-required-attr",
+      "weight": 10,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-required-children",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-required-parent",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-roles",
+      "weight": 10,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-text",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-toggle-field-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-tooltip-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-treeitem-name",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-valid-attr-value",
+      "weight": 10,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "aria-valid-attr",
+      "weight": 10,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "button-name",
+      "weight": 10,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "bypass",
+      "weight": 0,
+      "group": "a11y-navigation"
+     },
+     {
+      "id": "color-contrast",
+      "weight": 7,
+      "group": "a11y-color-contrast"
+     },
+     {
+      "id": "definition-list",
+      "weight": 0,
+      "group": "a11y-tables-lists"
+     },
+     {
+      "id": "dlitem",
+      "weight": 0,
+      "group": "a11y-tables-lists"
+     },
+     {
+      "id": "document-title",
+      "weight": 7,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "duplicate-id-aria",
+      "weight": 0,
+      "group": "a11y-aria"
+     },
+     {
+      "id": "form-field-multiple-labels",
+      "weight": 0,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "frame-title",
+      "weight": 7,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "heading-order",
+      "weight": 3,
+      "group": "a11y-navigation"
+     },
+     {
+      "id": "html-has-lang",
+      "weight": 7,
+      "group": "a11y-language"
+     },
+     {
+      "id": "html-lang-valid",
+      "weight": 7,
+      "group": "a11y-language"
+     },
+     {
+      "id": "html-xml-lang-mismatch",
+      "weight": 0,
+      "group": "a11y-language"
+     },
+     {
+      "id": "image-alt",
+      "weight": 10,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "input-button-name",
+      "weight": 0,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "input-image-alt",
+      "weight": 0,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "label",
+      "weight": 10,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "link-in-text-block",
+      "weight": 7,
+      "group": "a11y-color-contrast"
+     },
+     {
+      "id": "link-name",
+      "weight": 7,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "list",
+      "weight": 7,
+      "group": "a11y-tables-lists"
+     },
+     {
+      "id": "listitem",
+      "weight": 7,
+      "group": "a11y-tables-lists"
+     },
+     {
+      "id": "meta-refresh",
+      "weight": 0,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "meta-viewport",
+      "weight": 10,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "object-alt",
+      "weight": 0,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "select-name",
+      "weight": 0,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "skip-link",
+      "weight": 3,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "tabindex",
+      "weight": 0,
+      "group": "a11y-navigation"
+     },
+     {
+      "id": "target-size",
+      "weight": 7,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "td-headers-attr",
+      "weight": 0,
+      "group": "a11y-tables-lists"
+     },
+     {
+      "id": "th-has-data-cells",
+      "weight": 0,
+      "group": "a11y-tables-lists"
+     },
+     {
+      "id": "valid-lang",
+      "weight": 0,
+      "group": "a11y-language"
+     },
+     {
+      "id": "video-caption",
+      "weight": 0,
+      "group": "a11y-audio-video"
+     },
+     {
+      "id": "landmark-one-main",
+      "weight": 3,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "autocomplete-valid",
+      "weight": 1,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "presentation-role-conflict",
+      "weight": 1,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "svg-img-alt",
+      "weight": 0,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "focusable-controls",
+      "weight": 0
+     },
+     {
+      "id": "interactive-element-affordance",
+      "weight": 0
+     },
+     {
+      "id": "logical-tab-order",
+      "weight": 0
+     },
+     {
+      "id": "visual-order-follows-dom",
+      "weight": 0
+     },
+     {
+      "id": "focus-traps",
+      "weight": 0
+     },
+     {
+      "id": "managed-focus",
+      "weight": 0
+     },
+     {
+      "id": "use-landmarks",
+      "weight": 0
+     },
+     {
+      "id": "offscreen-content-hidden",
+      "weight": 0
+     },
+     {
+      "id": "custom-controls-labels",
+      "weight": 0
+     },
+     {
+      "id": "custom-controls-roles",
+      "weight": 0
+     },
+     {
+      "id": "table-duplicate-name",
+      "weight": 0,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "empty-heading",
+      "weight": 0,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "aria-allowed-role",
+      "weight": 0,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "image-redundant-alt",
+      "weight": 0,
+      "group": "a11y-names-labels"
+     },
+     {
+      "id": "identical-links-same-purpose",
+      "weight": 0,
+      "group": "a11y-best-practices"
+     },
+     {
+      "id": "label-content-name-mismatch",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "table-fake-caption",
+      "weight": 0,
+      "group": "hidden"
+     },
+     {
+      "id": "td-has-header",
+      "weight": 0,
+      "group": "hidden"
+     }
+    ]
+   },
+   "best-practices": {
+    "id": "best-practices",
+    "title": "Best Practices",
+    "score": 0.96,
+    "auditRefs": [
+     {
+      "id": "is-on-https",
+      "weight": 5,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "redirects-http",
+      "weight": 0,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "geolocation-on-start",
+      "weight": 1,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "notification-on-start",
+      "weight": 1,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "csp-xss",
+      "weight": 0,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "has-hsts",
+      "weight": 0,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "origin-isolation",
+      "weight": 0,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "clickjacking-mitigation",
+      "weight": 0,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "trusted-types-xss",
+      "weight": 0,
+      "group": "best-practices-trust-safety"
+     },
+     {
+      "id": "paste-preventing-inputs",
+      "weight": 3,
+      "group": "best-practices-ux"
+     },
+     {
+      "id": "image-aspect-ratio",
+      "weight": 1,
+      "group": "best-practices-ux"
+     },
+     {
+      "id": "image-size-responsive",
+      "weight": 1,
+      "group": "best-practices-ux"
+     },
+     {
+      "id": "doctype",
+      "weight": 1,
+      "group": "best-practices-browser-compat"
+     },
+     {
+      "id": "charset",
+      "weight": 1,
+      "group": "best-practices-browser-compat"
+     },
+     {
+      "id": "baseline",
+      "weight": 0,
+      "group": "best-practices-browser-compat"
+     },
+     {
+      "id": "js-libraries",
+      "weight": 0,
+      "group": "best-practices-general"
+     },
+     {
+      "id": "deprecations",
+      "weight": 5,
+      "group": "best-practices-general"
+     },
+     {
+      "id": "third-party-cookies",
+      "weight": 5,
+      "group": "best-practices-general"
+     },
+     {
+      "id": "errors-in-console",
+      "weight": 1,
+      "group": "best-practices-general"
+     },
+     {
+      "id": "valid-source-maps",
+      "weight": 0,
+      "group": "best-practices-general"
+     },
+     {
+      "id": "inspector-issues",
+      "weight": 1,
+      "group": "best-practices-general"
+     }
+    ]
+   },
+   "seo": {
+    "id": "seo",
+    "title": "SEO",
+    "description": "These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on [Core Web Vitals](https://web.dev/explore/vitals). [Learn more about Google Search Essentials](https://support.google.com/webmasters/answer/35769).",
+    "score": 0.92,
+    "manualDescription": "Run these additional validators on your site to check additional SEO best practices.",
+    "auditRefs": [
+     {
+      "id": "is-crawlable",
+      "weight": 4.043478260869565,
+      "group": "seo-crawl"
+     },
+     {
+      "id": "document-title",
+      "weight": 1,
+      "group": "seo-content"
+     },
+     {
+      "id": "meta-description",
+      "weight": 1,
+      "group": "seo-content"
+     },
+     {
+      "id": "http-status-code",
+      "weight": 1,
+      "group": "seo-crawl"
+     },
+     {
+      "id": "link-text",
+      "weight": 1,
+      "group": "seo-content"
+     },
+     {
+      "id": "crawlable-anchors",
+      "weight": 1,
+      "group": "seo-crawl"
+     },
+     {
+      "id": "robots-txt",
+      "weight": 1,
+      "group": "seo-crawl"
+     },
+     {
+      "id": "image-alt",
+      "weight": 1,
+      "group": "seo-content"
+     },
+     {
+      "id": "hreflang",
+      "weight": 1,
+      "group": "seo-content"
+     },
+     {
+      "id": "canonical",
+      "weight": 1,
+      "group": "seo-content"
+     },
+     {
+      "id": "structured-data",
+      "weight": 0
+     }
+    ]
+   }
+  },
+  "categoryGroups": {
+   "a11y-names-labels": {
+    "title": "Names and labels",
+    "description": "These are opportunities to improve the semantics of the controls in your application. This may enhance the experience for users of assistive technology, like a screen reader."
+   },
+   "a11y-tables-lists": {
+    "title": "Tables and lists",
+    "description": "These are opportunities to improve the experience of reading tabular or list data using assistive technology, like a screen reader."
+   },
+   "a11y-aria": {
+    "title": "ARIA",
+    "description": "These are opportunities to improve the usage of ARIA in your application which may enhance the experience for users of assistive technology, like a screen reader."
+   },
+   "best-practices-trust-safety": {
+    "title": "Trust and Safety"
+   },
+   "seo-crawl": {
+    "title": "Crawling and Indexing",
+    "description": "To appear in search results, crawlers need access to your app."
+   },
+   "a11y-language": {
+    "title": "Internationalization and localization",
+    "description": "These are opportunities to improve the interpretation of your content by users in different locales."
+   },
+   "agent-accessibility": {
+    "title": "Agent Accessibility",
+    "description": "These audits highlight best practices for improving the accessibility of the website for AI agents."
+   },
+   "insights": {
+    "title": "Insights",
+    "description": "These insights are also available in the Chrome DevTools Performance Panel - [record a trace](https://developer.chrome.com/docs/devtools/performance/reference) to view more detailed information."
+   },
+   "seo-mobile": {
+    "title": "Mobile Friendly",
+    "description": "Make sure your pages are mobile friendly so users don\u2019t have to pinch or zoom in order to read the content pages. [Learn how to make pages mobile-friendly](https://developers.google.com/search/mobile-sites/)."
+   },
+   "a11y-navigation": {
+    "title": "Navigation",
+    "description": "These are opportunities to improve keyboard navigation in your application."
+   },
+   "seo-content": {
+    "title": "Content Best Practices",
+    "description": "Format your HTML in a way that enables crawlers to better understand your app\u2019s content."
+   },
+   "best-practices-general": {
+    "title": "General"
+   },
+   "agent-discoverability": {
+    "title": "Agent Discoverability",
+    "description": "These audits validate that websites expose discoverable resources, documentation, and catalogs for AI agents."
+   },
+   "best-practices-browser-compat": {
+    "title": "Browser Compatibility"
+   },
+   "metrics": {
+    "title": "Metrics"
+   },
+   "a11y-audio-video": {
+    "title": "Audio and video",
+    "description": "These are opportunities to provide alternative content for audio and video. This may improve the experience for users with hearing or vision impairments."
+   },
+   "webmcp": {
+    "title": "WebMCP",
+    "description": "Audits validating WebMCP integration."
+   },
+   "a11y-best-practices": {
+    "title": "Best practices",
+    "description": "These items highlight common accessibility best practices."
+   },
+   "a11y-color-contrast": {
+    "title": "Contrast",
+    "description": "These are opportunities to improve the legibility of your content."
+   },
+   "best-practices-ux": {
+    "title": "User Experience"
+   },
+   "diagnostics": {
+    "title": "Diagnostics",
+    "description": "More information about the performance of your application. These numbers don't [directly affect](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) the Performance score."
+   }
+  },
+  "audits": {
+   "image-alt": {
+    "id": "image-alt",
+    "title": "Image elements have `[alt]` attributes",
+    "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.13/image-alt).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "key": "node",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "label": "Failing Elements",
+       "valueType": "node"
+      }
+     ]
+    }
+   },
+   "is-crawlable": {
+    "id": "is-crawlable",
+    "title": "Page isn\u2019t blocked from indexing",
+    "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more about crawler directives](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "label": "Blocking Directive Source",
+       "key": "source",
+       "valueType": "code"
+      }
+     ]
+    },
+    "warnings": []
+   },
+   "managed-focus": {
+    "id": "managed-focus",
+    "title": "The user's focus is directed to new content added to the page",
+    "description": "If new content, such as a dialog, is added to the page, the user's focus is directed to it. [Learn how to direct focus to new content](https://developer.chrome.com/docs/lighthouse/accessibility/managed-focus/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "paste-preventing-inputs": {
+    "id": "paste-preventing-inputs",
+    "title": "Allows users to paste into input fields",
+    "description": "Preventing input pasting is a bad practice for the UX, and weakens security by blocking password managers.[Learn more about user-friendly input fields](https://developer.chrome.com/docs/lighthouse/best-practices/paste-preventing-inputs/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "headings": [
+      {
+       "key": "node",
+       "label": "Failing Elements",
+       "valueType": "node"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "input-button-name": {
+    "id": "input-button-name",
+    "title": "Input buttons have discernible text.",
+    "description": "Adding discernable and accessible text to input buttons may help screen reader users understand the purpose of the input button. [Learn more about input buttons](https://dequeuniversity.com/rules/axe/4.13/input-button-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "custom-controls-labels": {
+    "id": "custom-controls-labels",
+    "title": "Custom controls have associated labels",
+    "description": "Custom interactive controls have associated labels, provided by aria-label or aria-labelledby. [Learn more about custom controls and labels](https://developer.chrome.com/docs/lighthouse/accessibility/custom-controls-labels/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "aria-valid-attr-value": {
+    "id": "aria-valid-attr-value",
+    "title": "`[aria-*]` attributes have valid values",
+    "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "label": "Failing Elements",
+       "key": "node",
+       "valueType": "node"
+      }
+     ]
+    }
+   },
+   "aria-valid-attr": {
+    "id": "aria-valid-attr",
+    "title": "`[aria-*]` attributes are valid and not misspelled",
+    "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "key": "node",
+       "valueType": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       }
+      }
+     ],
+     "items": []
+    }
+   },
+   "label": {
+    "id": "label",
+    "title": "Form elements have associated labels",
+    "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.13/label).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "valueType": "node",
+       "key": "node"
+      }
+     ],
+     "items": []
+    }
+   },
+   "autocomplete-valid": {
+    "id": "autocomplete-valid",
+    "title": "`autocomplete` attributes are used correctly",
+    "description": "The `autocomplete` attribute values must be valid and correctly applied for screen readers to function correctly. [Learn more about valid autocomplete values](https://dequeuniversity.com/rules/axe/4.13/autocomplete-valid).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "label": "Failing Elements",
+       "key": "node",
+       "valueType": "node"
+      }
+     ]
+    }
+   },
+   "select-name": {
+    "id": "select-name",
+    "title": "Select elements have associated label elements.",
+    "description": "Form elements without effective labels can create frustrating experiences for screen reader users. [Learn more about the `select` element](https://dequeuniversity.com/rules/axe/4.13/select-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "trusted-types-xss": {
+    "id": "trusted-types-xss",
+    "title": "Mitigate DOM-based XSS with Trusted Types",
+    "description": "The `require-trusted-types-for` directive in the `Content-Security-Policy` (CSP) header instructs user agents to control the data passed to DOM XSS sink functions. [Learn more about mitigating DOM-based XSS with Trusted Types](https://developer.chrome.com/docs/lighthouse/best-practices/trusted-types-xss).",
+    "score": 1,
+    "scoreDisplayMode": "informative",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "label": "Description",
+       "subItemsHeading": {
+        "key": "description"
+       },
+       "valueType": "text",
+       "key": "description"
+      },
+      {
+       "valueType": "text",
+       "label": "Severity",
+       "subItemsHeading": {
+        "key": "severity"
+       },
+       "key": "severity"
+      }
+     ],
+     "items": [
+      {
+       "severity": "High",
+       "description": "No `Content-Security-Policy` header with Trusted Types directive found"
+      }
+     ]
+    }
+   },
+   "total-blocking-time": {
+    "id": "total-blocking-time",
+    "title": "Total Blocking Time",
+    "description": "Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds. [Learn more about the Total Blocking Time metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/).",
+    "score": 0.43,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "690\u00a0ms",
+    "numericValue": 688,
+    "numericUnit": "millisecond"
+   },
+   "link-in-text-block": {
+    "id": "link-in-text-block",
+    "title": "Links are distinguishable without relying on color.",
+    "description": "Low-contrast text is difficult or impossible for many users to read. Link text that is discernible improves the experience for users with low vision. [Learn how to make links distinguishable](https://dequeuniversity.com/rules/axe/4.13/link-in-text-block).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "valueType": "node",
+       "key": "node",
+       "label": "Failing Elements"
+      }
+     ],
+     "type": "table",
+     "items": []
+    }
+   },
+   "valid-lang": {
+    "id": "valid-lang",
+    "title": "`[lang]` attributes have a valid value",
+    "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) on elements helps ensure that text is pronounced correctly by a screen reader. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.13/valid-lang).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "td-headers-attr": {
+    "id": "td-headers-attr",
+    "title": "Cells in a `<table>` element that use the `[headers]` attribute refer to table cells within the same table.",
+    "description": "Screen readers have features to make navigating tables easier. Ensuring `<td>` cells using the `[headers]` attribute only refer to other cells in the same table may improve the experience for screen reader users. [Learn more about the `headers` attribute](https://dequeuniversity.com/rules/axe/4.13/td-headers-attr).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "image-redundant-alt": {
+    "id": "image-redundant-alt",
+    "title": "Image elements do not have `[alt]` attributes that are redundant text.",
+    "description": "Informative elements should aim for short, descriptive alternative text. Alternative text that is exactly the same as the text adjacent to the link or image is potentially confusing for screen reader users, because the text will be read twice. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.13/image-redundant-alt).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "html-lang-valid": {
+    "id": "html-lang-valid",
+    "title": "`<html>` element has a valid value for its `[lang]` attribute",
+    "description": "Specifying a valid [BCP 47 language](https://www.w3.org/International/questions/qa-choosing-language-tags#question) helps screen readers announce text properly. [Learn how to use the `lang` attribute](https://dequeuniversity.com/rules/axe/4.13/html-lang-valid).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "node",
+       "key": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       }
+      }
+     ]
+    }
+   },
+   "empty-heading": {
+    "id": "empty-heading",
+    "title": "All heading elements contain content.",
+    "description": "A heading with no content or inaccessible text prevent screen reader users from accessing information on the page's structure. [Learn more about headings](https://dequeuniversity.com/rules/axe/4.13/empty-heading).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "table-duplicate-name": {
+    "id": "table-duplicate-name",
+    "title": "Tables have different content in the summary attribute and `<caption>`.",
+    "description": "The summary attribute should describe the table structure, while `<caption>` should have the onscreen title. Accurate table mark-up helps users of screen readers. [Learn more about summary and caption](https://dequeuniversity.com/rules/axe/4.13/table-duplicate-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "clickjacking-mitigation": {
+    "id": "clickjacking-mitigation",
+    "title": "Mitigate clickjacking with XFO or CSP",
+    "description": "The `X-Frame-Options` (XFO) header or the `frame-ancestors` directive in the `Content-Security-Policy` (CSP) header control where a page can be embedded. These can mitigate clickjacking attacks by blocking some or all sites from embedding the page. [Learn more about mitigating clickjacking](https://developer.chrome.com/docs/lighthouse/best-practices/clickjacking-mitigation).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "text",
+       "label": "Description",
+       "subItemsHeading": {
+        "key": "description"
+       },
+       "key": "description"
+      },
+      {
+       "valueType": "text",
+       "subItemsHeading": {
+        "key": "severity"
+       },
+       "label": "Severity",
+       "key": "severity"
+      }
+     ],
+     "items": []
+    }
+   },
+   "focus-traps": {
+    "id": "focus-traps",
+    "title": "User focus is not accidentally trapped in a region",
+    "description": "A user can tab into and out of any control or region without accidentally trapping their focus. [Learn how to avoid focus traps](https://developer.chrome.com/docs/lighthouse/accessibility/focus-traps/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "target-size": {
+    "id": "target-size",
+    "title": "Touch targets have sufficient size and spacing.",
+    "description": "Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. [Learn more about touch targets](https://dequeuniversity.com/rules/axe/4.13/target-size).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "valueType": "node",
+       "key": "node"
+      }
+     ]
+    }
+   },
+   "aria-toggle-field-name": {
+    "id": "aria-toggle-field-name",
+    "title": "ARIA toggle fields have accessible names",
+    "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.13/aria-toggle-field-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "aria-required-children": {
+    "id": "aria-required-children",
+    "title": "Elements with an ARIA `[role]` that require children to contain a specific `[role]` have all required children.",
+    "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.13/aria-required-children).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "aria-required-parent": {
+    "id": "aria-required-parent",
+    "title": "`[role]`s are contained by their required parent element",
+    "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.13/aria-required-parent).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "csp-xss": {
+    "id": "csp-xss",
+    "title": "Ensure CSP is effective against XSS attacks",
+    "description": "A strong Content Security Policy (CSP) significantly reduces the risk of cross-site scripting (XSS) attacks. [Learn how to use a CSP to prevent XSS](https://developer.chrome.com/docs/lighthouse/best-practices/csp-xss/)",
+    "score": null,
+    "scoreDisplayMode": "notApplicable",
+    "details": {
+     "items": [],
+     "headings": [
+      {
+       "valueType": "text",
+       "subItemsHeading": {
+        "key": "description"
+       },
+       "label": "Description",
+       "key": "description"
+      },
+      {
+       "label": "Directive",
+       "valueType": "code",
+       "subItemsHeading": {
+        "key": "directive"
+       },
+       "key": "directive"
+      },
+      {
+       "key": "severity",
+       "subItemsHeading": {
+        "key": "severity"
+       },
+       "valueType": "text",
+       "label": "Severity"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "aria-required-attr": {
+    "id": "aria-required-attr",
+    "title": "`[role]`s have all required `[aria-*]` attributes",
+    "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.13/aria-required-attr).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "node",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "key": "node",
+       "label": "Failing Elements"
+      }
+     ]
+    }
+   },
+   "speed-index": {
+    "id": "speed-index",
+    "title": "Speed Index",
+    "description": "Speed Index shows how quickly the contents of a page are visibly populated. [Learn more about the Speed Index metric](https://developer.chrome.com/docs/lighthouse/performance/speed-index/).",
+    "score": 0.82,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "3.9\u00a0s",
+    "numericValue": 3906.217208069504,
+    "numericUnit": "millisecond"
+   },
+   "meta-refresh": {
+    "id": "meta-refresh",
+    "title": "The document does not use `<meta http-equiv=\"refresh\">`",
+    "description": "Users do not expect a page to refresh automatically, and doing so will move focus back to the top of the page. This may create a frustrating or confusing experience. [Learn more about the refresh meta tag](https://dequeuniversity.com/rules/axe/4.13/meta-refresh).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "document-title": {
+    "id": "document-title",
+    "title": "Document has a `<title>` element",
+    "description": "The title gives screen reader users an overview of the page, and search engine users rely on it heavily to determine if a page is relevant to their search. [Learn more about document titles](https://dequeuniversity.com/rules/axe/4.13/document-title).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "key": "node",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "valueType": "node",
+       "label": "Failing Elements"
+      }
+     ]
+    }
+   },
+   "is-on-https": {
+    "id": "is-on-https",
+    "title": "Uses HTTPS",
+    "description": "All sites should be protected with HTTPS, even ones that don't handle sensitive data. This includes avoiding [mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content), where some resources are loaded over HTTP despite the initial request being served over HTTPS. HTTPS prevents intruders from tampering with or passively listening in on the communications between your app and your users, and is a prerequisite for HTTP/2 and many new web platform APIs. [Learn more about HTTPS](https://developer.chrome.com/docs/lighthouse/pwa/is-on-https/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "key": "url",
+       "valueType": "url",
+       "label": "Insecure URL"
+      },
+      {
+       "key": "resolution",
+       "valueType": "text",
+       "label": "Request Resolution"
+      }
+     ]
+    }
+   },
+   "cumulative-layout-shift": {
+    "id": "cumulative-layout-shift",
+    "title": "Cumulative Layout Shift",
+    "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
+    "score": 0.85,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "0.118",
+    "details": {
+     "type": "debugdata",
+     "items": [
+      {
+       "newEngineResultDiffered": false,
+       "cumulativeLayoutShiftMainFrame": 0.11780119327793072
+      }
+     ]
+    },
+    "numericValue": 0.11780119327793072,
+    "numericUnit": "unitless"
+   },
+   "geolocation-on-start": {
+    "id": "geolocation-on-start",
+    "title": "Avoids requesting the geolocation permission on page load",
+    "description": "Users are mistrustful of or confused by sites that request their location without context. Consider tying the request to a user action instead. [Learn more about the geolocation permission](https://developer.chrome.com/docs/lighthouse/best-practices/geolocation-on-start/). Also consider using the [`<geolocation>` element](https://developer.chrome.com/blog/geolocation-html-element).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "source",
+       "valueType": "source-location",
+       "label": "Source"
+      }
+     ]
+    }
+   },
+   "inspector-issues": {
+    "id": "inspector-issues",
+    "title": "No issues in the `Issues` panel in Chrome Devtools",
+    "description": "Issues logged to the `Issues` panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "issueType",
+       "valueType": "text",
+       "subItemsHeading": {
+        "key": "url",
+        "valueType": "url"
+       },
+       "label": "Issue type"
+      }
+     ]
+    }
+   },
+   "link-text": {
+    "id": "link-text",
+    "title": "Links do not have descriptive text",
+    "description": "Descriptive link text helps search engines understand your content. [Learn how to make links more accessible](https://developer.chrome.com/docs/lighthouse/seo/link-text/).",
+    "score": 0,
+    "scoreDisplayMode": "binary",
+    "displayValue": "6 links found",
+    "details": {
+     "items": [
+      {
+       "textLang": "en",
+       "href": "https://web.dev/explore/ai",
+       "text": "Learn more"
+      },
+      {
+       "text": "Learn more",
+       "textLang": "en",
+       "href": "https://web.dev/explore/how-to-optimize-inp?utm_source=web.dev&utm_medium=cards&utm_campaign=inp-cwv"
+      },
+      {
+       "href": "https://web.dev/identity",
+       "text": "Learn more",
+       "textLang": "en"
+      }
+     ],
+     "type": "table",
+     "headings": [
+      {
+       "label": "Link destination",
+       "valueType": "url",
+       "key": "href"
+      },
+      {
+       "label": "Link Text",
+       "valueType": "text",
+       "key": "text"
+      }
+     ]
+    }
+   },
+   "aria-allowed-attr": {
+    "id": "aria-allowed-attr",
+    "title": "`[aria-*]` attributes match their roles",
+    "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.13/aria-allowed-attr).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "key": "node"
+      }
+     ]
+    }
+   },
+   "aria-meter-name": {
+    "id": "aria-meter-name",
+    "title": "ARIA `meter` elements have accessible names",
+    "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.13/aria-meter-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "button-name": {
+    "id": "button-name",
+    "title": "Buttons have an accessible name",
+    "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.13/button-name).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "node",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "valueType": "node",
+       "label": "Failing Elements"
+      }
+     ]
+    }
+   },
+   "aria-command-name": {
+    "id": "aria-command-name",
+    "title": "`button`, `link`, and `menuitem` elements have accessible names",
+    "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.13/aria-command-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "js-libraries": {
+    "id": "js-libraries",
+    "title": "Detected JavaScript libraries",
+    "description": "All front-end JavaScript libraries detected on the page. [Learn more about this JavaScript library detection diagnostic audit](https://developer.chrome.com/docs/lighthouse/best-practices/js-libraries/).",
+    "score": 1,
+    "scoreDisplayMode": "informative",
+    "details": {
+     "type": "table",
+     "items": [
+      {
+       "version": "4.2.2",
+       "npm": "lit-element",
+       "name": "LitElement"
+      },
+      {
+       "version": "3.3.3",
+       "name": "lit-html",
+       "npm": "lit-element"
+      }
+     ],
+     "headings": [
+      {
+       "label": "Name",
+       "valueType": "text",
+       "key": "name"
+      },
+      {
+       "label": "Version",
+       "key": "version",
+       "valueType": "text"
+      }
+     ]
+    }
+   },
+   "third-party-cookies": {
+    "id": "third-party-cookies",
+    "title": "Avoids third-party cookies",
+    "description": "Third-party cookies may be blocked in some contexts. [Learn more about preparing for third-party cookie restrictions](https://privacysandbox.google.com/cookies/prepare/overview).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "label": "Name",
+       "valueType": "text",
+       "key": "name"
+      },
+      {
+       "label": "URL",
+       "valueType": "url",
+       "key": "url"
+      }
+     ]
+    }
+   },
+   "link-name": {
+    "id": "link-name",
+    "title": "Links do not have a discernible name",
+    "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.13/link-name).",
+    "score": 0,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "valueType": "node",
+       "key": "node",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "label": "Failing Elements"
+      }
+     ],
+     "items": [
+      {
+       "node": {
+        "type": "node",
+        "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+        "snippet": "<a href=\"https://web.dev/explore/ai\">",
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,1,SECTION,0,DIV,0,DIV,0,DIV,0,DIV,0,FIGURE,0,A",
+        "nodeLabel": "div.devsite-landing-row-item > div.devsite-landing-row-item-media > figure.devsite-landing-row-item-image > a",
+        "selector": "div.devsite-landing-row-item > div.devsite-landing-row-item-media > figure.devsite-landing-row-item-image > a",
+        "lhId": "1-9-A",
+        "boundingRect": {
+         "right": 364,
+         "height": 200,
+         "left": 48,
+         "width": 316,
+         "top": 1125,
+         "bottom": 1325
+        }
+       }
+      },
+      {
+       "node": {
+        "nodeLabel": "div.devsite-landing-row-item > div.devsite-landing-row-item-media > figure.devsite-landing-row-item-image > a",
+        "type": "node",
+        "snippet": "<a href=\"https://web.dev/explore/how-to-optimize-inp?utm_source=web.dev&amp;utm_medium=\u2026\">",
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,1,SECTION,0,DIV,0,DIV,1,DIV,0,DIV,0,FIGURE,0,A",
+        "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+        "boundingRect": {
+         "width": 316,
+         "bottom": 1957,
+         "right": 364,
+         "top": 1757,
+         "height": 200,
+         "left": 48
+        },
+        "lhId": "1-10-A",
+        "selector": "div.devsite-landing-row-item > div.devsite-landing-row-item-media > figure.devsite-landing-row-item-image > a"
+       }
+      },
+      {
+       "node": {
+        "boundingRect": {
+         "bottom": 2589,
+         "top": 2389,
+         "width": 316,
+         "left": 48,
+         "height": 200,
+         "right": 364
+        },
+        "explanation": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute",
+        "type": "node",
+        "selector": "div.devsite-landing-row-item > div.devsite-landing-row-item-media > figure.devsite-landing-row-item-image > a",
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,1,SECTION,0,DIV,0,DIV,2,DIV,0,DIV,0,FIGURE,0,A",
+        "snippet": "<a href=\"https://web.dev/identity\">",
+        "lhId": "1-11-A",
+        "nodeLabel": "div.devsite-landing-row-item > div.devsite-landing-row-item-media > figure.devsite-landing-row-item-image > a"
+       }
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "presentation-role-conflict": {
+    "id": "presentation-role-conflict",
+    "title": "Elements with `role=\"none\"` or `role=\"presentation\"` do not have conflicts",
+    "description": "There are certain cases where the semantic role of an element with `role=\"none\"` or `role=\"presentation\"` does not resolve to none or presentation. To ensure the element remains removed from the accessibility tree, you should not add any global ARIA attributes to the element or make it focusable. [Learn more about presentation role conflict](https://dequeuniversity.com/rules/axe/4.13/presentation-role-conflict).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "key": "node",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "valueType": "node"
+      }
+     ],
+     "items": []
+    }
+   },
+   "bypass": {
+    "id": "bypass",
+    "title": "The page contains a heading, skip link, or landmark region",
+    "description": "Adding ways to bypass repetitive content lets keyboard users navigate the page more efficiently. [Learn more about bypass blocks](https://dequeuniversity.com/rules/axe/4.13/bypass).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "focusable-controls": {
+    "id": "focusable-controls",
+    "title": "Interactive controls are keyboard focusable",
+    "description": "Custom interactive controls are keyboard focusable and display a focus indicator. [Learn how to make custom controls focusable](https://developer.chrome.com/docs/lighthouse/accessibility/focusable-controls/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "object-alt": {
+    "id": "object-alt",
+    "title": "`<object>` elements have alternate text",
+    "description": "Screen readers cannot translate non-text content. Adding alternate text to `<object>` elements helps screen readers convey meaning to users. [Learn more about alt text for `object` elements](https://dequeuniversity.com/rules/axe/4.13/object-alt).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "visual-order-follows-dom": {
+    "id": "visual-order-follows-dom",
+    "title": "Visual order on the page follows DOM order",
+    "description": "DOM order matches the visual order, improving navigation for assistive technology. [Learn more about DOM and visual ordering](https://developer.chrome.com/docs/lighthouse/accessibility/visual-order-follows-dom/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "has-hsts": {
+    "id": "has-hsts",
+    "title": "Use a strong HSTS policy",
+    "description": "Deployment of the HSTS header significantly reduces the risk of downgrading HTTP connections and eavesdropping attacks. A rollout in stages, starting with a low max-age is recommended. [Learn more about using a strong HSTS policy.](https://developer.chrome.com/docs/lighthouse/best-practices/has-hsts)",
+    "score": null,
+    "scoreDisplayMode": "notApplicable",
+    "details": {
+     "items": [],
+     "headings": [
+      {
+       "subItemsHeading": {
+        "key": "description"
+       },
+       "key": "description",
+       "label": "Description",
+       "valueType": "text"
+      },
+      {
+       "label": "Directive",
+       "key": "directive",
+       "subItemsHeading": {
+        "key": "directive"
+       },
+       "valueType": "code"
+      },
+      {
+       "key": "severity",
+       "valueType": "text",
+       "subItemsHeading": {
+        "key": "severity"
+       },
+       "label": "Severity"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "svg-img-alt": {
+    "id": "svg-img-alt",
+    "title": "SVG elements with an `img` role have an accessible text alternative",
+    "description": "Ensures SVG elements with an `img`, `graphics-document` or `graphics-symbol` role have an accessible text alternative. [Learn more about SVG alt text](https://dequeuniversity.com/rules/axe/4.13/svg-img-alt).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "td-has-header": {
+    "id": "td-has-header",
+    "title": "`<td>` elements in a large `<table>` have one or more table headers.",
+    "description": "Screen readers have features to make navigating tables easier. Ensuring that `<td>` elements in a large table (3 or more cells in width and height) have an associated table header may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.13/td-has-header).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "accesskeys": {
+    "id": "accesskeys",
+    "title": "`[accesskey]` values are unique",
+    "description": "Access keys let users quickly focus a part of the page. For proper navigation, each access key must be unique. [Learn more about access keys](https://dequeuniversity.com/rules/axe/4.13/accesskeys).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "meta-viewport": {
+    "id": "meta-viewport",
+    "title": "`[user-scalable=\"no\"]` is not used in the `<meta name=\"viewport\">` element and the `[maximum-scale]` attribute is not less than 5.",
+    "description": "Disabling zooming is problematic for users with low vision who rely on screen magnification to properly see the contents of a web page. [Learn more about the viewport meta tag](https://dequeuniversity.com/rules/axe/4.13/meta-viewport).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "key": "node",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "valueType": "node",
+       "label": "Failing Elements"
+      }
+     ],
+     "items": []
+    }
+   },
+   "image-aspect-ratio": {
+    "id": "image-aspect-ratio",
+    "title": "Displays images with correct aspect ratio",
+    "description": "Image display dimensions should match natural aspect ratio. [Learn more about image aspect ratio](https://developer.chrome.com/docs/lighthouse/best-practices/image-aspect-ratio/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "node",
+       "valueType": "node"
+      },
+      {
+       "label": "URL",
+       "valueType": "url",
+       "key": "url"
+      },
+      {
+       "label": "Aspect Ratio (Displayed)",
+       "valueType": "text",
+       "key": "displayedAspectRatio"
+      },
+      {
+       "label": "Aspect Ratio (Actual)",
+       "valueType": "text",
+       "key": "actualAspectRatio"
+      }
+     ]
+    }
+   },
+   "skip-link": {
+    "id": "skip-link",
+    "title": "Skip links are focusable.",
+    "description": "Including a skip link can help users skip to the main content to save time. [Learn more about skip links](https://dequeuniversity.com/rules/axe/4.13/skip-link).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "node",
+       "valueType": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       }
+      }
+     ]
+    }
+   },
+   "redirects-http": {
+    "id": "redirects-http",
+    "title": "Redirects HTTP traffic to HTTPS",
+    "description": "Make sure that you redirect all HTTP traffic to HTTPS in order to enable secure web features for all your users. [Learn more](https://developer.chrome.com/docs/lighthouse/pwa/redirects-http/).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "doctype": {
+    "id": "doctype",
+    "title": "Page has the HTML doctype",
+    "description": "Specifying a doctype prevents the browser from switching to quirks-mode. [Learn more about the doctype declaration](https://developer.chrome.com/docs/lighthouse/best-practices/doctype/).",
+    "score": 1,
+    "scoreDisplayMode": "binary"
+   },
+   "aria-progressbar-name": {
+    "id": "aria-progressbar-name",
+    "title": "ARIA `progressbar` elements have accessible names",
+    "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.13/aria-progressbar-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "landmark-one-main": {
+    "id": "landmark-one-main",
+    "title": "Document has a main landmark.",
+    "description": "One main landmark helps screen reader users navigate a web page. [Learn more about landmarks](https://dequeuniversity.com/rules/axe/4.13/landmark-one-main).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "label": "Failing Elements",
+       "valueType": "node",
+       "key": "node"
+      }
+     ]
+    }
+   },
+   "list": {
+    "id": "list",
+    "title": "Lists contain only `<li>` elements and script supporting elements (`<script>` and `<template>`).",
+    "description": "Screen readers have a specific way of announcing lists. Ensuring proper list structure aids screen reader output. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.13/list).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "valueType": "node",
+       "key": "node"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "aria-dialog-name": {
+    "id": "aria-dialog-name",
+    "title": "Elements with `role=\"dialog\"` or `role=\"alertdialog\"` have accessible names.",
+    "description": "ARIA dialog elements without accessible names may prevent screen readers users from discerning the purpose of these elements. [Learn how to make ARIA dialog elements more accessible](https://dequeuniversity.com/rules/axe/4.13/aria-dialog-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "label-content-name-mismatch": {
+    "id": "label-content-name-mismatch",
+    "title": "Elements with visible text labels have matching accessible names.",
+    "description": "Visible text labels that do not match the accessible name can result in a confusing experience for screen reader users. [Learn more about accessible names](https://dequeuniversity.com/rules/axe/4.13/label-content-name-mismatch).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "robots-txt": {
+    "id": "robots-txt",
+    "title": "robots.txt is valid",
+    "description": "If your robots.txt file is malformed, crawlers may not be able to understand how you want your website to be crawled or indexed. [Learn more about robots.txt](https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "valueType": "text",
+       "label": "Line #",
+       "key": "index"
+      },
+      {
+       "valueType": "code",
+       "label": "Content",
+       "key": "line"
+      },
+      {
+       "valueType": "code",
+       "label": "Error",
+       "key": "message"
+      }
+     ]
+    }
+   },
+   "frame-title": {
+    "id": "frame-title",
+    "title": "`<frame>` or `<iframe>` elements do not have a title",
+    "description": "Screen reader users rely on frame titles to describe the contents of frames. [Learn more about frame titles](https://dequeuniversity.com/rules/axe/4.13/frame-title).",
+    "score": 0,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "key": "node",
+       "valueType": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       }
+      }
+     ],
+     "type": "table",
+     "items": [
+      {
+       "node": {
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,13,SECTION,0,DIV,1,DIV,0,DIV,0,DEVSITE-IFRAME,0,IFRAME",
+        "selector": "div.devsite-landing-row-group > div.devsite-landing-row-item > devsite-iframe > iframe",
+        "type": "node",
+        "boundingRect": {
+         "top": 11820,
+         "height": 802,
+         "bottom": 12622,
+         "width": 412,
+         "right": 412,
+         "left": 0
+        },
+        "snippet": "<iframe src=\"https://web.dev/frame/root_e7ed82a285fa17c863c90c60e0a1522bed456cddc7356ce\u2026\" allow=\"clipboard-write https://web-dot-devsite-v2-prod-3p.appspot.com\" allowfullscreen=\"\" name=\"goog_849159712\">",
+        "explanation": "Fix any of the following:\n  Element has no title attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",
+        "lhId": "1-8-IFRAME",
+        "nodeLabel": "div.devsite-landing-row-group > div.devsite-landing-row-item > devsite-iframe > iframe"
+       }
+      }
+     ]
+    }
+   },
+   "meta-description": {
+    "id": "meta-description",
+    "title": "Document has a meta description",
+    "description": "Meta descriptions may be included in search results to concisely summarize page content. [Learn more about the meta description](https://developer.chrome.com/docs/lighthouse/seo/meta-description/).",
+    "score": 1,
+    "scoreDisplayMode": "binary"
+   },
+   "baseline": {
+    "id": "baseline",
+    "title": "Baseline Features",
+    "description": "Lists web features used on the page and their Baseline status as of 2026-09-17. [Learn more about Baseline](https://webstatus.dev/).",
+    "score": 1,
+    "scoreDisplayMode": "informative",
+    "details": {
+     "type": "table",
+     "items": [
+      {
+       "source": {
+        "type": "source-location",
+        "urlProvider": "network",
+        "url": "https://www.gstatic.com/devrel-devsite/prod/v9ce9cb5b22b62a465ff52c45061a0a6a2d86a80b685e9aa8a182b203fdfbf420/js/devsite_app_module.js",
+        "column": 258,
+        "line": 209
+       },
+       "displayStatus": {
+        "status": "limited",
+        "displayString": "Limited Availability",
+        "type": "baseline-status"
+       },
+       "featureId": {
+        "type": "link",
+        "url": "https://webstatus.dev/features/beforeunload",
+        "text": "beforeunload"
+       }
+      },
+      {
+       "featureId": {
+        "url": "https://webstatus.dev/features/scheduler",
+        "type": "link",
+        "text": "scheduler"
+       },
+       "displayStatus": {
+        "status": "limited",
+        "displayString": "Limited Availability",
+        "type": "baseline-status"
+       },
+       "source": {
+        "type": "source-location",
+        "line": 295,
+        "url": "https://www.gstatic.com/devrel-devsite/prod/v9ce9cb5b22b62a465ff52c45061a0a6a2d86a80b685e9aa8a182b203fdfbf420/js/devsite_app_module.js",
+        "urlProvider": "network",
+        "column": 66
+       }
+      },
+      {
+       "featureId": {
+        "url": "https://webstatus.dev/features/ua-client-hints",
+        "text": "ua-client-hints",
+        "type": "link"
+       },
+       "source": {
+        "type": "source-location",
+        "column": 134,
+        "urlProvider": "network",
+        "line": 203,
+        "url": "https://www.gstatic.com/devrel-devsite/prod/v9ce9cb5b22b62a465ff52c45061a0a6a2d86a80b685e9aa8a182b203fdfbf420/js/devsite_app_custom_elements_module.js"
+       },
+       "displayStatus": {
+        "status": "limited",
+        "type": "baseline-status",
+        "displayString": "Limited Availability"
+       }
+      }
+     ],
+     "headings": [
+      {
+       "key": "featureId",
+       "label": "Web-features",
+       "valueType": "link"
+      },
+      {
+       "key": "displayStatus",
+       "label": "Baseline Status",
+       "valueType": "baseline-status"
+      },
+      {
+       "key": "source",
+       "valueType": "source-location",
+       "label": "Source"
+      }
+     ]
+    }
+   },
+   "custom-controls-roles": {
+    "id": "custom-controls-roles",
+    "title": "Custom controls have ARIA roles",
+    "description": "Custom interactive controls have appropriate ARIA roles. [Learn how to add roles to custom controls](https://developer.chrome.com/docs/lighthouse/accessibility/custom-control-roles/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "valid-source-maps": {
+    "id": "valid-source-maps",
+    "title": "Page has valid source maps",
+    "description": "Source maps translate minified code to the original source code. This helps developers debug in production. In addition, Lighthouse is able to provide further insights. Consider deploying source maps to take advantage of these benefits. [Learn more about source maps](https://developer.chrome.com/docs/devtools/javascript/source-maps/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [
+      {
+       "sourceMapUrl": "https://unpkg.com/web-vitals/dist/web-vitals.attribution.iife.js.map",
+       "subItems": {
+        "items": [],
+        "type": "subitems"
+       },
+       "scriptUrl": "https://unpkg.com/web-vitals/dist/web-vitals.attribution.iife.js"
+      }
+     ],
+     "headings": [
+      {
+       "key": "scriptUrl",
+       "label": "URL",
+       "subItemsHeading": {
+        "key": "error"
+       },
+       "valueType": "url"
+      },
+      {
+       "key": "sourceMapUrl",
+       "label": "Map URL",
+       "valueType": "url"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "http-status-code": {
+    "id": "http-status-code",
+    "title": "Page has successful HTTP status code",
+    "description": "Pages with unsuccessful HTTP status codes may not be indexed properly. [Learn more about HTTP status codes](https://developer.chrome.com/docs/lighthouse/seo/http-status-code/).",
+    "score": 1,
+    "scoreDisplayMode": "binary"
+   },
+   "aria-hidden-focus": {
+    "id": "aria-hidden-focus",
+    "title": "`[aria-hidden=\"true\"]` elements do not contain focusable descendents",
+    "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.13/aria-hidden-focus).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "label": "Failing Elements",
+       "valueType": "node",
+       "key": "node"
+      }
+     ]
+    }
+   },
+   "origin-isolation": {
+    "id": "origin-isolation",
+    "title": "Ensure proper origin isolation with COOP",
+    "description": "The Cross-Origin-Opener-Policy (COOP) can be used to isolate the top-level window from other documents such as pop-ups. [Learn more about deploying the COOP header.](https://web.dev/articles/why-coop-coep#coop)",
+    "score": 1,
+    "scoreDisplayMode": "informative",
+    "details": {
+     "headings": [
+      {
+       "key": "description",
+       "valueType": "text",
+       "label": "Description",
+       "subItemsHeading": {
+        "key": "description"
+       }
+      },
+      {
+       "valueType": "code",
+       "key": "directive",
+       "label": "Directive",
+       "subItemsHeading": {
+        "key": "directive"
+       }
+      },
+      {
+       "subItemsHeading": {
+        "key": "severity"
+       },
+       "key": "severity",
+       "valueType": "text",
+       "label": "Severity"
+      }
+     ],
+     "items": [
+      {
+       "description": "No COOP header found",
+       "severity": "High"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "deprecations": {
+    "id": "deprecations",
+    "title": "Avoids deprecated APIs",
+    "description": "Deprecated APIs will eventually be removed from the browser. [Learn more about deprecated APIs](https://developer.chrome.com/docs/lighthouse/best-practices/deprecations/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "text",
+       "label": "Deprecation / Warning",
+       "key": "value"
+      },
+      {
+       "key": "source",
+       "label": "Source",
+       "valueType": "source-location"
+      }
+     ],
+     "items": []
+    }
+   },
+   "input-image-alt": {
+    "id": "input-image-alt",
+    "title": "`<input type=\"image\">` elements have `[alt]` text",
+    "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.13/input-image-alt).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "errors-in-console": {
+    "id": "errors-in-console",
+    "title": "Browser errors were logged to the console",
+    "description": "Errors logged to the console indicate unresolved problems. They can come from network request failures and other browser concerns. [Learn more about this errors in console diagnostic audit](https://developer.chrome.com/docs/lighthouse/best-practices/errors-in-console/)",
+    "score": 0,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "valueType": "source-location",
+       "key": "sourceLocation",
+       "label": "Source"
+      },
+      {
+       "label": "Description",
+       "valueType": "code",
+       "key": "description"
+      }
+     ],
+     "items": [
+      {
+       "description": "requestStorageAccess: Permission denied.",
+       "source": "security",
+       "sourceLocation": {
+        "url": "https://www.google.com/recaptcha/api2/anchor?ar=1&k=6Lfqf9YdAAAAAKUVvj6y53E_tMMlnj8dt1fpo-FV&co=aHR0cHM6Ly93ZWItZG90LWRldnNpdGUtdjItcHJvZC0zcC5hcHBzcG90LmNvbTo0NDM.&hl=en&v=NhfdZHzre16wrc2m6BxEdu7J&size=normal&anchor-ms=20000&execute-ms=30000&cb=fszjjppgmhme",
+        "line": 258,
+        "type": "source-location",
+        "column": 0,
+        "urlProvider": "network"
+       }
+      },
+      {
+       "sourceLocation": {
+        "urlProvider": "network",
+        "type": "source-location",
+        "column": 0,
+        "url": "https://www.google.com/recaptcha/api2/bframe?hl=en&v=NhfdZHzre16wrc2m6BxEdu7J&k=6Lfqf9YdAAAAAKUVvj6y53E_tMMlnj8dt1fpo-FV&bft=0dAFcWeA5wSmwKBgx2zwi-5OYpG6g8h-eHbQNaNo4LA52hm0AubHAEgO28Dz-bzUDpfG9O14uAiDlG9dB7IWweWHIT4DpjxiWLDw",
+        "line": 0
+       },
+       "source": "security",
+       "description": "requestStorageAccess: Permission denied."
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "use-landmarks": {
+    "id": "use-landmarks",
+    "title": "HTML5 landmark elements are used to improve navigation",
+    "description": "Landmark elements (`<main>`, `<nav>`, etc.) are used to improve the keyboard navigation of the page for assistive technology. [Learn more about landmark elements](https://developer.chrome.com/docs/lighthouse/accessibility/use-landmarks/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "aria-conditional-attr": {
+    "id": "aria-conditional-attr",
+    "title": "ARIA attributes are used as specified for the element's role",
+    "description": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.13/aria-conditional-attr).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "valueType": "node",
+       "label": "Failing Elements",
+       "key": "node",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       }
+      }
+     ]
+    }
+   },
+   "table-fake-caption": {
+    "id": "table-fake-caption",
+    "title": "Tables use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption.",
+    "description": "Screen readers have features to make navigating tables easier. Ensuring that tables use the actual caption element instead of cells with the `[colspan]` attribute may improve the experience for screen reader users. [Learn more about captions](https://dequeuniversity.com/rules/axe/4.13/table-fake-caption).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "structured-data": {
+    "id": "structured-data",
+    "title": "Structured data is valid",
+    "description": "Run the [Structured Data Testing Tool](https://developers.google.com/search/docs/appearance/structured-data/) to validate structured data. [Learn more about Structured Data](https://developer.chrome.com/docs/lighthouse/seo/structured-data/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "logical-tab-order": {
+    "id": "logical-tab-order",
+    "title": "The page has a logical tab order",
+    "description": "Tabbing through the page follows the visual layout. Users cannot focus elements that are offscreen. [Learn more about logical tab ordering](https://developer.chrome.com/docs/lighthouse/accessibility/logical-tab-order/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "notification-on-start": {
+    "id": "notification-on-start",
+    "title": "Avoids requesting the notification permission on page load",
+    "description": "Users are mistrustful of or confused by sites that request to send notifications without context. Consider tying the request to user gestures instead. [Learn more about responsibly getting permission for notifications](https://developer.chrome.com/docs/lighthouse/best-practices/notification-on-start/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "label": "Source",
+       "key": "source",
+       "valueType": "source-location"
+      }
+     ],
+     "type": "table",
+     "items": []
+    }
+   },
+   "aria-deprecated-role": {
+    "id": "aria-deprecated-role",
+    "title": "Deprecated ARIA roles were not used",
+    "description": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.13/aria-deprecated-role).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "key": "node",
+       "valueType": "node",
+       "label": "Failing Elements"
+      }
+     ],
+     "type": "table",
+     "items": []
+    }
+   },
+   "aria-roles": {
+    "id": "aria-roles",
+    "title": "`[role]` values are valid",
+    "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.13/aria-roles).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "valueType": "node",
+       "key": "node",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       }
+      }
+     ],
+     "type": "table",
+     "items": []
+    }
+   },
+   "aria-treeitem-name": {
+    "id": "aria-treeitem-name",
+    "title": "ARIA `treeitem` elements have accessible names",
+    "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.13/aria-treeitem-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "aria-tooltip-name": {
+    "id": "aria-tooltip-name",
+    "title": "ARIA `tooltip` elements have accessible names",
+    "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.13/aria-tooltip-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "interactive-element-affordance": {
+    "id": "interactive-element-affordance",
+    "title": "Interactive elements indicate their purpose and state",
+    "description": "Interactive elements, such as links and buttons, should indicate their state and be distinguishable from non-interactive elements. [Learn how to decorate interactive elements with affordance hints](https://developer.chrome.com/docs/lighthouse/accessibility/interactive-element-affordance/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "form-field-multiple-labels": {
+    "id": "form-field-multiple-labels",
+    "title": "No form fields have multiple labels",
+    "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.13/form-field-multiple-labels).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "listitem": {
+    "id": "listitem",
+    "title": "List items (`<li>`) are contained within `<ul>`, `<ol>` or `<menu>` parent elements",
+    "description": "Screen readers require list items (`<li>`) to be contained within a parent `<ul>`, `<ol>` or `<menu>` to be announced properly. [Learn more about proper list structure](https://dequeuniversity.com/rules/axe/4.13/listitem).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       },
+       "valueType": "node",
+       "key": "node",
+       "label": "Failing Elements"
+      }
+     ],
+     "type": "table",
+     "items": []
+    }
+   },
+   "aria-text": {
+    "id": "aria-text",
+    "title": "Elements with the `role=text` attribute do not have focusable descendents.",
+    "description": "Adding `role=text` around a text node split by markup enables VoiceOver to treat it as one phrase, but the element's focusable descendents will not be announced. [Learn more about the `role=text` attribute](https://dequeuniversity.com/rules/axe/4.13/aria-text).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "largest-contentful-paint": {
+    "id": "largest-contentful-paint",
+    "title": "Largest Contentful Paint",
+    "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn more about the Largest Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
+    "score": 0.48,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "4.1\u00a0s",
+    "numericValue": 4056.217303337644,
+    "numericUnit": "millisecond"
+   },
+   "canonical": {
+    "id": "canonical",
+    "title": "Document has a valid `rel=canonical`",
+    "description": "Canonical links suggest which URL to show in search results. [Learn more about canonical links](https://developer.chrome.com/docs/lighthouse/seo/canonical/).",
+    "score": 1,
+    "scoreDisplayMode": "binary"
+   },
+   "video-caption": {
+    "id": "video-caption",
+    "title": "`<video>` elements contain a `<track>` element with `[kind=\"captions\"]`",
+    "description": "When a video provides a caption it is easier for deaf and hearing impaired users to access its information. [Learn more about video captions](https://dequeuniversity.com/rules/axe/4.13/video-caption).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "aria-allowed-role": {
+    "id": "aria-allowed-role",
+    "title": "Uses ARIA roles only on compatible elements",
+    "description": "Many HTML elements can only be assigned certain ARIA roles. Using ARIA roles where they are not allowed can interfere with the accessibility of the web page. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role).",
+    "score": 1,
+    "scoreDisplayMode": "informative",
+    "details": {
+     "headings": [
+      {
+       "key": "node",
+       "valueType": "node",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "label": "Failing Elements"
+      }
+     ],
+     "items": [
+      {
+       "node": {
+        "lhId": "1-18-LI",
+        "snippet": "<li class=\"devsite-nav-title\" role=\"heading\" tooltip=\"\">",
+        "type": "node",
+        "nodeLabel": "Web Platform",
+        "explanation": "Fix any of the following:\n  ARIA role heading must be removed when the element is made visible, as it is not allowed for the element",
+        "selector": "div.devsite-tabs-dropdown-content > div.devsite-tabs-dropdown-column > ul.devsite-tabs-dropdown-section > li.devsite-nav-title",
+        "boundingRect": {
+         "left": 0,
+         "height": 0,
+         "right": 0,
+         "bottom": 0,
+         "top": 0,
+         "width": 0
+        },
+        "path": "1,HTML,1,BODY,2,SECTION,1,DEVSITE-HEADER,0,DIV,0,DIV,0,DIV,0,DIV,2,DIV,0,DIV,0,DEVSITE-TABS,0,NAV,0,TAB,1,DIV,0,DIV,0,DIV,0,UL,0,LI"
+       }
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "dlitem": {
+    "id": "dlitem",
+    "title": "Definition list items are wrapped in `<dl>` elements",
+    "description": "Definition list items (`<dt>` and `<dd>`) must be wrapped in a parent `<dl>` element to ensure that screen readers can properly announce them. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.13/dlitem).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "hreflang": {
+    "id": "hreflang",
+    "title": "Document has a valid `hreflang`",
+    "description": "hreflang links tell search engines what version of a page they should list in search results for a given language or region. [Learn more about `hreflang`](https://developer.chrome.com/docs/lighthouse/seo/hreflang/).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "source",
+       "subItemsHeading": {
+        "valueType": "text",
+        "key": "reason"
+       },
+       "valueType": "code"
+      }
+     ]
+    }
+   },
+   "crawlable-anchors": {
+    "id": "crawlable-anchors",
+    "title": "Links are crawlable",
+    "description": "Search engines may use `href` attributes on links to crawl websites. Ensure that the `href` attribute of anchor elements links to an appropriate destination, so more pages of the site can be discovered. [Learn how to make links crawlable](https://support.google.com/webmasters/answer/9112205)",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "key": "node",
+       "label": "Uncrawlable Link",
+       "valueType": "node"
+      }
+     ]
+    }
+   },
+   "th-has-data-cells": {
+    "id": "th-has-data-cells",
+    "title": "`<th>` elements and elements with `[role=\"columnheader\"/\"rowheader\"]` have data cells they describe.",
+    "description": "Screen readers have features to make navigating tables easier. Ensuring table headers always refer to some set of cells may improve the experience for screen reader users. [Learn more about table headers](https://dequeuniversity.com/rules/axe/4.13/th-has-data-cells).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "html-xml-lang-mismatch": {
+    "id": "html-xml-lang-mismatch",
+    "title": "`<html>` element has an `[xml:lang]` attribute with the same base language as the `[lang]` attribute.",
+    "description": "If the webpage does not specify a consistent language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.13/html-xml-lang-mismatch).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "heading-order": {
+    "id": "heading-order",
+    "title": "Heading elements appear in a sequentially-descending order",
+    "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.13/heading-order).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "key": "node",
+       "valueType": "node",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       }
+      }
+     ]
+    }
+   },
+   "duplicate-id-aria": {
+    "id": "duplicate-id-aria",
+    "title": "ARIA IDs are unique",
+    "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.13/duplicate-id-aria).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "tabindex": {
+    "id": "tabindex",
+    "title": "No element has a `[tabindex]` value greater than 0",
+    "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.13/tabindex).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "image-size-responsive": {
+    "id": "image-size-responsive",
+    "title": "Serves images with appropriate resolution",
+    "description": "Image natural dimensions should be proportional to the display size and the pixel ratio to maximize image clarity. [Learn how to provide responsive images](https://web.dev/articles/serve-responsive-images).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "node",
+       "key": "node"
+      },
+      {
+       "valueType": "url",
+       "key": "url",
+       "label": "URL"
+      },
+      {
+       "valueType": "text",
+       "key": "displayedSize",
+       "label": "Displayed size"
+      },
+      {
+       "valueType": "text",
+       "label": "Actual size",
+       "key": "actualSize"
+      },
+      {
+       "valueType": "text",
+       "label": "Expected size",
+       "key": "expectedSize"
+      }
+     ]
+    }
+   },
+   "aria-hidden-body": {
+    "id": "aria-hidden-body",
+    "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
+    "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.13/aria-hidden-body).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "type": "table",
+     "items": [],
+     "headings": [
+      {
+       "key": "node",
+       "valueType": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "valueType": "node",
+        "key": "relatedNode"
+       }
+      }
+     ]
+    }
+   },
+   "charset": {
+    "id": "charset",
+    "title": "Properly defines charset",
+    "description": "A character encoding declaration is required. It can be done with a `<meta>` tag in the first 1024 bytes of the HTML or in the Content-Type HTTP response header. [Learn more about declaring the character encoding](https://developer.chrome.com/docs/lighthouse/best-practices/charset/).",
+    "score": 1,
+    "scoreDisplayMode": "binary"
+   },
+   "offscreen-content-hidden": {
+    "id": "offscreen-content-hidden",
+    "title": "Offscreen content is hidden from assistive technology",
+    "description": "Offscreen content is hidden with display: none or aria-hidden=true. [Learn how to properly hide offscreen content](https://developer.chrome.com/docs/lighthouse/accessibility/offscreen-content-hidden/).",
+    "score": null,
+    "scoreDisplayMode": "manual"
+   },
+   "definition-list": {
+    "id": "definition-list",
+    "title": "`<dl>`'s contain only properly-ordered `<dt>` and `<dd>` groups, `<script>`, `<template>` or `<div>` elements.",
+    "description": "When definition lists are not properly marked up, screen readers may produce confusing or inaccurate output. [Learn how to structure definition lists correctly](https://dequeuniversity.com/rules/axe/4.13/definition-list).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "aria-input-field-name": {
+    "id": "aria-input-field-name",
+    "title": "ARIA input fields have accessible names",
+    "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.13/aria-input-field-name).",
+    "score": null,
+    "scoreDisplayMode": "notApplicable"
+   },
+   "aria-prohibited-attr": {
+    "id": "aria-prohibited-attr",
+    "title": "Elements use only permitted ARIA attributes",
+    "description": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "valueType": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "key": "node"
+      }
+     ],
+     "items": [],
+     "type": "table"
+    }
+   },
+   "identical-links-same-purpose": {
+    "id": "identical-links-same-purpose",
+    "title": "Identical links have the same purpose.",
+    "description": "Links with the same destination should have the same description, to help users understand the link's purpose and decide whether to follow it. [Learn more about identical links](https://dequeuniversity.com/rules/axe/4.13/identical-links-same-purpose).",
+    "score": 1,
+    "scoreDisplayMode": "informative",
+    "details": {
+     "type": "table",
+     "headings": [
+      {
+       "valueType": "node",
+       "key": "node",
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       }
+      }
+     ],
+     "items": [
+      {
+       "node": {
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,1,SECTION,0,DIV,0,DIV,0,DIV,1,DIV,0,DIV,2,DIV,0,A",
+        "nodeLabel": "Learn more",
+        "type": "node",
+        "snippet": "<a href=\"https://web.dev/explore/ai\" class=\"button button-primary\n      \">",
+        "boundingRect": {
+         "width": 177,
+         "height": 48,
+         "top": 1553,
+         "right": 293,
+         "bottom": 1601,
+         "left": 116
+        },
+        "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+        "lhId": "1-21-A",
+        "explanation": "Fix all of the following:\n  Check that links have the same purpose, or are intentionally ambiguous."
+       },
+       "subItems": {
+        "items": [
+         {
+          "relatedNode": {
+           "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+           "lhId": "1-22-A",
+           "nodeLabel": "Learn more",
+           "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,1,SECTION,0,DIV,0,DIV,1,DIV,1,DIV,0,DIV,2,DIV,0,A",
+           "boundingRect": {
+            "left": 116,
+            "height": 48,
+            "bottom": 2233,
+            "width": 177,
+            "top": 2185,
+            "right": 293
+           },
+           "snippet": "<a href=\"https://web.dev/explore/how-to-optimize-inp?utm_source=web.dev&amp;utm_medium=\u2026\" class=\"button button-primary\n      \">",
+           "type": "node"
+          }
+         },
+         {
+          "relatedNode": {
+           "boundingRect": {
+            "left": 116,
+            "height": 48,
+            "right": 293,
+            "top": 2817,
+            "bottom": 2865,
+            "width": 177
+           },
+           "nodeLabel": "Learn more",
+           "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,1,SECTION,0,DIV,0,DIV,2,DIV,1,DIV,0,DIV,2,DIV,0,A",
+           "type": "node",
+           "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+           "lhId": "1-23-A",
+           "snippet": "<a href=\"https://web.dev/identity\" class=\"button button-primary\n      \">"
+          }
+         },
+         {
+          "relatedNode": {
+           "boundingRect": {
+            "bottom": 3726,
+            "top": 3678,
+            "left": 116,
+            "right": 293,
+            "height": 48,
+            "width": 177
+           },
+           "snippet": "<a href=\"https://web.dev/html\" class=\"button button-primary\n      \">",
+           "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+           "nodeLabel": "Learn more",
+           "lhId": "1-24-A",
+           "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,3,SECTION,0,DIV,0,DIV,0,DIV,0,DIV,1,DIV,2,DIV,0,A",
+           "type": "node"
+          }
+         }
+        ],
+        "type": "subitems"
+       }
+      }
+     ]
+    }
+   },
+   "html-has-lang": {
+    "id": "html-has-lang",
+    "title": "`<html>` element has a `[lang]` attribute",
+    "description": "If a page doesn't specify a `lang` attribute, a screen reader assumes that the page is in the default language that the user chose when setting up the screen reader. If the page isn't actually in the default language, then the screen reader might not announce the page's text correctly. [Learn more about the `lang` attribute](https://dequeuniversity.com/rules/axe/4.13/html-has-lang).",
+    "score": 1,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "items": [],
+     "headings": [
+      {
+       "label": "Failing Elements",
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "valueType": "node",
+       "key": "node"
+      }
+     ],
+     "type": "table"
+    }
+   },
+   "color-contrast": {
+    "id": "color-contrast",
+    "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+    "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.13/color-contrast).",
+    "score": 0,
+    "scoreDisplayMode": "binary",
+    "details": {
+     "headings": [
+      {
+       "subItemsHeading": {
+        "key": "relatedNode",
+        "valueType": "node"
+       },
+       "label": "Failing Elements",
+       "valueType": "node",
+       "key": "node"
+      }
+     ],
+     "type": "table",
+     "items": [
+      {
+       "subItems": {
+        "items": [
+         {
+          "relatedNode": {
+           "lhId": "1-1-DIV",
+           "nodeLabel": "Course\nLearn HTML\nA solid overview of HTML for developers, from novice to exper\u2026",
+           "snippet": "<div class=\"devsite-landing-row-item\" background=\"grey\" description-position=\"bottom\">",
+           "selector": "section.devsite-landing-row > div.devsite-landing-row-inner > div.devsite-landing-row-group > div.devsite-landing-row-item",
+           "type": "node",
+           "boundingRect": {
+            "right": 396,
+            "width": 380,
+            "height": 417,
+            "bottom": 5533,
+            "left": 16,
+            "top": 5116
+           },
+           "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,5,SECTION,0,DIV,0,DIV,0,DIV"
+          }
+         }
+        ],
+        "type": "subitems"
+       },
+       "node": {
+        "type": "node",
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,5,SECTION,0,DIV,0,DIV,0,DIV,1,DIV,0,DIV,3,DIV,0,A",
+        "boundingRect": {
+         "height": 48,
+         "left": 111,
+         "right": 297,
+         "width": 186,
+         "top": 5417,
+         "bottom": 5465
+        },
+        "snippet": "<a href=\"https://web.dev/learn/html\" class=\"button\n      \">",
+        "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+        "lhId": "1-0-A",
+        "nodeLabel": "Start course",
+        "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.16 (foreground color: #1a73e8, background color: #f5f6f7, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+       }
+      },
+      {
+       "node": {
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,5,SECTION,0,DIV,0,DIV,1,DIV,1,DIV,0,DIV,3,DIV,0,A",
+        "nodeLabel": "Start course",
+        "type": "node",
+        "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+        "snippet": "<a href=\"https://web.dev/learn/css\" class=\"button\n      \">",
+        "boundingRect": {
+         "bottom": 5906,
+         "top": 5858,
+         "width": 186,
+         "height": 48,
+         "right": 297,
+         "left": 111
+        },
+        "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.16 (foreground color: #1a73e8, background color: #f5f6f7, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+        "lhId": "1-2-A"
+       },
+       "subItems": {
+        "items": [
+         {
+          "relatedNode": {
+           "selector": "section.devsite-landing-row > div.devsite-landing-row-inner > div.devsite-landing-row-group > div.devsite-landing-row-item",
+           "nodeLabel": "Course\nLearn CSS\nA guide to CSS with modules covering everything from accessibi\u2026",
+           "lhId": "1-3-DIV",
+           "boundingRect": {
+            "left": 16,
+            "top": 5557,
+            "bottom": 5974,
+            "right": 396,
+            "height": 417,
+            "width": 380
+           },
+           "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,5,SECTION,0,DIV,0,DIV,1,DIV",
+           "type": "node",
+           "snippet": "<div class=\"devsite-landing-row-item\" background=\"grey\" description-position=\"bottom\">"
+          }
+         }
+        ],
+        "type": "subitems"
+       }
+      },
+      {
+       "subItems": {
+        "type": "subitems",
+        "items": [
+         {
+          "relatedNode": {
+           "snippet": "<div class=\"devsite-landing-row-item\" background=\"grey\" description-position=\"bottom\">",
+           "selector": "section.devsite-landing-row > div.devsite-landing-row-inner > div.devsite-landing-row-group > div.devsite-landing-row-item",
+           "lhId": "1-5-DIV",
+           "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,5,SECTION,0,DIV,0,DIV,2,DIV",
+           "nodeLabel": "Course\nLearn JavaScript\nAn in-depth course on the basics of JavaScript.\nStart c\u2026",
+           "type": "node",
+           "boundingRect": {
+            "top": 5998,
+            "bottom": 6415,
+            "width": 380,
+            "right": 396,
+            "left": 16,
+            "height": 417
+           }
+          }
+         }
+        ]
+       },
+       "node": {
+        "lhId": "1-4-A",
+        "selector": "div.devsite-landing-row-item-description > div.devsite-landing-row-item-body > div.devsite-landing-row-item-buttons > a.button",
+        "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.16 (foreground color: #1a73e8, background color: #f5f6f7, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+        "boundingRect": {
+         "width": 186,
+         "left": 111,
+         "right": 297,
+         "top": 6299,
+         "bottom": 6347,
+         "height": 48
+        },
+        "type": "node",
+        "snippet": "<a href=\"https://web.dev/learn/javascript\" class=\"button\n      \">",
+        "path": "1,HTML,1,BODY,2,SECTION,6,SECTION,0,MAIN,1,DEVSITE-CONTENT,0,ARTICLE,3,DIV,5,SECTION,0,DIV,0,DIV,2,DIV,1,DIV,0,DIV,3,DIV,0,A",
+        "nodeLabel": "Start course"
+       }
+      }
+     ]
+    }
+   },
+   "first-contentful-paint": {
+    "id": "first-contentful-paint",
+    "title": "First Contentful Paint",
+    "description": "First Contentful Paint marks the time at which the first text or image is painted. [Learn more about the First Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/).",
+    "score": 0.25,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "3.9\u00a0s",
+    "numericValue": 3906.217208069504,
+    "numericUnit": "millisecond"
+   }
+  }
+ }
+}

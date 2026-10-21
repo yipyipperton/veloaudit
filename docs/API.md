@@ -75,6 +75,15 @@ before ownership existed have no owner; they are hidden from every list but thei
   "diagnostics": [ /* same shape: failing audits WITHOUT estimated metric savings */ ],
   "labMetricScores": { "lcp": 0.51, "fcp": 0.24, "si": 0.67, "tbt": 0.24, "cls": 0.85 },   // Lighthouse 0-1 scores, drive ●/■/▲ indicators
   "fieldDistributions": { "lcp": [0.6613, 0.1761, 0.1626] },  // CrUX [good, needs improvement, poor]; omitted when not reported
+  "categoryScores": { "performance": 57, "accessibility": 90, "bestPractices": 96, "seo": 92 },  // 0-100; null for audits stored before categories existed
+  "categories": [   // one per Lighthouse category, classified like the PSI report renderer ("hidden" group skipped)
+    { "id": "accessibility", "title": "Accessibility", "score": 90,
+      "failed": [ { "id": "color-contrast", "title": "Background and foreground colors do not have a sufficient contrast ratio.", "description": "…",
+                    "score": 0, "group": "Contrast", "weight": 7, "table": { "headings": ["Failing Elements"], "rows": [["…"]] } } ],  // score < 0.9 or error; heaviest weight first
+      "passed": [ { "id": "image-alt", "title": "…" } ],          // score >= 0.9
+      "manual": [ { "id": "logical-tab-order", "title": "…", "description": "…" } ],  // scoreDisplayMode "manual"
+      "notApplicable": [ { "id": "video-caption", "title": "…" } ] }  // scoreDisplayMode "notApplicable"
+  ],
   "screenshots": {
     "final": { "src": "/api/audits/cmv…/screenshot?kind=final&i=0", "timingMs": null },
     "thumbnails": [{ "src": "/api/audits/cmv…/screenshot?kind=thumb&i=0", "timingMs": 428 }]
@@ -203,7 +212,7 @@ A budget is a target for one metric, from one **explicit source**:
 
 | source | metrics | comparator |
 | --- | --- | --- |
-| `lab` | `score` (0–100), `lcp`, `fcp`, `si`, `tbt`, `cls`, `ttfb` (server response) | `score` is `>=`; all others are `<=` |
+| `lab` | `score` (0–100), `accessibility`, `best-practices`, `seo` (Lighthouse category scores, 0–100), `lcp`, `fcp`, `si`, `tbt`, `cls`, `ttfb` (server response) | `score` and category scores are `>=`; all others are `<=` |
 | `field` | `lcp`, `inp`, `cls`, `fcp`, `ttfb` (CrUX p75) | `<=` |
 
 Evaluation result: `pass`, `fail` or `not_evaluable`. A budget is `not_evaluable` when the metric is unavailable for that source, the audit
@@ -234,3 +243,12 @@ Request: `{ "url", "strategy", "source": "lab"|"field", "metric", "threshold": n
 ### `DELETE /api/budgets/:id`
 
 Returns `204`, or `400 INVALID_ID` / `404 NOT_FOUND`.
+
+## PageSpeed Insights request
+
+Each audit sends one `runPagespeed` call with repeated category params:
+`category=performance&category=accessibility&category=best-practices&category=seo`. Measured on web.dev (2026-10-21), all four
+categories made the response about 1.0–1.15 MB (performance only: about 0.8 MB). The call took 23 s on mobile and 34 s on desktop.
+The per-attempt timeout is 120 s, and the job deadline is 240 s. Response bodies over 8 MB are rejected as `PSI_BAD_RESPONSE` and
+are not retried.
+

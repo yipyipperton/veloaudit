@@ -20,6 +20,10 @@ export const LAB_METRICS: readonly MetricDef[] = [
   { source: "lab", key: "tbt", label: "TBT", unit: "ms", better: "lower", get: (a) => a.lab.tbtMs },
   { source: "lab", key: "cls", label: "CLS", unit: "unitless", better: "lower", get: (a) => a.lab.cls },
   { source: "lab", key: "ttfb", label: "Server response (backend only)", unit: "ms", better: "lower", get: (a) => a.lab.ttfbMs },
+  // Lighthouse category scores (lab). Budget keys stay <= 16 chars.
+  { source: "lab", key: "accessibility", label: "Accessibility score", unit: "score", better: "higher", get: (a) => a.categoryScores?.accessibility ?? null },
+  { source: "lab", key: "best-practices", label: "Best Practices score", unit: "score", better: "higher", get: (a) => a.categoryScores?.bestPractices ?? null },
+  { source: "lab", key: "seo", label: "SEO score", unit: "score", better: "higher", get: (a) => a.categoryScores?.seo ?? null },
 ];
 
 export const FIELD_METRICS: readonly MetricDef[] = [

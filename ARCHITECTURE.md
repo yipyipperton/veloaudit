@@ -38,7 +38,7 @@ for demos: it has no durable queue and is limited by function lifetime and concu
 - `AuditAsset`: screenshot bytes (`kind` = `final` | `thumb`, `idx`, `mime`, `timingMs`), unique per `(auditId, kind, idx)`.
   Decoded from the Lighthouse data URIs already in the PSI response, so the audited site is never fetched by us. Kept out of the
   audit row so list/history queries stay light; replaced atomically with the result in one transaction.
-- `Audit`: one row per device. Lab columns (`lab*`), field columns (`field*` plus categories and `fieldScope`), `opportunities` / `diagnostics` (JSON, with up to 5 detail rows each), `labMetricScores` (Lighthouse 0-1 per metric) and
+- `Audit`: one row per device. Lab columns (`lab*`), field columns (`field*` plus categories and `fieldScope`), `opportunities` / `diagnostics` (JSON, with up to 5 detail rows each), `labMetricScores` (Lighthouse 0-1 per metric), `accessibilityScore` / `bestPracticesScore` / `seoScore` (performance stays in `labScore`), `categories` (JSON: per category failed audits with group, weight and details, plus passed / manual / not-applicable lists, classified in `src/server/psi/categories.ts` the way the Lighthouse report renderer does it) and
   `fieldDistributions` (CrUX good/NI/poor proportions).
   Indexed on `createdAt`, `status`, and `(url, strategy, createdAt)` for history queries.
 - `Budget`: `(url, strategy, source, metric, threshold)`, unique per `(url, strategy, source, metric)` and indexed on `(url, strategy)`.

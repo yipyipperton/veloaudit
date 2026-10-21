@@ -70,6 +70,8 @@ export async function saveResult(id: string, p: ParsedAudit): Promise<Audit> {
       fieldTtfbMs: f.ttfbMs?.value ?? null, fieldTtfbCategory: f.ttfbMs?.category ?? null,
       opportunities: p.opportunities as unknown as Prisma.InputJsonValue,
       diagnostics: p.diagnostics as unknown as Prisma.InputJsonValue,
+      accessibilityScore: p.categoryScores.accessibility, bestPracticesScore: p.categoryScores.bestPractices, seoScore: p.categoryScores.seo,
+      categories: p.categories as unknown as Prisma.InputJsonValue,
       labMetricScores: p.labMetricScores as unknown as Prisma.InputJsonValue,
       fieldDistributions: p.fieldDistributions as unknown as Prisma.InputJsonValue,
     },
