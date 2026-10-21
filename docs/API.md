@@ -39,7 +39,7 @@ Base URL: the web app (for example `http://localhost:3000`). All endpoints are J
   },
   "opportunities": [
     { "id": "unused-javascript", "title": "Reduce unused JavaScript", "description": "…", "score": 0,
-      "displayValue": "Est savings of 870 KiB", "savingsMs": 4350, "savingsBytes": 890880, "metricSavings": { "LCP": 4350, "FCP": 4000 } }
+      "displayValue": "Est savings of 870 KiB", "savingsMs": 4350, "savingsBytes": 890880, "metricSavings": { "LCP": 4350 } }
   ]
 }
 ```

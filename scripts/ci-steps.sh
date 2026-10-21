@@ -14,7 +14,7 @@ step "typecheck"; npm run typecheck; end
 step "lint"; npm run lint; end
 step "unit + integration tests"; npm test; end
 step "build"; npm run build; end
-step "playwright browsers"; npx playwright install ${PLAYWRIGHT_INSTALL_FLAGS:---with-deps} chromium; end
+step "playwright browsers"; npx playwright install ${PLAYWRIGHT_INSTALL_FLAGS---with-deps} chromium; end
 step "e2e"
 PORT="${CI_PORT:-3100}"
 npm start -- -p "$PORT" > /tmp/ci-web.log 2>&1 & WEB=$!
