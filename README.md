@@ -5,9 +5,9 @@ Google PageSpeed Insights (PSI) v5 API and stores Lighthouse **lab** metrics and
 as separate data sets. The UI lets you follow job status live, read the results and the opportunities Lighthouse found,
 look at trends per URL, compare two runs, set performance budgets and download reports.
 
-**Live demo:** https://veloaudit.vercel.app. This runs in **demo execution mode** (see [Execution modes](#execution-modes)).
-The demo database is a temporary Prisma Postgres instance that is **deleted automatically within 24 hours** unless it is claimed,
-so the demo may stop working after that.
+**Live demo:** https://veloaudit.vercel.app. This runs in **demo execution mode** (see [Execution modes](#execution-modes)):
+Vercel functions with Neon Postgres (free plan, provisioned through the Vercel Marketplace). The demo shares one PSI quota and has no
+durable queue, so treat it as a demo, not a production deployment.
 
 ![Audit detail (light)](docs/screenshots/audit-webdev-mobile-light.png)
 
@@ -71,12 +71,14 @@ Only the executor changes.
 flowchart LR
   U[Browser] --> V[Vercel: Next.js<br/>UI + route handlers]
   V -->|"after(): processAudit()"| PSI[PSI v5]
-  V -->|Prisma| PG[(Prisma Postgres<br/>temporary, us-east-1)]
+  V -->|Prisma| PG[(Neon Postgres<br/>Vercel Marketplace)]
 ```
 
-- Production env vars set on Vercel: `DATABASE_URL`, `PSI_API_KEY` (sensitive), `DNS_RESOLVER=system`, `AUDIT_EXECUTION_MODE=inline` and
+- Database: Neon (free plan), connected to the Vercel project's production environment through the marketplace integration, which injects
+  `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED`. Migrations use the unpooled URL.
+- Other production env vars set on Vercel: `PSI_API_KEY` (sensitive), `DNS_RESOLVER=system`, `AUDIT_EXECUTION_MODE=inline` and
   `AUDIT_JOB_TIMEOUT_MS=240000`. `REDIS_URL` is not needed in inline mode.
-- `vercel.json` runs `npm run vercel-build` (`prisma migrate deploy && next build`), so migrations are applied on each deploy.
+- `vercel.json` runs `npm run vercel-build` (`prisma migrate deploy` against `DATABASE_URL_UNPOOLED` when set, then `next build`), so migrations are applied on each deploy.
 - Rate limiting is in-memory per function instance, so on serverless it is only best-effort.
 
 ## Features
@@ -152,7 +154,7 @@ backoff, and hold a BullMQ lock.
 
 ## Known limitations
 
-- The public demo uses inline mode and a temporary database (see Execution modes). It is not a production deployment.
+- The public demo uses inline mode on a free Neon plan (see Execution modes). It is not a production deployment.
 - The rate limiter is in-memory per process, so it is only correct for a single web instance.
 - The DNS validation is a policy guard. PSI fetches the page from Google's network, and DNS rebinding between our check and Google's fetch is not mitigated.
 - Lab results come from a single Lighthouse run per audit, with no median-of-N. Field data is a CrUX 28-day aggregate and only appears when Google has enough traffic data.
