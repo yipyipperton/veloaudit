@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuditStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+enum Strategy {
+  MOBILE
+  DESKTOP
+}
+
+model Audit {
+  id          String      @id @default(cuid())
+  url         String
+  strategy    Strategy
+  status      AuditStatus @default(QUEUED)
+  errorCode   String?
+  errorMessage String?
+  createdAt   DateTime    @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  finalUrl          String?
+  lighthouseVersion String?
+  fetchTime         String?
+
+  // Lighthouse lab metrics (null = not reported by Lighthouse)
+  labScore      Float?
+  labLcpMs      Float?
+  labFcpMs      Float?
+  labSpeedIndexMs Float?
+  labTbtMs      Float?
+  labCls        Float?
+  labTtfbMs     Float?
+
+  // CrUX field metrics (null = unavailable; never derived from lab data)
+  fieldScope       String?   // "url" | "origin" | null when no field data
+  fieldOverall     String?
+  fieldLcpMs       Float?
+  fieldLcpCategory String?
+  fieldInpMs       Float?
+  fieldInpCategory String?
+  fieldCls         Float?
+  fieldClsCategory String?
+  fieldFcpMs       Float?
+  fieldFcpCategory String?
+  fieldTtfbMs      Float?
+  fieldTtfbCategory String?
+
+  opportunities Json?
+
+  @@index([createdAt(sort: Desc)])
+  @@index([status])
+  @@index([url, strategy, createdAt(sort: Desc)])
+}
