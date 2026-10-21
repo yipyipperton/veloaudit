@@ -3,6 +3,8 @@
 set -euo pipefail
 step() { echo; echo "::group::$*"; }
 end() { echo "::endgroup::"; }
+# Per-run random session signing key (never printed). Shared by the app server and the e2e tests that sign cookies.
+export SESSION_SECRET="${SESSION_SECRET:-$(openssl rand -base64 48 | tr -d "\n")}"
 
 step "install"; npm ci; end
 step "create test db"

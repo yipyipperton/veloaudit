@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Download, FileText, LineChart, Monitor, Printer, Smartphone } from "lucide-react";
+import { Download, FileText, Link2, LineChart, Monitor, Printer, Smartphone } from "lucide-react";
 import type { AuditView, RunView } from "@/lib/types";
 import { StatusBadge } from "./status-badge";
 import { ScorePill } from "./score-gauge";
@@ -48,7 +48,7 @@ function DeviceProgress({ a, now, onSelect, selected }: { a: AuditView; now: num
   );
 }
 
-export function ResultsShell({ url, createdAt, audits, initialTab }: { url: string; createdAt: string; audits: AuditView[]; initialTab?: string }) {
+export function ResultsShell({ url, createdAt, audits, initialTab, shared = false }: { url: string; createdAt: string; audits: AuditView[]; initialTab?: string; shared?: boolean }) {
   const [tab, setTab] = useState<AuditView["strategy"]>(() => (audits.find((a) => a.strategy === initialTab) ?? audits[0])!.strategy);
   const now = useNow(audits.some(isPending));
   const active = audits.find((a) => a.strategy === tab) ?? audits[0]!;
@@ -59,6 +59,12 @@ export function ResultsShell({ url, createdAt, audits, initialTab }: { url: stri
   const report = (fmt: "html" | "md", dl: boolean) => `/api/audits/${active.id}/report?format=${fmt}${dl ? "&download=1" : ""}`;
   return (
     <div className="space-y-6">
+      {shared && (
+        <p className="flex items-start gap-2 rounded-xl border border-border bg-subtle px-4 py-2.5 text-[12.5px] text-muted-foreground" data-testid="shared-notice">
+          <Link2 className="mt-0.5 size-3.5 shrink-0" />
+          You&apos;re viewing a shared link. This audit belongs to another browser session, so it won&apos;t appear in your recent audits or history.
+        </p>
+      )}
       <section className="surface fade-up relative overflow-hidden p-5 sm:p-7">
         <div className="hero-glow pointer-events-none absolute inset-0 opacity-50" />
         <div className="relative space-y-2">
@@ -106,16 +112,16 @@ function Loading() {
 }
 
 export function RunResults({ id, initialTab }: { id: string; initialTab?: string }) {
-  const { data, error } = usePoll<{ run: RunView }>(`/api/runs/${id}`, 2000, (d) => d.run.audits.some(isPending));
+  const { data, error } = usePoll<{ run: RunView; viewerIsOwner: boolean }>(`/api/runs/${id}`, 2000, (d) => d.run.audits.some(isPending));
   if (error && !data) return <p role="alert" className="text-rose-600 dark:text-rose-400">{error}</p>;
   if (!data) return <Loading />;
-  return <ResultsShell url={data.run.url} createdAt={data.run.createdAt} audits={data.run.audits} initialTab={initialTab} />;
+  return <ResultsShell url={data.run.url} createdAt={data.run.createdAt} audits={data.run.audits} initialTab={initialTab} shared={!data.viewerIsOwner} />;
 }
 
 /** Legacy single audit (created before runs existed, or opened directly). */
 export function AuditResults({ id }: { id: string }) {
-  const { data, error } = usePoll<{ audit: AuditView }>(`/api/audits/${id}`, 2000, (d) => isPending(d.audit));
+  const { data, error } = usePoll<{ audit: AuditView; viewerIsOwner: boolean }>(`/api/audits/${id}`, 2000, (d) => isPending(d.audit));
   if (error && !data) return <p role="alert" className="text-rose-600 dark:text-rose-400">{error}</p>;
   if (!data) return <Loading />;
-  return <ResultsShell url={data.audit.url} createdAt={data.audit.createdAt} audits={[data.audit]} />;
+  return <ResultsShell url={data.audit.url} createdAt={data.audit.createdAt} audits={[data.audit]} shared={!data.viewerIsOwner} />;
 }

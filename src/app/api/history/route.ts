@@ -5,6 +5,7 @@ import { jsonError, safe } from "@/server/http/errors";
 import { firstIssue } from "@/server/http/body";
 import { readLimited } from "@/server/http/rateLimit";
 import { toDto } from "@/server/http/serialize";
+import { readOwner } from "@/server/http/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +15,7 @@ export const GET = safe("GET /api/history", async (req: Request) => {
   const sp = new URL(req.url).searchParams;
   const q = HistoryQuerySchema.safeParse({ url: sp.get("url") ?? "", strategy: sp.get("strategy") ?? "" });
   if (!q.success) return jsonError(400, "INVALID_INPUT", firstIssue(q.error));
-  const rows = await listHistory(q.data.url, q.data.strategy === "mobile" ? "MOBILE" : "DESKTOP");
+  const owner = readOwner(req);
+  const rows = owner ? await listHistory(q.data.url, q.data.strategy === "mobile" ? "MOBILE" : "DESKTOP", owner) : [];
   return NextResponse.json({ url: q.data.url, strategy: q.data.strategy, audits: rows.map((a) => toDto(a)) });
 });

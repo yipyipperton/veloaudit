@@ -15,6 +15,8 @@ export type EnqueueOptions = {
   schedule?: (task: () => Promise<void>) => void;
   mode?: "queue" | "inline";
   deps?: ProcessDeps;
+  /** sha256 of the anonymous owner id; stored on the run and its audits. */
+  ownerHash?: string | null;
 };
 
 export type RunTarget = StrategyInput | "both";
@@ -27,7 +29,7 @@ const strategiesFor = (t: RunTarget): Strategy[] => (t === "both" ? ["MOBILE", "
  *   Promise.all, so mobile and desktop execute concurrently inside the function's after()/waitUntil budget.
  */
 export async function enqueueRun(url: string, target: RunTarget, opts: EnqueueOptions = {}): Promise<RunWithAudits> {
-  const run = await repo.createRun(url, strategiesFor(target));
+  const run = await repo.createRun(url, strategiesFor(target), opts.ownerHash ?? null);
   const ids = run.audits.map((a) => a.id);
   const mode = opts.mode ?? getEnv().AUDIT_EXECUTION_MODE;
   if (mode === "inline") {

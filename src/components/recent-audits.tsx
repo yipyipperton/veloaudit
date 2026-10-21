@@ -21,7 +21,7 @@ export function RecentAudits() {
   if (error) return <p className="p-6 text-sm text-rose-600 dark:text-rose-400">{error}</p>;
   if (!data) return <div className="p-6"><SkeletonRows /></div>;
   if (data.audits.length === 0)
-    return <div className="px-6 py-14 text-center text-sm text-muted-foreground">No audits yet. Paste a URL above to run your first one.</div>;
+    return <div className="px-6 py-14 text-center text-sm text-muted-foreground">No audits yet in this browser. Paste a URL above to run your first one.</div>;
   return (
     <ul className="divide-y divide-border" data-testid="recent-audits">
       {data.audits.map((a, i) => (

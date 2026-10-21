@@ -7,6 +7,7 @@ import { jsonError, safe } from "@/server/http/errors";
 import { readJson } from "@/server/http/body";
 import { clientIp, rateLimit, readLimited } from "@/server/http/rateLimit";
 import { runDto, toDto } from "@/server/http/serialize";
+import { ensureOwner, readOwner, withOwnerCookie } from "@/server/http/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,10 +23,11 @@ export const POST = safe("POST /api/audits", async (req: Request) => {
   if (!parsed.success) return jsonError(400, "INVALID_INPUT", "Provide { url: string, strategy: 'mobile' | 'desktop' | 'both' }");
   const check = await validatePublicUrl(parsed.data.url);
   if (!check.ok) return jsonError(400, "INVALID_URL", check.reason);
+  const owner = ensureOwner(req);
   try {
-    const run = runDto(await enqueueRun(check.url, parsed.data.strategy, { schedule: (task) => after(task) }));
+    const run = runDto(await enqueueRun(check.url, parsed.data.strategy, { schedule: (task) => after(task), ownerHash: owner.hash }));
     // `audit` (first device) is kept for single-strategy clients; `run.audits` lists every device.
-    return NextResponse.json({ run, audit: run.audits[0] }, { status: 202 });
+    return withOwnerCookie(NextResponse.json({ run, audit: run.audits[0], viewerIsOwner: true }, { status: 202 }), owner);
   } catch (err) {
     if (err instanceof QueueUnavailableError) return jsonError(503, "QUEUE_UNAVAILABLE", "Audit queue is temporarily unavailable");
     throw err;
@@ -34,6 +36,8 @@ export const POST = safe("POST /api/audits", async (req: Request) => {
 
 export const GET = safe("GET /api/audits", async (req: Request) => {
   if (!readLimited(req).ok) return jsonError(429, "RATE_LIMITED", "Too many requests");
-  const audits = await listAudits(25);
+  // Only the caller's own audits; without a valid session cookie there is nothing to list.
+  const owner = readOwner(req);
+  const audits = owner ? await listAudits(owner, 25) : [];
   return NextResponse.json({ audits: audits.map((a) => toDto(a)) });
 });

@@ -8,20 +8,20 @@ import { prisma } from "@/server/persistence/db";
 import * as repo from "@/server/persistence/audits";
 import { parsePsiResponse } from "@/server/psi/parser";
 import { SYNTHETIC_PSI_NO_FIELD } from "../fixtures/psi-synthetic";
-import { resetDb, syntheticPsi } from "./helpers";
+import { OWNER_A, cookieFor, hashFor, resetDb, syntheticPsi } from "./helpers";
 
 beforeEach(resetDb);
 afterAll(() => prisma.$disconnect());
 
 const U = "https://synthetic.invalid/";
 async function seed(strategy: "MOBILE" | "DESKTOP", payload: unknown, day: number) {
-  const a = await repo.createAudit(U, strategy);
+  const a = await repo.createAudit(U, strategy, hashFor(OWNER_A));
   await prisma.audit.update({ where: { id: a.id }, data: { createdAt: new Date(Date.UTC(2000, 0, day)) } });
   return repo.saveResult(a.id, parsePsiResponse(payload));
 }
 let ip = 0;
 const req = (path: string, init: RequestInit = {}) =>
-  new Request(`http://t${path}`, { ...init, headers: { "x-forwarded-for": `192.0.2.${++ip % 250}`, ...(init.headers ?? {}) } });
+  new Request(`http://t${path}`, { ...init, headers: { "x-forwarded-for": `192.0.2.${++ip % 250}`, cookie: cookieFor(OWNER_A), ...(init.headers ?? {}) } });
 const postBudget = (body: unknown) => POST_BUDGET(req("/api/budgets", { method: "POST", body: JSON.stringify(body), headers: { "content-type": "application/json" } }));
 
 describe("GET /api/history", () => {

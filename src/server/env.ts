@@ -8,6 +8,8 @@ const EnvSchema = z.object({
   AUDIT_EXECUTION_MODE: z.enum(["queue", "inline"]).default("queue"),
   WORKER_CONCURRENCY: z.coerce.number().int().min(2).max(32).default(4),
   AUDIT_JOB_TIMEOUT_MS: z.coerce.number().int().positive().default(300_000),
+  /** HMAC key for the anonymous owner cookie. Required in production; >= 32 chars. */
+  SESSION_SECRET: z.string().optional().transform((v) => (v && v.trim() !== "" ? v.trim() : undefined)).pipe(z.string().min(32).optional()),
   PSI_API_KEY: z.string().optional().transform((v) => (v && v.trim() !== "" ? v.trim() : undefined)),
 });
 

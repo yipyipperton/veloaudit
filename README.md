@@ -56,6 +56,16 @@ flowchart LR
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for modules and the job lifecycle, and [docs/API.md](docs/API.md) for the full HTTP API.
 
+## Privacy: anonymous owner sessions
+
+Audits are private per visitor without accounts. The first audit or budget you create sets an `HttpOnly`, `Secure`,
+`SameSite=Lax` cookie (`__Host-va_owner`) holding a random 256-bit owner id signed with HMAC-SHA256 (`SESSION_SECRET`).
+Only `sha256(ownerId)` is stored on runs, audits and budgets. Recent audits, history, compare and budgets return only your
+own data. Run and audit ids are unguessable cuid2 values, and a result link works as an explicit **share link**
+(a capability): anyone with it can view that one result, including its report and screenshots, and nothing else. The full
+access table is in [docs/API.md](docs/API.md#ownership-and-share-links). Demo data created before this change has no owner
+and is hidden from all lists.
+
 ## Execution modes
 
 The same orchestration module (`src/server/orchestration/audits.ts`) is used in both modes: `enqueueRun()` creates the run and one `QUEUED`
@@ -78,7 +88,7 @@ flowchart LR
 
 - Database: Neon (free plan), connected to the Vercel project's production environment through the marketplace integration, which injects
   `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED`. Migrations use the unpooled URL.
-- Other production env vars set on Vercel: `PSI_API_KEY` (sensitive), `DNS_RESOLVER=system`, `AUDIT_EXECUTION_MODE=inline` and
+- Other production env vars set on Vercel: `PSI_API_KEY` (sensitive), `SESSION_SECRET` (sensitive), `DNS_RESOLVER=system`, `AUDIT_EXECUTION_MODE=inline` and
   `AUDIT_JOB_TIMEOUT_MS=240000`. `REDIS_URL` is not needed in inline mode.
 - `vercel.json` runs `npm run vercel-build` (`prisma migrate deploy` against `DATABASE_URL_UNPOOLED` when set, then `next build`), so migrations are applied on each deploy.
 - Rate limiting is in-memory per function instance, so on serverless it is only best-effort.
@@ -124,6 +134,7 @@ Development: `npm run dev` plus `npm run worker`.
 | `AUDIT_QUEUE_NAME` | no | `audits` | Use different names to isolate environments or tests |
 | `AUDIT_EXECUTION_MODE` | no | `queue` | `queue` = BullMQ + worker (production). `inline` = run via `after()` in the request's function (demo/serverless). |
 | `AUDIT_JOB_TIMEOUT_MS` | no | `300000` | Hard deadline per audit job |
+| `SESSION_SECRET` | production | — | HMAC key for the owner cookie, at least 32 chars (`openssl rand -base64 48`). Required when `NODE_ENV=production`; dev and tests fall back to an insecure built-in key with a warning. Rotating it signs everyone out of their anonymous history. |
 | `WORKER_CONCURRENCY` | no | `4` | Worker job concurrency (min 2, so a run's mobile and desktop jobs execute in parallel) |
 | `DNS_RESOLVER` | no | `system` | Set to `doh` (Google DNS-over-HTTPS) only where the system resolver returns synthetic IPs, such as some sandboxes or egress proxies |
 | `TEST_DATABASE_URL` | tests | `…/veloaudit_test` | Database used by the integration tests |
@@ -164,7 +175,9 @@ backoff, and hold a BullMQ lock.
 - The rate limiter is in-memory per process, so it is only correct for a single web instance.
 - The DNS validation is a policy guard. PSI fetches the page from Google's network, and DNS rebinding between our check and Google's fetch is not mitigated.
 - Lab results come from a single Lighthouse run per audit, with no median-of-N. Field data is a CrUX 28-day aggregate and only appears when Google has enough traffic data.
-- There are no authentication or multi-tenant budgets. Budgets are global per URL and strategy.
+- There are no accounts. Ownership is an anonymous browser cookie: **clearing cookies, switching browsers or using a private
+  window loses access to your history and budgets** (results stay reachable through any link you kept). Rotating
+  `SESSION_SECRET` has the same effect for everyone. Anyone holding a result link can view that result.
 - Raw PSI JSON is not stored, so new metrics can't be backfilled from old audits. Audits from before runs existed have no
   distributions, screenshots or diagnostics and open as a single-device view.
 - Per-device progress is real state (queued / running / done + elapsed time). PSI exposes no percentage, so none is shown.
@@ -176,7 +189,8 @@ backoff, and hold a BullMQ lock.
 
 - Median-of-N lab runs, with confidence ranges on the comparison page.
 - Scheduled and recurring audits, with alerts when budgets fail.
-- A Redis-backed rate limiter, auth, and per-user or per-project budgets.
+- Real accounts (e.g. email magic link or OAuth) that can claim an anonymous owner's history, plus revocable share links.
+- A Redis-backed rate limiter and per-project budgets.
 - Store raw PSI responses in object storage for reprocessing.
 - CrUX History API trends for longer field data history.
 - OpenTelemetry traces and metrics for the worker.

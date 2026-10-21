@@ -26,18 +26,22 @@ enum MetricSource {
 
 /// One user submission. Groups the per-device audits (mobile + desktop) that run in parallel.
 model AuditRun {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid(2))
+  /// sha256 of the anonymous owner id from the signed session cookie (null = legacy/ownerless, hidden from lists)
+  ownerHash String?
   url       String
   createdAt DateTime @default(now())
   audits    Audit[]
 
+  @@index([ownerHash, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
 }
 
 model Audit {
-  id          String      @id @default(cuid())
+  id          String      @id @default(cuid(2))
   runId       String?
   run         AuditRun?   @relation(fields: [runId], references: [id], onDelete: Cascade)
+  ownerHash   String?
   url         String
   strategy    Strategy
   status      AuditStatus @default(QUEUED)
@@ -86,11 +90,14 @@ model Audit {
   @@index([createdAt(sort: Desc)])
   @@index([status])
   @@index([url, strategy, createdAt(sort: Desc)])
+  @@index([ownerHash, createdAt(sort: Desc)])
+  @@index([ownerHash, url, strategy, createdAt(sort: Desc)])
 }
 
 /// User-defined performance target, evaluated against an explicit source (lab or field).
 model Budget {
-  id        String       @id @default(cuid())
+  id        String       @id @default(cuid(2))
+  ownerHash String?
   url       String
   strategy  Strategy
   source    MetricSource
@@ -98,13 +105,13 @@ model Budget {
   threshold Float
   createdAt DateTime     @default(now())
 
-  @@unique([url, strategy, source, metric])
-  @@index([url, strategy])
+  @@unique([ownerHash, url, strategy, source, metric])
+  @@index([ownerHash, url, strategy])
 }
 
 /// Screenshot bytes decoded from Lighthouse data URIs in the PSI response (never fetched from the target site).
 model AuditAsset {
-  id       String @id @default(cuid())
+  id       String @id @default(cuid(2))
   auditId  String
   audit    Audit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
   kind     String // "final" | "thumb"

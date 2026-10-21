@@ -12,9 +12,38 @@ Base URL: the web app (for example `http://localhost:3000`). All endpoints are J
   
   When a limit is hit the API returns `429 RATE_LIMITED` (audit creation also sets `retry-after`).
 - **Write bodies** must use `Content-Type: application/json` (otherwise 415) and be at most 4 KB (otherwise 413).
-- **IDs** are cuid strings matching `^[a-z0-9]{20,40}$`. Anything else returns `400 INVALID_ID`.
+- **IDs** match `^[a-z0-9]{20,40}$` (anything else returns `400 INVALID_ID`). New runs, audits and budgets use **cuid2**
+  (24 chars, from a cryptographically secure random source, no timestamp or counter prefix), so ids are not guessable.
+  Rows created before this change use cuid v1 ids, which are partly time-based.
+- **Privacy (anonymous owner session):** see [Ownership and share links](#ownership-and-share-links).
 - **URLs** are normalized (fragment removed, trailing slash added for bare origins). `https://web.dev` becomes `https://web.dev/`.
 - **Units:** times are in milliseconds, CLS is unitless, and the score is 0–100. `null` means *unavailable*: it is never estimated, and field INP is never derived from lab TBT.
+
+## Ownership and share links
+
+There are no accounts. The first write (`POST /api/audits` or `POST /api/budgets`) sets an anonymous owner cookie:
+
+```
+Set-Cookie: __Host-va_owner=v1.<ownerId>.<sig>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=31536000
+```
+
+`ownerId` is 32 random bytes (base64url) and `sig` is HMAC-SHA256(`SESSION_SECRET`, `v1.<ownerId>`). A missing, malformed or
+tampered cookie is treated as anonymous; the next write issues a fresh owner. The database stores only `sha256(ownerId)` on runs,
+audits and budgets, never the id itself. Rate limits stay per IP.
+
+| Endpoint | Access rule |
+| --- | --- |
+| `POST /api/audits`, `POST /api/budgets` | Creates or reuses the caller's anonymous owner (sets the cookie if missing or invalid); new rows are stamped with the owner hash |
+| `GET /api/audits` (recent) | Caller's own audits only; `[]` without a valid cookie |
+| `GET /api/history` | Caller's own completed audits only |
+| `GET /api/compare` | Both audits must be the caller's own, otherwise `404 NOT_FOUND` |
+| `GET /api/budgets`, `DELETE /api/budgets/:id` | Caller's own budgets only; deleting someone else's id returns `404` |
+| `GET /api/runs/:id`, `GET /api/audits/:id` | **Capability:** anyone with the id can view it (share link). Responses include `viewerIsOwner` |
+| `GET /api/audits/:id/report`, `GET /api/audits/:id/screenshot` | **Capability**, same rule as the audit itself (the shared page needs its images and report). Budget results in a report are the *viewer's* own budgets, so none for anonymous viewers |
+
+**A run or audit link is a capability:** whoever has the URL can view that result, so share it deliberately. It doesn't
+reveal or grant access to anything else: the viewer's lists, history, compare and budgets stay their own. Audits created
+before ownership existed have no owner; they are hidden from every list but their old links still open.
 
 ## Audit object
 

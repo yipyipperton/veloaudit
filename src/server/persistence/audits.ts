@@ -2,19 +2,19 @@ import type { Audit, Prisma, Strategy } from "@prisma/client";
 import { prisma } from "./db";
 import type { ParsedAudit } from "../psi/parser";
 
-export function createAudit(url: string, strategy: Strategy, runId?: string): Promise<Audit> {
-  return prisma.audit.create({ data: { url, strategy, ...(runId ? { runId } : {}) } });
+export function createAudit(url: string, strategy: Strategy, ownerHash: string | null = null): Promise<Audit> {
+  return prisma.audit.create({ data: { url, strategy, ownerHash } });
 }
 
 export type AssetMeta = { kind: string; idx: number; timingMs: number | null };
 const ASSET_META = { select: { kind: true, idx: true, timingMs: true }, orderBy: [{ kind: "asc" }, { idx: "asc" }] } satisfies Prisma.Audit$assetsArgs;
 export type AuditWithAssets = Audit & { assets: AssetMeta[] };
-export type RunWithAudits = { id: string; url: string; createdAt: Date; audits: AuditWithAssets[] };
+export type RunWithAudits = { id: string; ownerHash: string | null; url: string; createdAt: Date; audits: AuditWithAssets[] };
 
 /** Create a run and one QUEUED audit per strategy atomically. */
-export async function createRun(url: string, strategies: Strategy[]): Promise<RunWithAudits> {
+export async function createRun(url: string, strategies: Strategy[], ownerHash: string | null = null): Promise<RunWithAudits> {
   return prisma.auditRun.create({
-    data: { url, audits: { create: strategies.map((strategy) => ({ url, strategy })) } },
+    data: { url, ownerHash, audits: { create: strategies.map((strategy) => ({ url, strategy, ownerHash })) } },
     include: { audits: { orderBy: { strategy: "asc" }, include: { assets: ASSET_META } } },
   });
 }
@@ -30,13 +30,14 @@ export function getAsset(auditId: string, kind: string, idx: number): Promise<{ 
 export function getAudit(id: string): Promise<Audit | null> {
   return prisma.audit.findUnique({ where: { id } });
 }
-export function listAudits(limit = 25): Promise<Audit[]> {
-  return prisma.audit.findMany({ orderBy: { createdAt: "desc" }, take: limit });
+/** The caller's recent audits only. Ownerless (legacy) rows never match. */
+export function listAudits(ownerHash: string, limit = 25): Promise<Audit[]> {
+  return prisma.audit.findMany({ where: { ownerHash }, orderBy: { createdAt: "desc" }, take: limit });
 }
 /** Completed audits for one URL + strategy, oldest first (uses the url/strategy/createdAt index). */
-export function listHistory(url: string, strategy: Strategy, limit = 100): Promise<Audit[]> {
+export function listHistory(url: string, strategy: Strategy, ownerHash: string, limit = 100): Promise<Audit[]> {
   return prisma.audit
-    .findMany({ where: { url, strategy, status: "SUCCEEDED" }, orderBy: { createdAt: "desc" }, take: limit })
+    .findMany({ where: { ownerHash, url, strategy, status: "SUCCEEDED" }, orderBy: { createdAt: "desc" }, take: limit })
     .then((rows) => rows.reverse());
 }
 export function markRunning(id: string): Promise<Audit> {

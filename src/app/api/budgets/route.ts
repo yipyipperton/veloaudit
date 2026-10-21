@@ -8,6 +8,7 @@ import { jsonError, safe } from "@/server/http/errors";
 import { firstIssue, readJson } from "@/server/http/body";
 import { clientIp, rateLimit, readLimited } from "@/server/http/rateLimit";
 import { budgetDto, toDto } from "@/server/http/serialize";
+import { ensureOwner, readOwner, withOwnerCookie } from "@/server/http/session";
 import { evaluateBudgets } from "@/lib/budgets";
 
 export const runtime = "nodejs";
@@ -22,7 +23,8 @@ export const GET = safe("GET /api/budgets", async (req: Request) => {
   const q = HistoryQuerySchema.safeParse({ url: sp.get("url") ?? "", strategy: sp.get("strategy") ?? "" });
   if (!q.success) return jsonError(400, "INVALID_INPUT", firstIssue(q.error));
   const strategy = toStrategy(q.data.strategy);
-  const budgets = (await listBudgets(q.data.url, strategy)).map(budgetDto);
+  const owner = readOwner(req);
+  const budgets = owner ? (await listBudgets(owner, q.data.url, strategy)).map(budgetDto) : [];
   const auditId = sp.get("auditId");
   let audit = null;
   if (auditId) {
@@ -31,7 +33,7 @@ export const GET = safe("GET /api/budgets", async (req: Request) => {
     if (!row || row.url !== q.data.url || row.strategy !== strategy) return jsonError(404, "NOT_FOUND", "Audit not found for this URL/strategy");
     audit = toDto(row);
   } else {
-    const hist = await listHistory(q.data.url, strategy, 1);
+    const hist = owner ? await listHistory(q.data.url, strategy, owner, 1) : [];
     audit = hist[0] ? toDto(hist[0]) : null;
   }
   return NextResponse.json({
@@ -47,6 +49,7 @@ export const POST = safe("POST /api/budgets", async (req: Request) => {
   if (!body.ok) return body.res;
   const p = CreateBudgetSchema.safeParse(body.body);
   if (!p.success) return jsonError(400, "INVALID_INPUT", firstIssue(p.error));
-  const b = await upsertBudget({ ...p.data, strategy: toStrategy(p.data.strategy), source: p.data.source === "lab" ? "LAB" : "FIELD" });
-  return NextResponse.json({ budget: budgetDto(b) }, { status: 201 });
+  const owner = ensureOwner(req);
+  const b = await upsertBudget({ ...p.data, ownerHash: owner.hash, strategy: toStrategy(p.data.strategy), source: p.data.source === "lab" ? "LAB" : "FIELD" });
+  return withOwnerCookie(NextResponse.json({ budget: budgetDto(b) }, { status: 201 }), owner);
 });

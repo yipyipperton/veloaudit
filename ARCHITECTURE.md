@@ -51,6 +51,19 @@ for demos: it has no durable queue and is limited by function lifetime and concu
 - The job deadline (`AUDIT_JOB_TIMEOUT_MS`) aborts the in-flight fetch and records `JOB_TIMEOUT`.
 - Audits that have already finished are never reprocessed. On startup the worker marks old `QUEUED`/`RUNNING` rows as `STALE`.
 
+## Ownership (anonymous sessions)
+
+- `src/server/http/session.ts`: `ensureOwner(req)` (writes) returns the caller's owner hash and, when the cookie is missing,
+  malformed or fails HMAC verification (`timingSafeEqual`), a new random owner plus `Set-Cookie`. `readOwner(req)` (reads)
+  never creates one. Cookie: `__Host-va_owner=v1.<32 random bytes b64url>.<HMAC-SHA256(SESSION_SECRET)>`, HttpOnly, Secure, SameSite=Lax.
+- `ownerHash = sha256(ownerId)` is stored on `AuditRun`, `Audit` and `Budget` (nullable; null = legacy, hidden from lists).
+  Indexes: `Audit(ownerHash, createdAt)`, `Audit(ownerHash, url, strategy, createdAt)`, `AuditRun(ownerHash, createdAt)`,
+  and `Budget` is unique per `(ownerHash, url, strategy, source, metric)`.
+- Lists, history, compare and budgets are always filtered by the caller's hash in the persistence layer (`listAudits(owner)`,
+  `listHistory(..., owner)`, `listBudgets(owner, ...)`, `deleteBudget(id, owner)`).
+- Run/audit/report/screenshot reads by id are capabilities: ids are cuid2 (`@default(cuid(2))`), and responses carry
+  `viewerIsOwner` so the UI can label shared views.
+
 ## Lab vs field rules
 
 - These are separate data sets end to end: parser, columns, DTO, charts, comparison tables and budget sources.

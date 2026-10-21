@@ -3,7 +3,7 @@ import { POST, GET } from "@/app/api/audits/route";
 import { GET as GET_ONE } from "@/app/api/audits/[id]/route";
 import { prisma } from "@/server/persistence/db";
 import { auditQueue } from "@/server/orchestration/queue";
-import { resetDb } from "./helpers";
+import { replayCookie, resetDb } from "./helpers";
 
 let ipCounter = 0;
 const post = (body: string, headers: Record<string, string> = {}) =>
@@ -63,8 +63,8 @@ describe("GET audit endpoints", () => {
     expect((await GET_ONE(new Request("http://t/x"), { params: Promise.resolve({ id: "c".repeat(25) }) })).status).toBe(404);
   });
   it("lists audits", async () => {
-    await post('{"url":"https://8.8.4.4/","strategy":"mobile"}');
-    const r = await GET(new Request("http://t/api/audits"));
+    const created = await post('{"url":"https://8.8.4.4/","strategy":"mobile"}');
+    const r = await GET(new Request("http://t/api/audits", { headers: { cookie: replayCookie(created) } }));
     expect(((await r.json()) as { audits: unknown[] }).audits).toHaveLength(1);
   });
 });

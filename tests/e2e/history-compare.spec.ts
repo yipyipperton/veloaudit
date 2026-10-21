@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { PrismaClient } from "@prisma/client";
+import { newOwnerCookie, type OwnerCookie } from "./owner";
 
 /**
  * SYNTHETIC DATA — seeded directly into the app database for this test and removed afterwards.
@@ -8,8 +9,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({ datasourceUrl: process.env.DATABASE_URL ?? "postgresql://velo:velo@localhost:5432/veloaudit?schema=public" });
 const URL_ = "https://synthetic-e2e.invalid/";
 const ids: string[] = [];
+/** Fixed SYNTHETIC owner hash for the seeded rows; each test's browser context gets a cookie for it. */
+let ownerHash = "";
+let ownerCookie: OwnerCookie | null = null;
 
-test.beforeAll(async () => {
+test.beforeAll(async ({}, info) => {
+  const o = newOwnerCookie(info.project.use.baseURL ?? "http://localhost:3000");
+  ownerHash = o.hash; ownerCookie = o.cookie;
   await prisma.budget.deleteMany({ where: { url: URL_ } });
   await prisma.audit.deleteMany({ where: { url: URL_ } });
   const rows = [
@@ -20,12 +26,13 @@ test.beforeAll(async () => {
   for (const r of rows) {
     const a = await prisma.audit.create({ data: {
       url: URL_, strategy: "MOBILE", status: "SUCCEEDED", createdAt: new Date(Date.UTC(2000, 0, r.day)), completedAt: new Date(Date.UTC(2000, 0, r.day)),
-      lighthouseVersion: "SYNTHETIC", labScore: r.labScore, labLcpMs: r.labLcpMs, labFcpMs: 1000, labSpeedIndexMs: 2000, labTbtMs: r.labTbtMs, labCls: r.labCls, labTtfbMs: 50,
+      ownerHash, lighthouseVersion: "SYNTHETIC", labScore: r.labScore, labLcpMs: r.labLcpMs, labFcpMs: 1000, labSpeedIndexMs: 2000, labTbtMs: r.labTbtMs, labCls: r.labCls, labTtfbMs: 50,
       fieldScope: "url", fieldLcpMs: r.fieldLcpMs, fieldInpMs: r.fieldInpMs, fieldCls: r.fieldCls, fieldFcpMs: 1500, fieldTtfbMs: 600, opportunities: [],
     } });
     ids.push(a.id);
   }
 });
+test.beforeEach(async ({ context }) => { if (ownerCookie) await context.addCookies([ownerCookie]); });
 test.afterAll(async () => {
   await prisma.budget.deleteMany({ where: { url: URL_ } });
   await prisma.audit.deleteMany({ where: { url: URL_ } });

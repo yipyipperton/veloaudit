@@ -5,6 +5,7 @@ import { listBudgets } from "@/server/persistence/budgets";
 import { jsonError, safe } from "@/server/http/errors";
 import { readLimited } from "@/server/http/rateLimit";
 import { budgetDto, toDto } from "@/server/http/serialize";
+import { readOwner } from "@/server/http/session";
 import { evaluateBudgets } from "@/lib/budgets";
 import { renderHtml, renderMarkdown } from "@/server/report/render";
 
@@ -23,7 +24,9 @@ export const GET = safe("GET /api/audits/[id]/report", async (req: Request, ctx:
   const row = await getAudit(id);
   if (!row) return jsonError(404, "NOT_FOUND", "Audit not found");
   const audit = toDto(row);
-  const budgets = (await listBudgets(row.url, row.strategy)).map(budgetDto);
+  // The audit id is the capability; budgets are the VIEWER's own (none for anonymous viewers).
+  const owner = readOwner(req);
+  const budgets = owner ? (await listBudgets(owner, row.url, row.strategy)).map(budgetDto) : [];
   const results = evaluateBudgets(budgets, audit);
   const isMd = q.data.format === "md";
   const body = isMd ? renderMarkdown(audit, results) : renderHtml(audit, results);

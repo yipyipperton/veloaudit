@@ -32,7 +32,10 @@ export default function Home() {
       <section id="audits" className="mx-auto max-w-6xl scroll-mt-20 px-5 sm:px-6">
         <div className="surface overflow-hidden">
           <div className="flex items-center justify-between border-b border-border px-4 py-3.5 sm:px-6">
-            <h2 className="text-[15px] font-semibold tracking-tight">Recent audits</h2>
+            <div>
+              <h2 className="text-[15px] font-semibold tracking-tight">Your recent audits</h2>
+              <p className="mt-0.5 text-[11.5px] text-muted-foreground">Private to this browser · share a result by sending its link</p>
+            </div>
             <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><span className="relative flex size-1.5"><span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60" /><span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" /></span>Live</span>
           </div>
           <RecentAudits />

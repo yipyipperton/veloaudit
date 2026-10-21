@@ -4,6 +4,7 @@ import { getAuditWithAssets } from "@/server/persistence/audits";
 import { jsonError, safe } from "@/server/http/errors";
 import { readLimited } from "@/server/http/rateLimit";
 import { toDto } from "@/server/http/serialize";
+import { readOwner } from "@/server/http/session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,5 +15,6 @@ export const GET = safe("GET /api/audits/[id]", async (req: Request, ctx: { para
   if (!AuditIdSchema.safeParse(id).success) return jsonError(400, "INVALID_ID", "Invalid audit id");
   const audit = await getAuditWithAssets(id);
   if (!audit) return jsonError(404, "NOT_FOUND", "Audit not found");
-  return NextResponse.json({ audit: toDto(audit, audit.assets) });
+  const owner = readOwner(req);
+  return NextResponse.json({ audit: toDto(audit, audit.assets), viewerIsOwner: owner !== null && audit.ownerHash === owner });
 });
