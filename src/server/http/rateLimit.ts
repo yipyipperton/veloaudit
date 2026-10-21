@@ -1,4 +1,4 @@
-/** Basic in-memory fixed-window limiter (per process). Phase 1 only; move to Redis for multi-instance. */
+/** Basic in-memory fixed-window limiter (per process). Move to Redis for multi-instance deployments. */
 type Bucket = { count: number; resetAt: number };
 const buckets = new Map<string, Bucket>();
 
@@ -15,4 +15,9 @@ export function rateLimit(key: string, limit: number, windowMs: number, now = Da
 
 export function clientIp(req: Request): string {
   return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
+}
+
+/** Shared read-endpoint guard. */
+export function readLimited(req: Request): { ok: boolean; retryAfterS: number } {
+  return rateLimit(`read:${clientIp(req)}`, 120, 60_000);
 }

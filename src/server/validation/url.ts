@@ -6,7 +6,7 @@ export type UrlCheck = { ok: true; url: string; hostname: string } | { ok: false
 
 const BLOCKED_SUFFIXES = [".localhost", ".local", ".internal", ".home.arpa", ".lan"];
 
-/** Synchronous structural checks (no network). */
+/** Synchronous structural checks (no network). Also used to normalize URLs for lookups. */
 export function checkUrlSyntax(input: string): UrlCheck {
   const trimmed = input.trim();
   if (trimmed.length === 0 || trimmed.length > 2048) return { ok: false, reason: "URL must be 1-2048 characters" };

@@ -1,7 +1,7 @@
 export type FieldValue = { value: number; category: string | null } | null;
 export type Opportunity = {
   id: string; title: string; description: string; score: number | null;
-  displayValue: string | null; savingsMs: number | null; savingsBytes: number | null;
+  displayValue: string | null; savingsMs: number | null; savingsBytes: number | null; metricSavings?: Record<string, number>;
 };
 export type AuditView = {
   id: string; url: string; strategy: "mobile" | "desktop";

@@ -52,14 +52,14 @@ export function AuditDetail({ id }: { id: string }) {
       {a.status === "SUCCEEDED" && (
         <>
           <Card>
-            <CardHeader><CardTitle>Lab metrics (Lighthouse)</CardTitle><CardDescription>Simulated single run from PageSpeed Insights.</CardDescription></CardHeader>
+            <CardHeader><CardTitle>Lab metrics (Lighthouse)</CardTitle><CardDescription>Single simulated run from PageSpeed Insights. Lighthouse reports server response time for the root document, which leaves out network time, so it is not a full TTFB. Real-user TTFB is in the field data below.</CardDescription></CardHeader>
             <CardContent className="grid grid-cols-2 gap-3 md:grid-cols-3">
               <Metric testId="lab-lcp" label="LCP" value={fmtMs(a.lab.lcpMs)} />
               <Metric testId="lab-fcp" label="FCP" value={fmtMs(a.lab.fcpMs)} />
               <Metric testId="lab-si" label="Speed Index" value={fmtMs(a.lab.speedIndexMs)} />
               <Metric testId="lab-tbt" label="TBT" value={fmtMs(a.lab.tbtMs)} />
               <Metric testId="lab-cls" label="CLS" value={fmtCls(a.lab.cls)} />
-              <Metric testId="lab-ttfb" label="TTFB (server response)" value={fmtMs(a.lab.ttfbMs)} />
+              <Metric testId="lab-ttfb" label="Server response (backend only)" value={fmtMs(a.lab.ttfbMs)} />
             </CardContent>
           </Card>
           <Card>
@@ -89,7 +89,7 @@ export function AuditDetail({ id }: { id: string }) {
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <span className="font-medium">{o.title}</span>
                         <span className="text-sm text-muted-foreground">
-                          {o.savingsMs ? `~${fmtMs(o.savingsMs)} ` : ""}{o.savingsBytes ? `· ${Math.round(o.savingsBytes / 1024)} KiB ` : ""}{o.displayValue ? `· ${o.displayValue}` : ""}
+                          {o.savingsMs ? `Est. savings ~${fmtMs(o.savingsMs)} ` : ""}{!o.savingsMs && o.metricSavings?.["CLS"] ? `CLS −${o.metricSavings["CLS"].toFixed(3)} ` : ""}{o.savingsBytes ? `· ${Math.round(o.savingsBytes / 1024)} KiB ` : ""}{o.displayValue ? `· ${o.displayValue}` : ""}
                         </span>
                       </div>
                       <p className="mt-1 text-sm text-muted-foreground">{o.description}</p>

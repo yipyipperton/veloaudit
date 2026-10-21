@@ -11,7 +11,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "db:migrate": "prisma migrate deploy"
+    "db:migrate": "prisma migrate deploy",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "ci:local": "bash scripts/ci-local.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

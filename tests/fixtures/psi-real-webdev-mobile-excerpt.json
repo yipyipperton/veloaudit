@@ -1,0 +1,261 @@
+{
+ "_FIXTURE_NOTE": "REAL PSI v5 response EXCERPT captured 2026-10-21 for https://web.dev/ (mobile). Audits trimmed, details removed except unused-javascript. Used only by tests.",
+ "loadingExperience": {
+  "id": "https://web.dev/",
+  "metrics": {
+   "CUMULATIVE_LAYOUT_SHIFT_SCORE": {
+    "percentile": 1,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 10,
+      "proportion": 0.8664
+     },
+     {
+      "min": 10,
+      "max": 25,
+      "proportion": 0.0607
+     },
+     {
+      "min": 25,
+      "proportion": 0.0729
+     }
+    ],
+    "category": "FAST"
+   },
+   "EXPERIMENTAL_TIME_TO_FIRST_BYTE": {
+    "percentile": 1705,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 800,
+      "proportion": 0.2721
+     },
+     {
+      "min": 800,
+      "max": 1800,
+      "proportion": 0.4954
+     },
+     {
+      "min": 1800,
+      "proportion": 0.2326
+     }
+    ],
+    "category": "AVERAGE"
+   },
+   "FIRST_CONTENTFUL_PAINT_MS": {
+    "percentile": 3065,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 1800,
+      "proportion": 0.4675
+     },
+     {
+      "min": 1800,
+      "max": 3000,
+      "proportion": 0.2715
+     },
+     {
+      "min": 3000,
+      "proportion": 0.261
+     }
+    ],
+    "category": "SLOW"
+   },
+   "INTERACTION_TO_NEXT_PAINT": {
+    "percentile": 228,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 200,
+      "proportion": 0.7022
+     },
+     {
+      "min": 200,
+      "max": 500,
+      "proportion": 0.2061
+     },
+     {
+      "min": 500,
+      "proportion": 0.0917
+     }
+    ],
+    "category": "AVERAGE"
+   },
+   "LARGEST_CONTENTFUL_PAINT_MS": {
+    "percentile": 3069,
+    "distributions": [
+     {
+      "min": 0,
+      "max": 2500,
+      "proportion": 0.6613
+     },
+     {
+      "min": 2500,
+      "max": 4000,
+      "proportion": 0.1761
+     },
+     {
+      "min": 4000,
+      "proportion": 0.1626
+     }
+    ],
+    "category": "AVERAGE"
+   }
+  },
+  "overall_category": "SLOW",
+  "initial_url": "https://web.dev/"
+ },
+ "lighthouseResult": {
+  "finalDisplayedUrl": "https://web.dev/",
+  "lighthouseVersion": "13.5.0",
+  "fetchTime": "2026-10-21T16:41:26.646Z",
+  "categories": {
+   "performance": {
+    "score": 0.35
+   }
+  },
+  "audits": {
+   "largest-contentful-paint": {
+    "id": "largest-contentful-paint",
+    "title": "Largest Contentful Paint",
+    "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn more about the Largest Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
+    "score": 0,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "12.1\u00a0s",
+    "numericValue": 12078.377060321614,
+    "numericUnit": "millisecond"
+   },
+   "first-contentful-paint": {
+    "id": "first-contentful-paint",
+    "title": "First Contentful Paint",
+    "description": "First Contentful Paint marks the time at which the first text or image is painted. [Learn more about the First Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/).",
+    "score": 0,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "11.3\u00a0s",
+    "numericValue": 11253.826843063149,
+    "numericUnit": "millisecond"
+   },
+   "speed-index": {
+    "id": "speed-index",
+    "title": "Speed Index",
+    "description": "Speed Index shows how quickly the contents of a page are visibly populated. [Learn more about the Speed Index metric](https://developer.chrome.com/docs/lighthouse/performance/speed-index/).",
+    "score": 0.05,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "11.3\u00a0s",
+    "numericValue": 11253.826843063149,
+    "numericUnit": "millisecond"
+   },
+   "total-blocking-time": {
+    "id": "total-blocking-time",
+    "title": "Total Blocking Time",
+    "description": "Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds. [Learn more about the Total Blocking Time metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/).",
+    "score": 0.32,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "890\u00a0ms",
+    "numericValue": 893.5,
+    "numericUnit": "millisecond"
+   },
+   "cumulative-layout-shift": {
+    "id": "cumulative-layout-shift",
+    "title": "Cumulative Layout Shift",
+    "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
+    "score": 1,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "0.001",
+    "numericValue": 0.001241885477432222,
+    "numericUnit": "unitless"
+   },
+   "server-response-time": {
+    "id": "server-response-time",
+    "title": "Initial server response time was short",
+    "description": "Keep the server response time for the main document short because all other requests depend on it. [Learn more about the Time to First Byte metric](https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/).",
+    "score": 1,
+    "scoreDisplayMode": "metricSavings",
+    "displayValue": "Root document took 0\u00a0ms",
+    "metricSavings": {
+     "LCP": 0,
+     "FCP": 0
+    },
+    "numericValue": 4,
+    "numericUnit": "millisecond"
+   },
+   "bootup-time": {
+    "id": "bootup-time",
+    "title": "Reduce JavaScript execution time",
+    "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to reduce Javascript execution time](https://developer.chrome.com/docs/lighthouse/performance/bootup-time/).",
+    "score": 0,
+    "scoreDisplayMode": "metricSavings",
+    "displayValue": "2.6\u00a0s",
+    "metricSavings": {
+     "TBT": 800
+    },
+    "numericValue": 2563.9031999999966,
+    "numericUnit": "millisecond"
+   },
+   "unused-javascript": {
+    "id": "unused-javascript",
+    "title": "Reduce unused JavaScript",
+    "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
+    "score": 0,
+    "scoreDisplayMode": "metricSavings",
+    "displayValue": "Est savings of 868\u00a0KiB",
+    "metricSavings": {
+     "LCP": 4500,
+     "FCP": 4050
+    },
+    "details": {
+     "type": "opportunity",
+     "overallSavingsMs": 4500
+    },
+    "numericValue": 4500,
+    "numericUnit": "millisecond"
+   },
+   "render-blocking-insight": {
+    "id": "render-blocking-insight",
+    "title": "Render-blocking requests",
+    "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+    "score": 0,
+    "scoreDisplayMode": "metricSavings",
+    "displayValue": "Est savings of 1,790\u00a0ms",
+    "metricSavings": {
+     "LCP": 1800,
+     "FCP": 1800
+    }
+   },
+   "cache-insight": {
+    "id": "cache-insight",
+    "title": "Use efficient cache lifetimes",
+    "description": "A long cache lifetime can speed up repeat visits to your page. [Learn more about caching](https://developer.chrome.com/docs/performance/insights/cache).",
+    "score": 0.5,
+    "scoreDisplayMode": "metricSavings",
+    "displayValue": "Est savings of 0\u00a0KiB",
+    "metricSavings": {
+     "LCP": 0,
+     "FCP": 0
+    }
+   },
+   "total-byte-weight": {
+    "id": "total-byte-weight",
+    "title": "Avoid enormous network payloads",
+    "description": "Large network payloads cost users real money and are highly correlated with long load times. [Learn how to reduce payload sizes](https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/).",
+    "score": 0.5,
+    "scoreDisplayMode": "metricSavings",
+    "displayValue": "Total size was 3,623\u00a0KiB",
+    "numericValue": 3710385,
+    "numericUnit": "byte"
+   },
+   "interactive": {
+    "id": "interactive",
+    "title": "Time to Interactive",
+    "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive. [Learn more about the Time to Interactive metric](https://developer.chrome.com/docs/lighthouse/performance/interactive/).",
+    "score": 0.01,
+    "scoreDisplayMode": "numeric",
+    "displayValue": "21.3\u00a0s",
+    "numericValue": 21255.94179356264,
+    "numericUnit": "millisecond"
+   }
+  }
+ }
+}

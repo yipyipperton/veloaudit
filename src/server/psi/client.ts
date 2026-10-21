@@ -15,6 +15,7 @@ export type PsiClientOptions = {
   baseDelayMs?: number;
   fetchImpl?: typeof fetch;
   sleep?: (ms: number) => Promise<void>;
+  signal?: AbortSignal;
 };
 
 const ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -41,30 +42,38 @@ function classify(status: number, body: string): PsiError {
 
 /** Calls PSI v5 with per-attempt timeout and exponential backoff (with jitter) on transient errors. */
 export async function runPagespeed(url: string, strategy: PsiStrategy, opts: PsiClientOptions = {}): Promise<unknown> {
-  const { apiKey, timeoutMs = 120_000, maxAttempts = 4, baseDelayMs = 2_000, fetchImpl = fetch, sleep = defaultSleep } = opts;
+  const { apiKey, timeoutMs = 120_000, maxAttempts = 4, baseDelayMs = 2_000, fetchImpl = fetch, sleep = defaultSleep, signal } = opts;
   const qs = new URLSearchParams({ url, strategy, category: "performance" });
   if (apiKey) qs.set("key", apiKey);
-  const reqUrl = `${ENDPOINT}?${qs.toString()}`;
+  const reqUrl = `${ENDPOINT}?${qs.toString()}`; // never logged (may contain key)
 
   let last: PsiError = new PsiError("PSI request not attempted", "PSI_UNKNOWN", null, false);
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const started = Date.now();
     try {
-      const res = await fetchImpl(reqUrl, { signal: AbortSignal.timeout(timeoutMs), headers: { accept: "application/json" } });
+      const res = await fetchImpl(reqUrl, {
+        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs),
+        headers: { accept: "application/json" },
+      });
       const body = await res.text();
       if (res.ok) {
+        let parsed: unknown;
+        try { parsed = JSON.parse(body); } catch {
+          throw new PsiError("PSI returned a non-JSON body", "PSI_BAD_RESPONSE", res.status, false);
+        }
         logger.info("psi.success", { url, strategy, attempt, ms: Date.now() - started, keyed: Boolean(apiKey) });
-        return JSON.parse(body) as unknown;
+        return parsed;
       }
       last = classify(res.status, body);
     } catch (err) {
+      if (err instanceof PsiError) throw err;
       const name = err instanceof Error ? err.name : "Error";
       last = name === "TimeoutError" || name === "AbortError"
         ? new PsiError(`PSI request timed out after ${timeoutMs}ms`, "PSI_TIMEOUT", null, true)
         : new PsiError("Network error calling PSI", "PSI_NETWORK", null, true);
     }
     logger.warn("psi.attempt_failed", { url, strategy, attempt, code: last.code, status: last.status, retryable: last.retryable, ms: Date.now() - started });
-    if (!last.retryable || attempt === maxAttempts) break;
+    if (signal?.aborted || !last.retryable || attempt === maxAttempts) break;
     const delay = baseDelayMs * 2 ** (attempt - 1) + Math.floor(Math.random() * 500);
     await sleep(delay);
   }

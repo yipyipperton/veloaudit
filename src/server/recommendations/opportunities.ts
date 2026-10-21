@@ -21,6 +21,12 @@ function cleanDescription(d: string | undefined): string {
   return (d ?? "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").trim();
 }
 
+/** Largest reported time saving across metrics (LCP/FCP/TBT/INP); CLS is unitless and excluded. */
+function bestSavingsMs(overall: number | undefined, ms: Record<string, number>): number | null {
+  const vals = [overall, ms["LCP"], ms["FCP"], ms["TBT"], ms["INP"]].filter((v): v is number => typeof v === "number" && v > 0);
+  return vals.length ? Math.max(...vals) : null;
+}
+
 /**
  * Opportunities derived ONLY from real Lighthouse audits: failing (score < 0.9) audits that are
  * either `opportunity`-type or report non-zero metric savings. Sorted by estimated ms savings.
@@ -41,7 +47,7 @@ export function extractOpportunities(audits: Record<string, LhAudit>): Opportuni
       description: cleanDescription(a.description),
       score: a.score,
       displayValue: a.displayValue ?? null,
-      savingsMs: a.details?.overallSavingsMs ?? ms["LCP"] ?? ms["FCP"] ?? null,
+      savingsMs: bestSavingsMs(a.details?.overallSavingsMs, ms),
       savingsBytes: a.details?.overallSavingsBytes ?? null,
       metricSavings: ms,
     });

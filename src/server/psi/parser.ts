@@ -8,7 +8,7 @@ export type LabMetrics = {
   speedIndexMs: number | null;
   tbtMs: number | null;
   cls: number | null;
-  ttfbMs: number | null;
+  ttfbMs: number | null; // Lighthouse server-response-time (backend only)
 };
 
 export type FieldMetric = { value: number; category: string | null } | null;

@@ -11,6 +11,12 @@ export function getAudit(id: string): Promise<Audit | null> {
 export function listAudits(limit = 25): Promise<Audit[]> {
   return prisma.audit.findMany({ orderBy: { createdAt: "desc" }, take: limit });
 }
+/** Completed audits for one URL + strategy, oldest first (uses the url/strategy/createdAt index). */
+export function listHistory(url: string, strategy: Strategy, limit = 100): Promise<Audit[]> {
+  return prisma.audit
+    .findMany({ where: { url, strategy, status: "SUCCEEDED" }, orderBy: { createdAt: "desc" }, take: limit })
+    .then((rows) => rows.reverse());
+}
 export function markRunning(id: string): Promise<Audit> {
   return prisma.audit.update({ where: { id }, data: { status: "RUNNING", startedAt: new Date() } });
 }
@@ -35,4 +41,11 @@ export function saveResult(id: string, p: ParsedAudit): Promise<Audit> {
       opportunities: p.opportunities as unknown as Prisma.InputJsonValue,
     },
   });
+}
+export async function failStale(before: Date): Promise<number> {
+  const r = await prisma.audit.updateMany({
+    where: { status: { in: ["RUNNING", "QUEUED"] }, createdAt: { lt: before } },
+    data: { status: "FAILED", errorCode: "STALE", errorMessage: "Audit did not complete (worker interrupted)", completedAt: new Date() },
+  });
+  return r.count;
 }

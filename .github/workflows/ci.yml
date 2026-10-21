@@ -14,21 +14,11 @@ jobs:
         ports: ["6379:6379"]
     env:
       DATABASE_URL: postgresql://velo:velo@localhost:5432/veloaudit?schema=public
+      TEST_DATABASE_URL: postgresql://velo:velo@localhost:5432/veloaudit_test?schema=public
       REDIS_URL: redis://localhost:6379
       PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
-      - run: npm ci
-      - run: npx prisma migrate deploy
-      - run: npm run typecheck
-      - run: npm run lint
-      - run: npm test
-      - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - name: E2E
-        run: |
-          npm start & npm run worker &
-          npx wait-on http://localhost:3000
-          npm run test:e2e
+      - run: bash scripts/ci-steps.sh
