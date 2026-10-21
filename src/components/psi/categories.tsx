@@ -4,6 +4,7 @@ import { scoreRating } from "@/lib/cwv";
 import type { AuditView, CategoryId, CategoryView } from "@/lib/types";
 import { FindingList } from "./findings";
 import { RATING_FILL } from "./rating";
+import { InlineCode } from "./inline-code";
 
 const ORDER: { id: CategoryId; title: string; key: keyof AuditView["categoryScores"] }[] = [
   { id: "performance", title: "Performance", key: "performance" },
@@ -64,7 +65,7 @@ function Collapsed({ label, items, testId, withDescription = false }: { label: s
       <ul className="divide-y divide-border border-t border-border">
         {items.map((i) => (
           <li key={i.id} className="px-4 py-2 text-[12.5px]">
-            <span>{i.title}</span>
+            <span><InlineCode text={i.title} /></span>
             {withDescription && i.description && <p className="mt-0.5 text-[12px] leading-relaxed text-muted-foreground">{i.description}</p>}
           </li>
         ))}
@@ -81,7 +82,7 @@ export function CategorySection({ cat }: { cat: CategoryView }) {
     groups.set(g, [...(groups.get(g) ?? []), f]);
   }
   return (
-    <section id={categorySectionId(cat.id)} className="scroll-mt-32 space-y-4" data-testid={`section-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
+    <section id={categorySectionId(cat.id)} className="scroll-mt-48 space-y-4 sm:scroll-mt-36" data-testid={`section-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
       <div className="flex items-center gap-4">
         <MiniGauge score={cat.score} size={64} />
         <div>

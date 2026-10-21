@@ -13,7 +13,7 @@ export function PsiReport({ audit: a }: { audit: AuditView }) {
       <CategoryGauges audit={a} />
       <FieldSection audit={a} />
 
-      <section id={categorySectionId("performance")} className="scroll-mt-32 space-y-4" aria-labelledby="lab-h">
+      <section id={categorySectionId("performance")} className="scroll-mt-48 space-y-4 sm:scroll-mt-36" aria-labelledby="lab-h">
         <div>
           <p className="eyebrow">Lab · Lighthouse {a.lighthouseVersion ?? ""}</p>
           <h2 id="lab-h" className="mt-1 text-lg font-semibold tracking-tight">Diagnose performance issues</h2>

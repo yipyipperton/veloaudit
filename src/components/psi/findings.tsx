@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { InlineCode } from "./inline-code";
 import { scoreRating } from "@/lib/cwv";
 import type { Opportunity } from "@/lib/types";
 import { fmtMs } from "../format";
@@ -22,7 +23,7 @@ export function FindingList({ items, testId, empty }: { items: Opportunity[]; te
             <details className="group">
               <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 transition-colors hover:bg-subtle [&::-webkit-details-marker]:hidden">
                 <Indicator rating={scoreRating(o.score)} />
-                <span className="min-w-0 flex-1 text-[13.5px] font-medium tracking-tight">{o.title}
+                <span className="min-w-0 flex-1 text-[13.5px] font-medium tracking-tight"><InlineCode text={o.title} />
                   {o.displayValue && <span className="ml-2 font-normal text-muted-foreground">— {o.displayValue}</span>}
                 </span>
                 {s && <span className="hidden rounded-md bg-subtle px-2 py-0.5 font-mono text-[11px] text-muted-foreground ring-1 ring-inset ring-border sm:inline">{s}</span>}
